@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>浙江建投案例拆解 | 陈小群龙头战法</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      --bg: #110d0c;
+      --bg-soft: #1a1311;
+      --panel: rgba(33, 24, 21, 0.82);
+      --panel-strong: rgba(48, 36, 31, 0.9);
+      --card: rgba(255, 248, 240, 0.06);
+      --card-strong: rgba(255, 248, 240, 0.11);
+      --text: #f5ede5;
+      --muted: #ccb7a7;
+      --line: rgba(255, 223, 189, 0.12);
+      --line-strong: rgba(255, 223, 189, 0.22);
+      --accent: #df5a38;
+      --accent-soft: rgba(223, 90, 56, 0.18);
+      --gold: #d9b372;
+      --gold-soft: rgba(217, 179, 114, 0.16);
+      --green: #8aa07d;
+      --danger: #ff8f6b;
+      --shadow: 0 32px 70px rgba(0, 0, 0, 0.32);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --content-width: 1280px;
+      --sans: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --serif: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(223, 90, 56, 0.2), transparent 28%),
+        radial-gradient(circle at 88% 20%, rgba(217, 179, 114, 0.14), transparent 24%),
+        radial-gradient(circle at 70% 82%, rgba(138, 160, 125, 0.16), transparent 18%),
+        linear-gradient(180deg, #0b0908 0%, #17110f 42%, #120d0c 100%);
+      min-height: 100vh;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    body::before {
+      top: -7rem;
+      left: -6rem;
+      width: 22rem;
+      height: 22rem;
+      border-radius: 50%;
+      background: rgba(223, 90, 56, 0.16);
+    }
+
+    body::after {
+      right: -8rem;
+      bottom: -9rem;
+      width: 26rem;
+      height: 26rem;
+      border-radius: 50%;
+      background: rgba(217, 179, 114, 0.12);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+      width: min(var(--content-width), calc(100vw - 28px));
+      margin: 14px auto 36px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      background: rgba(18, 13, 12, 0.72);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      box-shadow: 0 0 0 6px rgba(223, 90, 56, 0.09);
+    }
+
+    .brand strong {
+      font-family: var(--serif);
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a,
+    .hero-actions a,
+    .source-link,
+    .tool-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      text-decoration: none;
+      font-size: 13px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .nav a:hover,
+    .hero-actions a:hover,
+    .source-link:hover,
+    .tool-link:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 223, 189, 0.24);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: calc(100svh - 110px);
+      padding: clamp(28px, 5vw, 56px);
+      display: grid;
+      align-items: end;
+      border-radius: 34px;
+      background:
+        linear-gradient(120deg, rgba(17, 13, 12, 0.92) 0%, rgba(17, 13, 12, 0.72) 44%, rgba(17, 13, 12, 0.94) 100%),
+        radial-gradient(circle at 70% 28%, rgba(223, 90, 56, 0.24), transparent 32%),
+        linear-gradient(135deg, #231915 0%, #0f0c0b 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -10% -8% auto auto;
+      width: 46vw;
+      max-width: 620px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(223, 90, 56, 0.38) 0%, rgba(223, 90, 56, 0.12) 34%, transparent 62%),
+        radial-gradient(circle at 60% 40%, rgba(217, 179, 114, 0.3) 0%, transparent 40%);
+      opacity: 0.72;
+      filter: blur(12px);
+      z-index: -1;
+      transform: translateY(-8%) scale(1.05);
+      animation: breathe 9s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(transparent 0 92%, rgba(255, 255, 255, 0.06) 92% 93%, transparent 93% 100%),
+        linear-gradient(90deg, transparent 0 92%, rgba(255, 255, 255, 0.05) 92% 93%, transparent 93% 100%);
+      background-size: 100% 14px, 14px 100%;
+      opacity: 0.05;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+      gap: clamp(18px, 4vw, 36px);
+      align-items: end;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+    }
+
+    .hero h1 {
+      margin: 16px 0 14px;
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 6.4vw, 5.7rem);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      max-width: 11.5ch;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--gold);
+    }
+
+    .hero-summary {
+      margin: 0;
+      max-width: 60ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.14rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .hero-actions a:first-child {
+      background: linear-gradient(135deg, rgba(223, 90, 56, 0.9), rgba(190, 65, 35, 0.95));
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-actions a:first-child:hover {
+      background: linear-gradient(135deg, rgba(233, 104, 69, 0.98), rgba(203, 73, 43, 0.98));
+    }
+
+    .hero-points {
+      display: grid;
+      gap: 12px;
+      align-self: stretch;
+    }
+
+    .hero-block {
+      padding: 20px 22px;
+      border-radius: var(--radius-xl);
+      background: rgba(255, 250, 244, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      transform: translateY(12px);
+      opacity: 0;
+      animation: rise 800ms ease forwards;
+    }
+
+    .hero-block:nth-child(2) {
+      animation-delay: 120ms;
+    }
+
+    .hero-block:nth-child(3) {
+      animation-delay: 220ms;
+    }
+
+    .hero-block h2,
+    .hero-block h3,
+    .section h2,
+    .panel h2,
+    .questions h2,
+    .next-step h2 {
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-block p,
+    .hero-block li {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 13px;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .stat {
+      padding: 16px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.06));
+      border-radius: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1;
+      font-family: var(--serif);
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 96px;
+      display: grid;
+      gap: 14px;
+      padding: 22px 20px;
+      border-radius: 28px;
+      background: rgba(20, 15, 14, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .toc h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      line-height: 1.08;
+    }
+
+    .toc p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .toc nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .toc a {
+      padding: 11px 12px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.03);
+      transition: transform 160ms ease, background 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+
+    .toc a:hover,
+    .toc a.is-active {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--line);
+      transform: translateX(3px);
+    }
+
+    .progress-shell {
+      display: grid;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transition: width 220ms ease;
+    }
+
+    .content {
+      display: grid;
+      gap: 16px;
+    }
+
+    .section,
+    .panel,
+    .questions,
+    .next-step {
+      padding: clamp(24px, 4vw, 34px);
+      border-radius: 28px;
+      background: rgba(22, 16, 15, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .section-head {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 22px;
+      max-width: 76ch;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .overline {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .summary-band {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+
+    .quote-panel {
+      padding: 22px;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(223, 90, 56, 0.16), rgba(223, 90, 56, 0.04)),
+        rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(223, 90, 56, 0.18);
+    }
+
+    .quote-panel blockquote {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 2.1vw, 2rem);
+      line-height: 1.22;
+      letter-spacing: -0.03em;
+    }
+
+    .quote-panel p {
+      margin: 14px 0 0;
+      color: var(--muted);
+    }
+
+    .analysis-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .analysis-item {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .analysis-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .analysis-item strong {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .analysis-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .framework-grid,
+    .insight-grid,
+    .risk-grid,
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .insight-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .framework-block,
+    .insight-block,
+    .risk-block,
+    .question-card,
+    .next-card {
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .framework-block:hover,
+    .insight-block:hover,
+    .risk-block:hover,
+    .question-card:hover,
+    .next-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--line-strong);
+    }
+
+    .framework-block h3,
+    .insight-block h3,
+    .risk-block h3,
+    .question-card h3,
+    .next-card h3 {
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-size: 1.14rem;
+      line-height: 1.14;
+      letter-spacing: -0.02em;
+    }
+
+    .framework-block p,
+    .insight-block p,
+    .risk-block p,
+    .next-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .framework-block ul,
+    .timeline-entry ul,
+    .risk-block ul {
+      padding-left: 18px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .framework-block li + li,
+    .timeline-entry li + li,
+    .risk-block li + li {
+      margin-top: 8px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      bottom: 12px;
+      left: 16px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(223, 90, 56, 0.45), rgba(217, 179, 114, 0.2));
+    }
+
+    .timeline-entry {
+      position: relative;
+      padding: 0 0 0 48px;
+    }
+
+    .timeline-entry::before {
+      content: "";
+      position: absolute;
+      top: 9px;
+      left: 9px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      box-shadow: 0 0 0 8px rgba(223, 90, 56, 0.08);
+    }
+
+    .timeline-tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(217, 179, 114, 0.22);
+      background: rgba(217, 179, 114, 0.08);
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .timeline-entry h3 {
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .timeline-entry p {
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .rhythm-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .rhythm-board {
+      padding: 18px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .rhythm-board-head {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+      max-width: 72ch;
+    }
+
+    .rhythm-board-head h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 1.28rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .rhythm-board-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .table-shell {
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(14, 11, 10, 0.44);
+    }
+
+    .rhythm-table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+    }
+
+    .rhythm-table th,
+    .rhythm-table td {
+      padding: 14px 16px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rhythm-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .rhythm-table th {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(255, 255, 255, 0.03);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .rhythm-table td {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .rhythm-table td strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .rhythm-type {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .rhythm-type-buy {
+      background: rgba(138, 160, 125, 0.12);
+      border-color: rgba(138, 160, 125, 0.22);
+      color: #bdd0b4;
+    }
+
+    .rhythm-type-sell {
+      background: rgba(223, 90, 56, 0.1);
+      border-color: rgba(223, 90, 56, 0.22);
+      color: #f4b39f;
+    }
+
+    .rhythm-type-watch {
+      background: rgba(217, 179, 114, 0.1);
+      border-color: rgba(217, 179, 114, 0.2);
+      color: var(--gold);
+    }
+
+    .rhythm-short {
+      color: var(--text);
+    }
+
+    .mode-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .mode-card strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .mode-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .question-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .question-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .question-card label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .question-card textarea {
+      width: 100%;
+      min-height: 132px;
+      border: 1px solid rgba(255, 223, 189, 0.14);
+      border-radius: 16px;
+      padding: 14px 15px;
+      resize: vertical;
+      font: inherit;
+      line-height: 1.6;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      outline: none;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .question-card textarea:focus {
+      border-color: rgba(223, 90, 56, 0.45);
+      background: rgba(255, 255, 255, 0.07);
+      transform: translateY(-1px);
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tool-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .case-image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .case-image-card {
+      margin: 0;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .case-image-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .case-image-card figcaption {
+      display: grid;
+      gap: 8px;
+      padding: 14px 14px 16px;
+    }
+
+    .case-image-card strong {
+      font-size: 0.98rem;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    .case-image-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .case-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(223, 90, 56, 0.2);
+      background: rgba(223, 90, 56, 0.1);
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tool-link {
+      font: inherit;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .source-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 18px;
+      margin-top: 20px;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .source-row p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 620ms ease, transform 620ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: translateY(-8%) scale(1.04);
+      }
+
+      50% {
+        transform: translateY(-3%) scale(1.1);
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1120px) {
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-grid,
+      .summary-band,
+      .page-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .insight-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page-shell {
+        width: min(var(--content-width), calc(100vw - 18px));
+        margin: 9px auto 22px;
+      }
+
+      .topbar {
+        position: static;
+        border-radius: 28px;
+        align-items: flex-start;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding: 26px 18px 22px;
+        border-radius: 28px;
+      }
+
+      .hero h1 {
+        max-width: none;
+      }
+
+      .hero-stats,
+      .framework-grid,
+      .insight-grid,
+      .risk-grid,
+      .mode-grid,
+      .case-image-grid,
+      .panel-grid,
+      .question-grid,
+      .next-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section,
+      .panel,
+      .questions,
+      .next-step {
+        padding: 22px 18px;
+        border-radius: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="eyebrow">陈小群案例拆解</span>
+        <strong>浙江建投 · 龙头战法 · 做T框架页</strong>
+      </div>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#summary">先看结论</a>
+        <a href="#framework">交易框架</a>
+        <a href="#timeline">两波走势</a>
+        <a href="#rhythm">节奏表</a>
+        <a href="#execution">执行表</a>
+        <a href="#questions">个人口径</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">浙江建投 · 龙头本质是资金合力</span>
+          <h1>龙头不是涨得最高 <span>而是分歧后还被反复选择</span></h1>
+          <p class="hero-summary">
+            这篇页面把 Notion 原文重新整理成一个可继续打磨的案例框架。重点不只是复述“浙江建投很强”，而是把陈小群这套龙头战法里最关键的几层逻辑拆出来：
+            大盘和情绪先定模式，资金合力决定谁是真龙头，走势节奏决定是锁仓还是做T，连续低于预期才是真正的离场信号。
+          </p>
+          <div class="chip-row">
+            <span class="chip">龙头本质是资金合力</span>
+            <span class="chip">震荡做T</span>
+            <span class="chip">加速锁仓</span>
+            <span class="chip">弱转强是关键观察点</span>
+            <span class="chip">两次爆量炸板后要防退潮</span>
+          </div>
+          <div class="hero-actions">
+            <a href="#timeline">直接看两波走势</a>
+            <a href="#questions">开始补全你的案例框架</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>2</strong>
+              <span>文中主拆解的核心上升波段</span>
+            </div>
+            <div class="stat">
+              <strong>11板</strong>
+              <span>第一波主升强度，后段进入高危分歧</span>
+            </div>
+            <div class="stat">
+              <strong>6板</strong>
+              <span>第二波主升强度，爆量分歧后确认结束</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-points">
+          <article class="hero-block">
+            <h2>一句话总纲</h2>
+            <p>
+              真正的龙头不是一路一致时最容易买的那只，而是分歧时仍然有承接、隔天还能超预期转强、让市场继续愿意跟随的那只。
+            </p>
+          </article>
+          <article class="hero-block">
+            <h3>操作核心</h3>
+            <p>
+              一致加速就锁仓，让利润滚动；反复分歧但还能封板，就围绕同一只票做T，既降成本，也让自己不被盘中震荡甩下车。
+            </p>
+          </article>
+          <article class="hero-block">
+            <h3>危险信号</h3>
+            <p>
+              高位连续加速后出现漏单、连续两天爆量炸板反复、高位高开又缺少新方向接力，这三种组合一旦出现，风险会迅速大于收益。
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-layout">
+      <aside class="toc">
+        <h2>阅读路径</h2>
+        <p>如果你现在是为了复盘，建议按“结论 → 框架 → 时间线 → 节奏表 → 执行表 → 个人口径”这个顺序往下看。</p>
+        <nav aria-label="目录">
+          <a href="#summary">先看结论</a>
+          <a href="#framework">文章提炼的交易框架</a>
+          <a href="#analysis">我对这篇文章的分析</a>
+          <a href="#timeline">两波走势时间线</a>
+          <a href="#rhythm">两波节奏表</a>
+          <a href="#execution">做T与走弱执行表</a>
+          <a href="#modes">做T与锁仓的切换条件</a>
+          <a href="#risks">风险红线</a>
+          <a href="#questions">个人口径</a>
+          <a href="#next">下一版网页建议</a>
+        </nav>
+        <div class="progress-shell">
+          <div class="progress-head">
+            <span>框架完善进度</span>
+            <strong id="progress-text">0 / 8</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+          <p>下面这一块已经写入你的第一版执行口径，仍然支持本地继续修改和补充。</p>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="section reveal" id="summary">
+          <div class="section-head">
+            <span class="overline">先看结论</span>
+            <h2>这篇文章真正想表达的，不是“龙头很猛”，而是“龙头为什么能被做出来”</h2>
+            <p>
+              原文最有价值的地方，是把“龙头”从一个静态标签，改写成一个动态过程。它强调的不是某个板数神话，而是资金在不同环境里如何反复完成三件事：识别核心、消化分歧、继续合力。
+            </p>
+          </div>
+
+          <div class="summary-band">
+            <div class="quote-panel">
+              <blockquote>
+                龙头的本质，不是先涨停，而是在一众高位票里，市场一次次还是选择它。
+              </blockquote>
+              <p>
+                这也是陈小群这类打法最难的地方。你看的不是“它强不强”，而是“当分歧出现时，谁还敢继续接、谁还能把分歧重新变成一致”。
+              </p>
+            </div>
+
+            <div class="analysis-list">
+              <div class="analysis-item">
+                <strong>核心结论 1</strong>
+                <p>先判大盘和情绪，再决定做消息扩散，还是做高位抱团。环境不对，龙头属性也会变。</p>
+              </div>
+              <div class="analysis-item">
+                <strong>核心结论 2</strong>
+                <p>弱转强比一路无脑加速更重要。真正的龙头，往往是在分歧之后重新上板的那一刻完成确认。</p>
+              </div>
+              <div class="analysis-item">
+                <strong>核心结论 3</strong>
+                <p>锁仓和做T不是对立关系，而是对应两种走势。持续一致用锁仓，反复分歧用做T。</p>
+              </div>
+              <div class="analysis-item">
+                <strong>核心结论 4</strong>
+                <p>卖点不是靠恐慌感受，而是靠结构破坏。连续低于预期、分歧后再也转不强、或连续两天爆量炸板，才是真正的危险区。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" id="framework">
+          <div class="section-head">
+            <span class="overline">交易框架</span>
+            <h2>从原文中提炼出的五层龙头交易模型</h2>
+            <p>
+              如果把原文内容压缩成一个可以反复调用的模型，我会把它整理成下面五层。这样以后再复盘步步高、中交地产，甚至其他现代高标，你都可以用同一套框架去套，而不是只记住浙江建投这个名字。
+            </p>
+          </div>
+
+          <div class="framework-grid">
+            <article class="framework-block">
+              <h3>第一层：环境先行</h3>
+              <ul>
+                <li>缩量下跌环境，更容易做高位抱团和妖股延续。</li>
+                <li>放量上涨环境，更适合做消息、政策和主线扩散。</li>
+                <li>大盘转强时容易走加速，大盘转弱时更容易烂板炸板。</li>
+              </ul>
+            </article>
+
+            <article class="framework-block">
+              <h3>第二层：情绪决定容错</h3>
+              <ul>
+                <li>连板高度还在，情绪才算真正好。</li>
+                <li>炸板弱、封板强，说明市场更愿意继续容纳高标。</li>
+                <li>如果没有新的方向，抱团高辨识度票就更容易成立。</li>
+              </ul>
+            </article>
+
+            <article class="framework-block">
+              <h3>第三层：龙头靠合力，不靠口号</h3>
+              <ul>
+                <li>高位里真正值得看的是辨识度、承接、换手和再转强能力。</li>
+                <li>“换手出妖”意味着筹码在高位重新分配，新的持有者愿意接力。</li>
+                <li>第一天大分歧不一定能买，但第二天若弱转强，往往是关键机会。</li>
+              </ul>
+            </article>
+
+            <article class="framework-block">
+              <h3>第四层：走势分型决定打法</h3>
+              <ul>
+                <li>持续小分歧、一直加速的票，更适合锁仓吃完整段。</li>
+                <li>每个板都有分歧但最后都能封住，更适合围绕同一只票做T。</li>
+                <li>做T的目的不是炫技，而是保护利润、压低成本、避免被甩下车。</li>
+              </ul>
+            </article>
+
+            <article class="framework-block">
+              <h3>第五层：风险确认靠节奏破坏</h3>
+              <ul>
+                <li>连续加速后出现漏单，往往意味着次日要迎来大分歧。</li>
+                <li>连续两天炸板反复且爆量，第三天大概率进入死亡节奏。</li>
+                <li>控异动票风险极高，只有“控好之后第一次超预期转强”才值得观察。</li>
+              </ul>
+            </article>
+
+            <article class="framework-block">
+              <h3>原文最强的一句操作口径</h3>
+              <ul>
+                <li>震荡期做T。</li>
+                <li>加速期锁仓。</li>
+                <li>低位介入，滚动操作。</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel reveal" id="analysis">
+          <div class="section-head">
+            <span class="overline">我的分析</span>
+            <h2>这篇文章有三个特别强的地方，也有三个必须补齐的地方</h2>
+            <p>
+              原文非常适合把交易者从“看涨停板数量”拉回到“看资金行为”。但如果我们想把它打磨成一个可以长期复用、甚至以后给别人看的案例网页，还需要把一些隐含前提补到台面上。
+            </p>
+          </div>
+
+          <div class="insight-grid">
+            <article class="insight-block">
+              <h3>它最强的地方</h3>
+              <p>
+                把“龙头”从一个结果词，变成了一个过程词。不是先定义龙头再解释走势，而是通过分歧、承接、换手、弱转强这些动态证据，反推谁才是真正的龙头。
+              </p>
+            </article>
+            <article class="insight-block">
+              <h3>它对持股很有帮助</h3>
+              <p>
+                很多人能买到强票，却拿不住。原文最实用的一点，是把“继续持有”写成了可观察的条件组合，而不是靠主观信心硬扛。
+              </p>
+            </article>
+            <article class="insight-block">
+              <h3>它把做T放回正确位置</h3>
+              <p>
+                做T在这里不是单独策略，而是龙头震荡段里的风险管理工具。这个定位很重要，不然做T很容易变成反复把自己洗出去。
+              </p>
+            </article>
+            <article class="insight-block">
+              <h3>它缺少精确时间背景</h3>
+              <p>
+                文章里对每一板的强弱判断很清晰，但缺少具体日期、当日指数环境、同期高标和题材强弱对照。没有这些，读者学到的可能只是感觉，而不是框架。
+              </p>
+            </article>
+            <article class="insight-block">
+              <h3>它还缺少反例</h3>
+              <p>
+                真正让案例站稳的，不只是“浙江建投为什么成了”，还要写清楚“哪些长得像浙江建投的票，最后没有走出来”。没有反例，框架很容易被过拟合。
+              </p>
+            </article>
+            <article class="insight-block">
+              <h3>它需要你的个人口径</h3>
+              <p>
+                原文给了方法论，但你还没把自己的买点、做T条件、仓位纪律、卖点定义放进去。下一版网页最重要的，不是多写，而是把你的口径写出来。
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section reveal" id="timeline">
+          <div class="section-head">
+            <span class="overline">两波走势</span>
+            <h2>浙江建投在这篇文章里，被拆成了两个完全不同但彼此相连的主升阶段</h2>
+            <p>
+              第一波更像“高位里不断完成分歧转一致”，第二波更像“平台之后再起一波，前半段克制、后半段加速，最后用爆量分歧确认结束”。把这两波分开看，比笼统说“妖股很猛”有用得多。
+            </p>
+          </div>
+
+          <div class="timeline">
+            <article class="timeline-entry">
+              <span class="timeline-tag">第一波 · 11板强度</span>
+              <h3>从普通首板到高位抱团核心，关键不在连板数，而在反复承接</h3>
+              <p>
+                原文认为，这一波最重要的不是前面连了多少板，而是四板和五板都出现了“不及预期开盘后又被资金重新拉强”的过程。这说明资金不是情绪性追高，而是在主动维护它的高位地位。
+              </p>
+              <ul>
+                <li>二板、三板是强走强阶段，建立前排核心辨识度。</li>
+                <li>四板、五板连续出现水下承接后再转强，这是合力真正成形的节点。</li>
+                <li>六板一字加速但出现漏单，已经提前埋下次日分歧预期。</li>
+              </ul>
+              <div class="case-image-grid">
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/first-wave-2-board.png" alt="浙江建投第一波二板强势秒板截图">
+                  <figcaption>
+                    <span class="case-chip">第一波买点</span>
+                    <strong>二板开盘强势表现</strong>
+                    <p>这是你定义的第一波起手买点，核心不是板数，而是高开后马上走强，说明市场已经开始把它往前排核心上推。</p>
+                  </figcaption>
+                </figure>
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/first-wave-4-board.png" alt="浙江建投第一波四板分歧后尾盘转强截图">
+                  <figcaption>
+                    <span class="case-chip">第一波买卖同看</span>
+                    <strong>四板冲高回落后的弱转强修复</strong>
+                    <p>你把这里同时看成盘中冲高回落的管理点，以及尾盘弱转强、水上均线承接后的重新确认点，这个口径很适合做复盘。</p>
+                  </figcaption>
+                </figure>
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/first-wave-5-board.png" alt="浙江建投第一波五板大分歧后转强截图">
+                  <figcaption>
+                    <span class="case-chip">第一波买点</span>
+                    <strong>五板开盘大分歧后的弱转强</strong>
+                    <p>这是你最明确的一类龙头买点：不是一致板上追，而是开盘先分歧，随后在水上均线上重新转强。</p>
+                  </figcaption>
+                </figure>
+              </div>
+            </article>
+
+            <article class="timeline-entry">
+              <span class="timeline-tag">第一波 · 天量炸板后的再确认</span>
+              <h3>最精彩的不是一路封死，而是炸过之后隔天还能高开上板</h3>
+              <p>
+                七板附近的大分歧和历史天量，按普通理解已经足够吓人。但文章的重点是，隔天还能继续高开上板，说明昨天的炸板不是纯兑现，而是一次剧烈但成功的换手，旧筹码出去，新筹码愿意接。
+              </p>
+              <ul>
+                <li>炸板本身不是结论，炸板之后有没有超预期反包，才是结论。</li>
+                <li>没有新方向时，这类高位辨识度票更容易形成抱团。</li>
+                <li>九板和十板时，题材已经疲软，能继续走主要靠高标抱团逻辑。</li>
+              </ul>
+              <div class="case-image-grid">
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/first-wave-7-break.png" alt="浙江建投第一波七板断板下杀截图">
+                  <figcaption>
+                    <span class="case-chip">第一波卖点</span>
+                    <strong>七板断板下杀时先做风险处理</strong>
+                    <p>你把这里列为第一波重要卖点之一，说明你更看重断板下杀本身带来的风险释放，而不是事后才去解释它是不是换手。</p>
+                  </figcaption>
+                </figure>
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/first-wave-8-return.png" alt="浙江建投第一波八板超预期转强上板截图">
+                  <figcaption>
+                    <span class="case-chip">第一波买点</span>
+                    <strong>八板断板后次日超预期开盘再上板</strong>
+                    <p>这是你第一波里最有代表性的超预期买点。前一天已经出现大分歧，但隔天开盘后还能快速转强上板，市场继续选择它。</p>
+                  </figcaption>
+                </figure>
+              </div>
+            </article>
+
+            <article class="timeline-entry">
+              <span class="timeline-tag">第一波 · 高危段</span>
+              <h3>十一板附近已经不是“要不要追”，而是“怎么识别死亡节奏”</h3>
+              <p>
+                原文把十一板定性为“非常大的分歧，危险很高”。这里的重点不是高度本身，而是连续两天炸板反复且爆量后，第三天大概率进入结束周期。这是整篇文章里最明确的风险节奏提示之一。
+              </p>
+              <ul>
+                <li>高位高开在题材疲软期很危险，容易引发兑现和恐慌。</li>
+                <li>如果高开下杀还能被承接住，属于超预期；但这不意味着风险解除。</li>
+                <li>连续两次剧烈分歧后，再往后要更偏卖点思维。</li>
+              </ul>
+              <div class="case-image-grid">
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/first-wave-11-risk.png" alt="浙江建投第一波十一板大烂板炸板截图">
+                  <figcaption>
+                    <span class="case-chip">第一波卖点</span>
+                    <strong>十一板碰 200% 异动的大烂板炸板</strong>
+                    <p>这里就是你定义的终极卖点。高度、监管、爆量、烂板和炸板叠在一起，已经不再是“还能不能格局”，而是必须尊重风险。</p>
+                  </figcaption>
+                </figure>
+              </div>
+            </article>
+
+            <article class="timeline-entry">
+              <span class="timeline-tag">第二波 · 6板强度</span>
+              <h3>平台后再起一波，节奏从“创新高洗筹”到“控异动后超预期加速”</h3>
+              <p>
+                第二波的起点不是情绪冲动，而是平台突破和高换手洗筹。文章把“创新高放量、换庄洗筹”看作非常关键的前提，说明第二波不是纯情绪延续，而是筹码结构重组后的再次上攻。
+              </p>
+              <ul>
+                <li>首板创新高，放量高换手，意味着第二波发动条件具备。</li>
+                <li>二板未封但有控异动意味，作者强调这种票本身风险大，不轻易碰。</li>
+                <li>真正值得看的，是控好异动之后第一次超预期转强的那一板。</li>
+              </ul>
+              <div class="case-image-grid">
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/second-wave-2-break.png" alt="浙江建投第二波二板断板大烂板截图">
+                  <figcaption>
+                    <span class="case-chip">第二波买点前置</span>
+                    <strong>二板断板大烂板，先看能否给出反包条件</strong>
+                    <p>按你的口径，这一天本身不是直接追的节点，而是为下一天的三板反包强上板做铺垫。</p>
+                  </figcaption>
+                </figure>
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/second-wave-3-rebound.png" alt="浙江建投第二波三板反包强势上板截图">
+                  <figcaption>
+                    <span class="case-chip">第二波买点</span>
+                    <strong>二板烂板之后，三板反包强势上板</strong>
+                    <p>这是你第二波最明确的参与点。前一天给足分歧，第二天直接反包上板，属于很典型的“分歧后的再次选择”。</p>
+                  </figcaption>
+                </figure>
+              </div>
+            </article>
+
+            <article class="timeline-entry">
+              <span class="timeline-tag">第二波 · 结束确认</span>
+              <h3>后半段加速很漂亮，但真正的终点依旧是爆量分歧后连续低于预期</h3>
+              <p>
+                第二波五板、六板的加速和分歧处理都很强，但七板未板时出现冲高回落、巨大量能，已经是标准的龙头分歧日。后面连续两天低于预期，文章明确给出的结论就是“彻底走弱，再彻底出局”。
+              </p>
+              <ul>
+                <li>六板分歧本来是健康的，但只要后面转强衔接不够，就会从健康分歧变成见顶信号。</li>
+                <li>龙头不是不能分歧，而是分歧后必须还能超预期。</li>
+                <li>一旦连续低于预期，前面所有“龙头滤镜”都该摘掉。</li>
+              </ul>
+              <div class="case-image-grid">
+                <figure class="case-image-card">
+                  <img src="./assets/zhejiang-jiantou-case/second-wave-7-exit.png" alt="浙江建投第二波七板放量十字星截图">
+                  <figcaption>
+                    <span class="case-chip">第二波卖点</span>
+                    <strong>七板放量收阴线十字星</strong>
+                    <p>你把这里定为第二波的核心卖点，逻辑非常清楚：不是看它跌没跌停，而是看它已经用巨大量能把强势结构耗尽了。</p>
+                  </figcaption>
+                </figure>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel reveal" id="rhythm">
+          <div class="section-head">
+            <span class="overline">节奏表</span>
+            <h2>把第一波和第二波拆成更适合你自己复盘的节奏表</h2>
+            <p>
+              这里我按你的口径，把关键节点整理成“位置、性质、信号、执行、短评”五列。以后你再看浙江建投时，可以先扫这两张表，再回头对照图片和全文细节。
+            </p>
+          </div>
+
+          <div class="rhythm-stack">
+            <article class="rhythm-board">
+              <div class="rhythm-board-head">
+                <h3>第一波节奏表</h3>
+                <p>第一波的核心是高位里不断完成分歧转一致，所以你的买点几乎都落在“分歧后重新被选择”的位置，卖点则主要集中在结构破坏和高危监管段。</p>
+              </div>
+              <div class="table-shell">
+                <table class="rhythm-table">
+                  <thead>
+                    <tr>
+                      <th>位置</th>
+                      <th>性质</th>
+                      <th>信号</th>
+                      <th>执行</th>
+                      <th>一句短评</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>二板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-buy">买点</span></td>
+                      <td>开盘强势表现，直接走强</td>
+                      <td>可以起手，先把它纳入前排核心观察和参与名单</td>
+                      <td class="rhythm-short">这不是低吸思路，而是最早确认它具备前排核心气质的节点。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>四板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">卖点</span></td>
+                      <td>盘中冲高回落</td>
+                      <td>如果前面已有仓位，这里先做风险处理，不恋战</td>
+                      <td class="rhythm-short">四板先给你一个“它也会分歧”的提醒，所以盘中冲高回落不该完全无视。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>四板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-buy">买点</span></td>
+                      <td>盘中转弱，但尾盘弱转强，水上均线有承接</td>
+                      <td>等它重新站稳后再上，不追恐慌，不追最低</td>
+                      <td class="rhythm-short">这类尾盘修复最值钱的地方，是把“分歧”重新翻译成“资金还愿意维护”。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>五板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-buy">买点</span></td>
+                      <td>开盘大分歧后弱转强，水上均线重新承接</td>
+                      <td>分歧确认后再接，属于高位里的标准龙头确认点</td>
+                      <td class="rhythm-short">五板还能这样走，说明这只票已经不是单纯的强，而是开始具备高位合力。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>七板附近</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">卖点</span></td>
+                      <td>断板下杀，强分歧放大</td>
+                      <td>先降风险，再看后面是否还能给出超预期修复</td>
+                      <td class="rhythm-short">你这里的处理很对，先把“是不是换手成功”放后面，先尊重断板下杀本身。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>八板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-buy">买点</span></td>
+                      <td>断板转弱后，早盘开盘里面超预期转强上板</td>
+                      <td>等它给出超预期转强，再当作重新确认的上车点</td>
+                      <td class="rhythm-short">这就是你最认同那句总纲的真实落点：分歧后还能被市场继续选择。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>十一板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">卖点</span></td>
+                      <td>碰到 200% 异动，大烂板炸板</td>
+                      <td>视作高危兑现区，优先离场，不再做“还能不能再来一板”的赌法</td>
+                      <td class="rhythm-short">高度、监管、爆量、烂板叠在一起时，已经不是格局能力的比拼，而是风险纪律的比拼。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="rhythm-board">
+              <div class="rhythm-board-head">
+                <h3>第二波节奏表</h3>
+                <p>第二波比第一波更像“平台后重新起势”的走势，所以你的节奏抓得更简洁：先等二板烂板把分歧做出来，再用三板反包确认，最后在七板放量十字星这里完成退出。</p>
+              </div>
+              <div class="table-shell">
+                <table class="rhythm-table">
+                  <thead>
+                    <tr>
+                      <th>位置</th>
+                      <th>性质</th>
+                      <th>信号</th>
+                      <th>执行</th>
+                      <th>一句短评</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>二板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-watch">观察</span></td>
+                      <td>断板大烂板，先把分歧做出来</td>
+                      <td>不急着直接追，重点看次日能不能给出强反包</td>
+                      <td class="rhythm-short">二板这天更像一个筛选器，目的不是马上上，而是看它值不值得等第二天。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>三板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-buy">买点</span></td>
+                      <td>二板断板大烂板后，三板反包强势上板</td>
+                      <td>把它当作第二波最明确的参与节点</td>
+                      <td class="rhythm-short">前一天已经释放了分歧，第二天还能直接反包，说明第二波是有资金继续接力的。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>七板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">卖点</span></td>
+                      <td>放量收阴线十字星</td>
+                      <td>把它当成主升尾声的离场点，不再等下一次侥幸转强</td>
+                      <td class="rhythm-short">你这里的定义很成熟，因为真正危险的不是跌停，而是高位巨量十字星说明强势已经被明显消耗了。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel reveal" id="execution">
+          <div class="section-head">
+            <span class="overline">执行表</span>
+            <h2>把做T规则和彻底走弱定义，也整理成同一套可执行的判断表</h2>
+            <p>
+              节奏表解决的是“哪里值得重点看”，这一块解决的是“盘中仓位怎么处理”。我按你的原话，把做T和走弱红线都改成了同样的表格语言，方便你以后直接拿来复盘别的龙头。
+            </p>
+          </div>
+
+          <div class="rhythm-stack">
+            <article class="rhythm-board">
+              <div class="rhythm-board-head">
+                <h3>做T执行表</h3>
+                <p>你这套做T口径的核心不是炫技，而是围绕承接做滚动：冲高但不给板就先兑现，震荡后重新有承接再分批吸回，做错也接受，不因为一两次失误把整段节奏做坏。</p>
+              </div>
+              <div class="table-shell">
+                <table class="rhythm-table">
+                  <thead>
+                    <tr>
+                      <th>场景</th>
+                      <th>性质</th>
+                      <th>信号</th>
+                      <th>执行</th>
+                      <th>一句短评</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>冲高无上板</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">高抛</span></td>
+                      <td>盘中冲高，但迟迟封不住板，强度开始兑现</td>
+                      <td>先抛出去锁利润，不把“也许马上就封”当成继续硬扛的理由</td>
+                      <td class="rhythm-short">冲高不封，本质就是强度不够，先兑现是做T纪律，不是否定龙头地位。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>震荡后有承接</strong></td>
+                      <td><span class="rhythm-type rhythm-type-buy">吸回</span></td>
+                      <td>回落后均线附近有人接，盘口没有彻底走坏</td>
+                      <td>慢慢分批吸回来，不一次性把仓位全部打回去</td>
+                      <td class="rhythm-short">低吸不是接飞刀，而是等承接重新出现后，把仓位一段段捡回来。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>低吸高抛</strong></td>
+                      <td><span class="rhythm-type rhythm-type-watch">原则</span></td>
+                      <td>走势仍处于分歧震荡段，但龙头地位没有被破坏</td>
+                      <td>围绕同一只票滚动做仓位，目标是降成本、提容错，不是每一笔都卖在最高</td>
+                      <td class="rhythm-short">做T真正有用的地方，是让你留在车上，而不是证明自己每次都能神操作。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>做T失败</strong></td>
+                      <td><span class="rhythm-type rhythm-type-watch">纪律</span></td>
+                      <td>抛完又拉、吸回后没立刻走强，单笔处理出现失误</td>
+                      <td>承受单次失败，不因为一笔做坏就情绪化追补或全盘否定</td>
+                      <td class="rhythm-short">你这句“失败没什么的，承受”很关键，因为做T本来就是赔率管理，不是百分百胜率游戏。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="rhythm-board">
+              <div class="rhythm-board-head">
+                <h3>彻底走弱执行表</h3>
+                <p>这一张表就是把“感觉不对”改成明确红线。只要出现这些结构信号，主逻辑就要从“还能不能持有”切到“先退出，再观察”。</p>
+              </div>
+              <div class="table-shell">
+                <table class="rhythm-table">
+                  <thead>
+                    <tr>
+                      <th>触发项</th>
+                      <th>性质</th>
+                      <th>信号</th>
+                      <th>执行</th>
+                      <th>一句短评</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>连续两天爆量收阴线</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">走弱</span></td>
+                      <td>高位连续放量却收不回去，抛压开始持续化</td>
+                      <td>视作主升节奏明显破坏，优先退出，不再按普通分歧处理</td>
+                      <td class="rhythm-short">一天还能解释成换手，两天连着来，大多已经不是强势洗盘了。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>爆量长上影线</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">走弱</span></td>
+                      <td>上冲过程中兑现盘重，尾盘留下明显长上影</td>
+                      <td>不把它美化成“洗洗更健康”，先按高位兑现压力上升处理</td>
+                      <td class="rhythm-short">高位长上影最危险的地方，是上方已经有人明确不愿意再锁仓。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>爆量长十字星</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">走弱</span></td>
+                      <td>振幅很大、换手很重，但收盘无法重新明确选择方向</td>
+                      <td>把它当作强势衰减信号，后面只接受极少数超预期修复</td>
+                      <td class="rhythm-short">巨量十字星不是中性信号，放在高位往往代表分歧已经吞掉了趋势惯性。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>高位出现封死跌停</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">走弱</span></td>
+                      <td>市场直接放弃承接，跌停被封死</td>
+                      <td>视作结构性结束信号，不再用“龙头会不会反核”安慰自己</td>
+                      <td class="rhythm-short">真正的龙头可以有大分歧，但高位封死跌停已经接近合力瓦解。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>破十日线趋势线</strong></td>
+                      <td><span class="rhythm-type rhythm-type-sell">走弱</span></td>
+                      <td>趋势支撑失守，修复节奏开始被破坏</td>
+                      <td>按趋势破位处理仓位，除非重新站回并超预期，否则不急着回去</td>
+                      <td class="rhythm-short">这条把主观感受变成了客观纪律，是你整套退出逻辑里很关键的一笔。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel reveal" id="modes">
+          <div class="section-head">
+            <span class="overline">执行切换</span>
+            <h2>什么时候锁仓，什么时候做T，什么时候只剩下卖点思维</h2>
+            <p>
+              我把原文的执行逻辑整理成三种模式。你以后只要先判断自己面对的是哪种模式，就不容易在加速段乱做T，也不容易在震荡段被来回甩出去。
+            </p>
+          </div>
+
+          <div class="mode-grid">
+            <article class="mode-card">
+              <strong>模式一：一致加速段</strong>
+              <p>
+                分歧很小，持续走加速，封板质量高，盘中没有明显漏单。这个阶段最重要的是锁仓，不要因为小波动把自己洗掉。
+              </p>
+            </article>
+            <article class="mode-card">
+              <strong>模式二：分歧震荡段</strong>
+              <p>
+                每个板都有一定分歧，但最后还能重新封住。这个阶段更适合围绕同一只龙头做T，目标是降成本、提容错，不是追求每次都卖在最高点。
+              </p>
+            </article>
+            <article class="mode-card">
+              <strong>模式三：结构破坏段</strong>
+              <p>
+                连续两天爆量炸板、分歧后转不强、或者后续连续低于预期。到了这里，主逻辑已经不再是“如何持有”，而是“如何彻底退出”。
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel reveal" id="risks">
+          <div class="section-head">
+            <span class="overline">风险红线</span>
+            <h2>如果你想把这页做成以后能反复看的模板，这五条必须被单独写出来</h2>
+            <p>
+              很多案例页只写“为什么涨”，不写“什么时候该怕”。这篇文章的一个优点是已经给出不少高价值风险提示，我把最该保留的几条单独拎出来了。
+            </p>
+          </div>
+
+          <div class="risk-grid">
+            <article class="risk-block">
+              <h3>高位连续加速后出现漏单</h3>
+              <ul>
+                <li>说明兑现盘开始冒头。</li>
+                <li>次日迎来大分歧的概率显著上升。</li>
+              </ul>
+            </article>
+            <article class="risk-block">
+              <h3>题材疲软时的高开</h3>
+              <ul>
+                <li>高位辨识度票高开容易激发畏高兑现。</li>
+                <li>除非出现超预期承接，否则高开不是礼物，是压力测试。</li>
+              </ul>
+            </article>
+            <article class="risk-block">
+              <h3>连续两天炸板反复且爆量</h3>
+              <ul>
+                <li>这是文章里最明确的死亡节奏信号。</li>
+                <li>第三天大概率已经不是低吸机会，而是风险放大期。</li>
+              </ul>
+            </article>
+            <article class="risk-block">
+              <h3>控异动但没有真正转强</h3>
+              <ul>
+                <li>作者明确偏谨慎，不爱冒险去做这种票。</li>
+                <li>只有控好之后第一次超预期转强，才有研究价值。</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="questions reveal" id="questions">
+          <div class="section-head">
+            <span class="overline">个人口径</span>
+            <h2>你这一版已经给出的核心执行口径，我先完整写回页面里了</h2>
+            <p>
+              这里不再只是“待补问题”，而是你的第一版复盘答案区。后面你如果想继续微调，我仍然保留了可编辑的形式；这对你自己做迭代会更方便。
+            </p>
+          </div>
+
+          <div class="question-grid">
+            <article class="question-card">
+              <h3>1. 这页的使用场景</h3>
+              <p>这一点已经确定了，所以后面的语气和结构都可以更偏“自己复盘”，少一点解释型废话，多一点执行型提示。</p>
+              <label for="answer-1">当前口径</label>
+              <textarea id="answer-1" data-question placeholder="你可以继续修改这里。">自己复盘</textarea>
+              <div class="question-meta"><span>决定页面语气与信息密度</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>2. 你最想留下的总纲</h3>
+              <p>这句话已经被我继续保留在整页叙事核心里。它比单纯说“龙头本质是资金合力”更适合拿来指导实际买点。</p>
+              <label for="answer-2">当前口径</label>
+              <textarea id="answer-2" data-question placeholder="你可以继续修改这里。">真正的龙头不是一路一致时最容易买的那只，而是分歧时仍然有承接、隔天还能超预期转强、让市场继续愿意跟随的那只。</textarea>
+              <div class="question-meta"><span>决定页面主标题与主叙事</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>3. 你定义的买卖点</h3>
+              <p>这是目前最关键的一格，因为它把你自己的参与口径从“感觉强”变成了几个可复盘、可回看的明确节点。</p>
+              <label for="answer-3">当前口径</label>
+              <textarea id="answer-3" data-question placeholder="你可以继续修改这里。">第一波走势买点：
+1. 二板开盘强势表现
+2. 四板盘中转弱但尾盘弱转强水上均线上
+3. 五板开盘大分歧弱转强水上均线上
+4. 八板断板转弱但是早盘开盘之后里面超预期转强上板的节点
+
+第一波走势卖点：
+1. 四板冲高回落的时候
+2. 七板断板下杀的时候
+3. 十一板要碰到 200% 异动的大烂板炸板
+
+第二波走势买点：
+1. 二板断板大烂板之后三板的反包强势上板
+
+第二波走势卖点：
+1. 七板放量收阴线十字星的时候</textarea>
+              <div class="question-meta"><span>决定页面的买卖点模块</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>4. 你的做T规则</h3>
+              <p>你这里给出的口径非常实战化，重点不是精密指标，而是围绕承接做滚动处理，这和整篇文章的龙头逻辑是贴合的。</p>
+              <label for="answer-4">当前口径</label>
+              <textarea id="answer-4" data-question placeholder="你可以继续修改这里。">低吸高抛，冲高无上板就抛出去，震荡有承接之后就慢慢分批吸回来，失败没什么的，承受。</textarea>
+              <div class="question-meta"><span>决定页面的执行细则</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>5. 你怎么定义“彻底走弱”</h3>
+              <p>你已经把“感觉走坏”压缩成几条结构规则了，这一点特别重要，因为以后复盘别的龙头时，这里可以直接复用。</p>
+              <label for="answer-5">当前口径</label>
+              <textarea id="answer-5" data-question placeholder="你可以继续修改这里。">彻底走弱的定义：
+1. 连续两天爆量收阴线
+2. 爆量长上影线
+3. 爆量长十字星
+4. 高位出现了封死跌停
+5. 破了十日线的趋势线</textarea>
+              <div class="question-meta"><span>决定卖点和风险模块</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>6. 这一版暂时不补什么</h3>
+              <p>这一条也很关键，因为它等于帮我们收窄了范围。现在先把案例本身打磨清楚，不急着把整套外部背景都塞进来。</p>
+              <label for="answer-6">当前口径</label>
+              <textarea id="answer-6" data-question placeholder="你可以继续修改这里。">暂时不用补当天的大盘和题材背景，但是把对应 Notion 的图补上去。</textarea>
+              <div class="question-meta"><span>决定这一版的信息边界</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>7. 反例对照的安排</h3>
+              <p>你这轮没有明确要求加反例，所以我先默认不加，避免页面一下子从个人复盘页变成过重的研究页。</p>
+              <label for="answer-7">当前口径</label>
+              <textarea id="answer-7" data-question placeholder="你可以继续修改这里。">暂时不加反例对照，先把浙江建投这个主案例打磨完整。</textarea>
+              <div class="question-meta"><span>决定案例页的扩展方向</span><span class="save-state">自动保存</span></div>
+            </article>
+
+            <article class="question-card">
+              <h3>8. 这一轮最重要的补充项</h3>
+              <p>你已经给出了最直接的下一步，所以我这次的主要工作也按这个方向执行：把 Notion 的图按节点补回页面。</p>
+              <label for="answer-8">当前口径</label>
+              <textarea id="answer-8" data-question placeholder="你可以继续修改这里。">先把对应 Notion 的图补上去，让这页更像一份直观的实战复盘页。</textarea>
+              <div class="question-meta"><span>决定当前迭代重点</span><span class="save-state">自动保存</span></div>
+            </article>
+          </div>
+
+          <div class="tool-row">
+            <button class="tool-link" id="copy-outline" type="button">复制当前问题大纲</button>
+            <button class="tool-link" id="clear-answers" type="button">清空本地答案</button>
+          </div>
+
+          <div class="source-row">
+            <p>页面内容基于 Notion 文章《浙江建投 - 案例 - 陈小群 - 龙头战法（加上 做T）- 龙头本质是资金合力！》整理，抓取时间为 2026-04-20。</p>
+            <a class="source-link" href="https://www.notion.so/3477af2f574e80af835be48f240a2e59" target="_blank" rel="noreferrer">打开 Notion 原文</a>
+          </div>
+        </section>
+
+        <section class="next-step reveal next-step" id="next">
+          <div class="section-head">
+            <span class="overline">下一版建议</span>
+            <h2>如果你认可这版骨架，我建议下一轮直接往“高完成度案例页”升级</h2>
+            <p>
+              现在这页已经能用来复盘和继续思考了，但它还可以继续升一层。我建议下一轮优先补“时间背景 + 个人执行口径 + 反例对照”这三个方向，网页会一下子更完整。
+            </p>
+          </div>
+
+          <div class="next-grid">
+            <article class="next-card">
+              <h3>补具体日期和市场背景</h3>
+              <p>把每个关键板对应到实际交易日、大盘状态、板块热度、同期卡位股，案例会从情绪感受升级成可验证的复盘页面。</p>
+            </article>
+            <article class="next-card">
+              <h3>补你的买卖点与仓位口径</h3>
+              <p>把你真正会怎么上、怎么T、怎么退出写进去，页面就不再只是读书笔记，而是你自己的方法论页面。</p>
+            </article>
+            <article class="next-card">
+              <h3>补失败对照案例</h3>
+              <p>选 1 到 2 个同期没有走出来的高位票，和浙江建投放在一起对照，能明显增强框架的边界感和实战价值。</p>
+            </article>
+            <article class="next-card">
+              <h3>补图像与标注层</h3>
+              <p>如果你想做成更强的学习页，我可以下一版把买点、卖点、弱转强和大分歧节点都做成图上标注的交互层。</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_PREFIX = "chen-xiaoqun-zhejiang-jiantou-case-v2:";
+    const textareas = Array.from(document.querySelectorAll("[data-question]"));
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+    const tocLinks = Array.from(document.querySelectorAll(".toc nav a"));
+    const sections = tocLinks
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+
+    function updateProgress() {
+      const filled = textareas.filter((item) => item.value.trim().length > 0).length;
+      const ratio = textareas.length ? (filled / textareas.length) * 100 : 0;
+      progressBar.style.width = ratio + "%";
+      progressText.textContent = filled + " / " + textareas.length;
+    }
+
+    function saveAnswer(textarea) {
+      localStorage.setItem(STORAGE_PREFIX + textarea.id, textarea.value);
+      updateProgress();
+    }
+
+    function restoreAnswers() {
+      textareas.forEach((textarea) => {
+        const saved = localStorage.getItem(STORAGE_PREFIX + textarea.id);
+        if (saved !== null) {
+          textarea.value = saved;
+        }
+      });
+      updateProgress();
+    }
+
+    function clearAnswers() {
+      textareas.forEach((textarea) => {
+        textarea.value = "";
+        localStorage.removeItem(STORAGE_PREFIX + textarea.id);
+      });
+      updateProgress();
+    }
+
+    function copyOutline() {
+      const lines = textareas.map((textarea, index) => {
+        const title = textarea.closest(".question-card").querySelector("h3").textContent.trim();
+        const answer = textarea.value.trim() || "待填写";
+        return (index + 1) + ". " + title + "\\n" + answer;
+      });
+
+      const content = lines.join("\\n\\n");
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(content);
+      } else {
+        const fallback = document.createElement("textarea");
+        fallback.value = content;
+        document.body.appendChild(fallback);
+        fallback.select();
+        document.execCommand("copy");
+        fallback.remove();
+      }
+    }
+
+    function activateToc(id) {
+      tocLinks.forEach((link) => {
+        const targetId = link.getAttribute("href").slice(1);
+        link.classList.toggle("is-active", targetId === id);
+      });
+    }
+
+    restoreAnswers();
+
+    textareas.forEach((textarea) => {
+      textarea.addEventListener("input", () => saveAnswer(textarea));
+    });
+
+    document.getElementById("clear-answers").addEventListener("click", clearAnswers);
+    document.getElementById("copy-outline").addEventListener("click", copyOutline);
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+
+    const tocObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visible) {
+        activateToc(visible.target.id);
+      }
+    }, {
+      rootMargin: "-20% 0px -55% 0px",
+      threshold: [0.2, 0.4, 0.7]
+    });
+
+    sections.forEach((section) => tocObserver.observe(section));
+    if (sections[0]) {
+      activateToc(sections[0].id);
+    }
+  </script>
+</body>
+</html>

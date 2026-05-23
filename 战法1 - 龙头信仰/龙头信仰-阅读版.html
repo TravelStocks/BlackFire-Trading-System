@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>龙头信仰 - 阅读版</title>
+  <meta
+    name="description"
+    content="龙头信仰阅读版网页，围绕主线题材、核心个股、节点买入、退出纪律与自我修行的长文手册。"
+  />
+  <style>
+    :root {
+      --bg: #efe5d7;
+      --bg-deep: #d7c4ad;
+      --paper: #fffaf3;
+      --paper-strong: #f6ede2;
+      --ink: #181311;
+      --muted: #6d625c;
+      --accent: #a83c21;
+      --accent-soft: rgba(168, 60, 33, 0.12);
+      --accent-line: rgba(168, 60, 33, 0.36);
+      --line: rgba(37, 26, 21, 0.14);
+      --shadow: 0 28px 80px rgba(67, 44, 27, 0.12);
+      --hero-shadow: 0 32px 120px rgba(18, 12, 10, 0.42);
+      --max-width: 1420px;
+      --sans: "Microsoft YaHei UI", "PingFang SC", "Segoe UI", sans-serif;
+      --serif: "STZhongsong", "Songti SC", "Noto Serif SC", serif;
+      --mono: "Cascadia Mono", "JetBrains Mono", "Consolas", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.58), transparent 34%),
+        linear-gradient(180deg, #f5ecdf 0%, var(--bg) 42%, #e5d6c3 100%);
+      line-height: 1.82;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.4;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(168, 60, 33, 0.16), transparent 18%),
+        radial-gradient(circle at 82% 18%, rgba(109, 98, 92, 0.12), transparent 22%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.06) 0,
+          rgba(255, 255, 255, 0.06) 1px,
+          transparent 1px,
+          transparent 120px
+        );
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, #d69a62 0%, var(--accent) 55%, #61180b 100%);
+      z-index: 20;
+      box-shadow: 0 0 20px rgba(168, 60, 33, 0.34);
+    }
+
+    .hero {
+      position: relative;
+      min-height: clamp(720px, 100svh, 940px);
+      display: grid;
+      align-items: center;
+      padding: 72px 24px 110px;
+      overflow: hidden;
+      background:
+        linear-gradient(160deg, rgba(21, 16, 14, 0.96) 0%, rgba(33, 22, 18, 0.92) 54%, rgba(59, 34, 24, 0.88) 100%);
+      color: #f7f0e8;
+      box-shadow: var(--hero-shadow);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(219, 140, 87, 0.3), transparent 24%),
+        radial-gradient(circle at 84% 22%, rgba(168, 60, 33, 0.24), transparent 22%),
+        linear-gradient(120deg, transparent 0%, rgba(247, 240, 232, 0.04) 48%, transparent 100%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.05) 0,
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 1px,
+          transparent 112px
+        );
+      opacity: 0.92;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -12vw;
+      bottom: -14vh;
+      width: min(44vw, 640px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(214, 154, 98, 0.24) 0%, rgba(214, 154, 98, 0) 68%),
+        conic-gradient(
+          from 0deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.08)
+        );
+      filter: blur(10px);
+      opacity: 0.9;
+    }
+
+    .hero-shell {
+      position: relative;
+      z-index: 1;
+      width: min(var(--max-width), 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.62fr);
+      gap: 48px;
+      align-items: end;
+    }
+
+    .hero-copy {
+      max-width: 820px;
+    }
+
+    .hero-kicker {
+      margin: 0 0 18px;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #d8b48f;
+    }
+
+    .hero-brand {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 32px);
+      color: #f0c8a7;
+      letter-spacing: 0.08em;
+    }
+
+    .hero h1 {
+      margin: 10px 0 20px;
+      max-width: 12ch;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(52px, 7vw, 96px);
+      line-height: 0.98;
+      letter-spacing: 0.01em;
+      text-wrap: balance;
+    }
+
+    .hero-subtitle {
+      margin: 0 0 20px;
+      font-size: clamp(20px, 2.8vw, 30px);
+      color: rgba(247, 240, 232, 0.92);
+      font-weight: 500;
+    }
+
+    .hero-lead,
+    .hero-support {
+      margin: 0;
+      max-width: 56ch;
+      color: rgba(247, 240, 232, 0.8);
+      font-size: 17px;
+    }
+
+    .hero-support {
+      margin-top: 18px;
+      color: rgba(247, 240, 232, 0.72);
+    }
+
+    .hero-triad {
+      margin-top: 34px;
+      display: grid;
+      gap: 8px;
+      max-width: 520px;
+    }
+
+    .hero-triad span {
+      display: block;
+      padding: 12px 0 14px;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      color: #f9f2eb;
+      border-top: 1px solid rgba(247, 240, 232, 0.18);
+    }
+
+    .hero-side {
+      position: relative;
+      padding: 26px 0 0 28px;
+      border-left: 1px solid rgba(247, 240, 232, 0.16);
+      color: rgba(247, 240, 232, 0.78);
+    }
+
+    .hero-side::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -1px;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(240, 200, 167, 0) 0%, rgba(240, 200, 167, 0.5) 22%, rgba(240, 200, 167, 0) 100%);
+    }
+
+    .side-label {
+      margin: 0 0 10px;
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #f0c8a7;
+    }
+
+    .side-copy {
+      margin: 0 0 24px;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .side-row {
+      padding-top: 16px;
+      border-top: 1px solid rgba(247, 240, 232, 0.12);
+    }
+
+    .side-row span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(247, 240, 232, 0.52);
+    }
+
+    .side-row strong {
+      font-weight: 600;
+      color: #fff3e8;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 2;
+      width: min(var(--max-width), 100%);
+      margin: -72px auto 0;
+      padding: 0 24px 88px;
+      display: grid;
+      grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+      padding: 24px 20px 24px 22px;
+      background: rgba(255, 250, 243, 0.78);
+      border: 1px solid rgba(37, 26, 21, 0.1);
+      border-radius: 26px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 40px rgba(63, 39, 25, 0.08);
+    }
+
+    .toc-label {
+      margin: 0 0 8px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .toc-count {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc li + li {
+      margin-top: 8px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: #3c302b;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.55;
+      transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .toc a:hover {
+      background: rgba(168, 60, 33, 0.08);
+      color: var(--accent);
+      transform: translateX(2px);
+    }
+
+    .toc a.active {
+      background: rgba(168, 60, 33, 0.12);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .article {
+      background: linear-gradient(180deg, rgba(255, 250, 243, 0.98) 0%, rgba(250, 242, 233, 0.98) 100%);
+      border: 1px solid rgba(37, 26, 21, 0.1);
+      border-radius: 34px;
+      padding: clamp(28px, 4vw, 54px);
+      box-shadow: var(--shadow);
+    }
+
+    .doc-note {
+      margin-bottom: 28px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--accent);
+      background: rgba(168, 60, 33, 0.06);
+      border-radius: 16px;
+      color: #4d3b34;
+    }
+
+    .chapter {
+      padding-top: 34px;
+      margin-top: 34px;
+      border-top: 1px solid var(--line);
+    }
+
+    .chapter:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .chapter-draft {
+      background:
+        linear-gradient(180deg, rgba(168, 60, 33, 0.03) 0%, rgba(168, 60, 33, 0) 100%);
+      border-radius: 24px;
+      padding-inline: 18px;
+      margin-inline: -18px;
+    }
+
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      color: #1e1714;
+    }
+
+    h2 {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 20px;
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.15;
+    }
+
+    .heading-index {
+      display: inline-block;
+      min-width: 2.3em;
+      font-size: clamp(12px, 1.4vw, 14px);
+      font-family: var(--mono);
+      color: var(--accent);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 28px 0 14px;
+      font-size: 24px;
+      line-height: 1.35;
+    }
+
+    h4 {
+      margin: 22px 0 12px;
+      font-size: 18px;
+      line-height: 1.45;
+      color: #4d2d22;
+    }
+
+    p {
+      margin: 0 0 1.1em;
+      font-size: 17px;
+      color: #211a17;
+      text-wrap: pretty;
+    }
+
+    .insight {
+      padding: 16px 18px;
+      background: rgba(168, 60, 33, 0.065);
+      border-radius: 16px;
+      border: 1px solid rgba(168, 60, 33, 0.14);
+    }
+
+    .soft-note {
+      color: #5f544d;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 1.4rem;
+      padding-left: 1.25rem;
+    }
+
+    li {
+      margin: 0.42rem 0;
+      padding-left: 0.15rem;
+    }
+
+    ul li::marker {
+      color: var(--accent);
+    }
+
+    ol li::marker {
+      color: #6d4a3a;
+      font-weight: 700;
+    }
+
+    strong {
+      color: #241713;
+    }
+
+    code {
+      padding: 0.12rem 0.48rem;
+      border-radius: 999px;
+      background: rgba(168, 60, 33, 0.1);
+      color: #7c240f;
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1.6rem 0 2rem;
+      border: 1px solid rgba(37, 26, 21, 0.08);
+      border-radius: 18px;
+      background: rgba(255, 252, 247, 0.9);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 560px;
+    }
+
+    thead th {
+      background: rgba(168, 60, 33, 0.08);
+      color: #45281d;
+      font-weight: 700;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(37, 26, 21, 0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .footer {
+      width: min(var(--max-width), 100%);
+      margin: 0 auto 44px;
+      padding: 0 24px;
+      color: #675b53;
+      font-size: 14px;
+    }
+
+    .backtop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(24, 19, 17, 0.9);
+      color: #fff7ef;
+      cursor: pointer;
+      font: inherit;
+      box-shadow: 0 16px 36px rgba(24, 19, 17, 0.24);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease, background-color 180ms ease;
+      z-index: 12;
+    }
+
+    .backtop.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .backtop:hover {
+      background: var(--accent);
+    }
+
+    @media (max-width: 1080px) {
+      .hero-shell,
+      .page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-bottom: 78px;
+      }
+
+      .hero h1 {
+        max-width: none;
+      }
+
+      .hero-side {
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid rgba(247, 240, 232, 0.16);
+        padding-top: 22px;
+      }
+
+      .toc {
+        position: relative;
+        top: 0;
+        order: -1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding-inline: 18px;
+      }
+
+      .page-shell,
+      .footer {
+        padding-inline: 18px;
+      }
+
+      .article {
+        border-radius: 26px;
+        padding: 26px 20px;
+      }
+
+      h2 {
+        gap: 10px;
+      }
+
+      .heading-index {
+        min-width: 2.1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <header class="hero">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <p class="hero-kicker">Working Manuscript · A-Share Strategy Folio</p>
+        <p class="hero-brand">龙头信仰</p>
+        <h1>股票投资深层逻辑的破执与取舍</h1>
+        <p class="hero-subtitle">把 XMind 思维导图整理成一份可继续扩写、可持续迭代的龙头战法网页手册。</p>
+        <p class="hero-lead">龙头战法，表面上看像是在研究最强的股票，实际上研究的是市场如何在混沌中选择方向、选择主线、选择最能承接资金与情绪的个股。它不是简单的追高，也不是狭义的打板，更不是看到涨停就冲。它是一套围绕主线题材、核心个股和节点买入展开的体系。</p>
+        <p class="hero-support">这套体系的核心，不在于事后总结谁涨得最多，而在于当市场刚刚形成共识、龙头刚刚被选出来、空间刚刚被看见的时候，能否认得出、拿得住、守得住、卖得掉。也正因为如此，龙头战法既是一套市场方法，也是一套自我修行的方法。</p>
+        <div class="hero-triad">
+          <span>主线题材</span>
+          <span>核心个股</span>
+          <span>节点买入</span>
+        </div>
+      </div>
+
+      <aside class="hero-side" aria-label="阅读提示">
+        <p class="side-label">阅读提示</p>
+        <p class="side-copy">版本说明：本稿基于你的 XMind 思维导图整理而成，属于第一版文字初稿。为了便于阅读，我对脑图顺序做了轻微整理，但不改变原意。整体目标不是一次写完，而是先把骨架搭起来，把核心概念、章节结构、关键判断和待补充内容放进同一份文档里，后续我们可以继续补案例、补定义、补规则、补图表。</p>
+        <div class="side-stack">
+          <div class="side-row">
+            <span>文稿结构</span>
+            <strong>12 个章节模块，含方法、规则、风险、修行与待细化问题。</strong>
+          </div>
+          <div class="side-row">
+            <span>核心路径</span>
+            <strong>识龙、持龙、离龙，不做一次性判断，而做持续性博弈。</strong>
+          </div>
+          <div class="side-row">
+            <span>退出底线</span>
+            <strong>爆量长上影、爆量十字星、封死跌停、破十日线。</strong>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <nav class="toc" aria-label="章节目录">
+      <p class="toc-label">目录</p>
+      <p class="toc-count">按章节快速跳转阅读</p>
+      <ol>
+        <li><a href="#section-01">写在前面</a></li>
+<li><a href="#section-02">第一部分：总纲</a></li>
+<li><a href="#section-03">第二部分：龙头的起源与定义</a></li>
+<li><a href="#section-04">第三部分：龙头的判断框架</a></li>
+<li><a href="#section-05">第四部分：龙头的风险与代价</a></li>
+<li><a href="#section-06">第五部分：龙头战法的破执</a></li>
+<li><a href="#section-07">第六部分：龙头战法的两大难关</a></li>
+<li><a href="#section-08">第七部分：龙头交易者的自我修行</a></li>
+<li><a href="#section-09">第八部分：龙头综合与实战派别</a></li>
+<li><a href="#section-10">第九部分：案例篇 · 浙江建投</a></li>
+<li><a href="#section-11">第十部分：当前最值得继续补强的内容</a></li>
+<li><a href="#section-12">第十一部分：接下来我建议你优先补充回答的问题</a></li>
+<li><a href="#section-13">第十二部分：基于当前补充的下一轮待细化问题</a></li>
+<li><a href="#section-14">结语</a></li>
+      </ol>
+    </nav>
+
+    <article class="article">
+      <div class="doc-note">版本说明：本稿基于你的 XMind 思维导图整理而成，属于第一版文字初稿。为了便于阅读，我对脑图顺序做了轻微整理，但不改变原意。整体目标不是一次写完，而是先把骨架搭起来，把核心概念、章节结构、关键判断和待补充内容放进同一份文档里，后续我们可以继续补案例、补定义、补规则、补图表。</div>
+<section class="chapter" id="section-01">
+<h2><span class="heading-index">01</span><span>写在前面</span></h2>
+<p>龙头战法，表面上看像是在研究最强的股票，实际上研究的是市场如何在混沌中选择方向、选择主线、选择最能承接资金与情绪的个股。它不是简单的追高，也不是狭义的打板，更不是看到涨停就冲。它是一套围绕主线题材、核心个股和节点买入展开的体系。</p>
+<p>这套体系的核心，不在于事后总结谁涨得最多，而在于当市场刚刚形成共识、龙头刚刚被选出来、空间刚刚被看见的时候，能否认得出、拿得住、守得住、卖得掉。也正因为如此，龙头战法既是一套市场方法，也是一套自我修行的方法。</p>
+<p>从这个角度看，所谓“龙头信仰”，不是盲信，不是迷信，也不是只相信强势股会一直涨，而是在深刻理解市场竞争逻辑、价值逻辑、情绪逻辑和交易逻辑之后，对“强者恒强”规律的一种主动拥抱；同时，也是对错误执念的不断破除，对取舍边界的不断明确。</p>
+</section>
+<section class="chapter" id="section-02">
+<h2><span class="heading-index">02</span><span>第一部分：总纲</span></h2>
+<h3 class="subheading">一、真正入行需要的三个条件</h3>
+<p>真正要把投资做进去、做出来，仅靠一时热情是不够的。按照脑图中的提法，至少需要三个条件：</p>
+<ul>
+<li>明师：方向不能错。方法、框架、认知，最好来自真正经历过周期和市场检验的人。</li>
+<li>天赋：这里的天赋，不只是聪明，而是对市场、节奏、风险、情绪的感知能力。</li>
+<li>努力：没有长期复盘、不断校正、持续训练，再好的方法也很难落地。</li>
+</ul>
+<p>这三者里，明师解决“路”的问题，天赋解决“感知”的问题，努力解决“能否走远”的问题。</p>
+<h3 class="subheading">二、成功的投资由三个部分组成</h3>
+<p>脑图里提到，成功的投资由三个部分构成：</p>
+<ul>
+<li>市场</li>
+<li>适合自己的投资体系</li>
+<li>自我</li>
+</ul>
+<p>这三者缺一不可。市场决定机会密度和赚钱效应；体系决定你用什么方法在市场里取胜；自我决定你能不能执行体系、能不能克服人性、能不能在顺境中不飘、逆境中不乱。</p>
+<p>很多人最后失败，不一定是因为看不懂市场，而是因为体系不适配自己，或者自我约束不够强。真正成熟的交易者，最终都会回到这三者的统一。</p>
+<h3 class="subheading">三、亘古不变的原则</h3>
+<p>不同市场状态，做法应该完全不同。这一点在脑图里总结得很干脆：</p>
+<ul>
+<li>牛市：积极做，重仓做龙头。</li>
+<li>猴市：看情况做，做趋势，做“麻雀龙”。</li>
+<li>熊市：空仓休息。</li>
+</ul>
+<p>这里的关键不只是“选股”，而是先判断环境。龙头战法不是任何时候都能强行使用的方法。没有赚钱效应、没有主线、没有市场合力的时候，硬做龙头，很容易把原本高胜率的方法做成低胜率的赌博。</p>
+<h3 class="subheading">四、龙头战法的浓缩表达</h3>
+<p>如果把整套龙头战法压缩成最简练的表达，脑图给出了三个词：</p>
+<ul>
+<li>主线题材</li>
+<li>核心个股</li>
+<li>节点买入</li>
+</ul>
+<p>这三个词几乎可以概括龙头战法的实战主线：</p>
+<ol>
+<li>先找主线题材。</li>
+<li>再找核心个股。</li>
+<li>最后只在关键节点买入。</li>
+</ol>
+<p>龙头不是脱离板块、脱离题材、脱离周期单独存在的；买点也不是任意时刻都成立的。只有主线清晰、龙头明确、节点合适，龙头战法的优势才会真正体现出来。</p>
+</section>
+<section class="chapter" id="section-03">
+<h2><span class="heading-index">03</span><span>第二部分：龙头的起源与定义</span></h2>
+<h3 class="subheading">一、龙头的一花三叶</h3>
+<p>脑图中将龙头分成三类，这个划分非常重要，因为不同龙头的确认方式、持有方式和预期方式并不一样。</p>
+<h4 class="minor-heading">1. 股权龙头</h4>
+<p>股权龙头也可以理解为价值龙头。它更接近公司本身，更接近长期价值，更接近基本面。</p>
+<ul>
+<li>基本面化、长线化。</li>
+<li>任何投资方法，很多时候都不如长期重仓持有优秀公司。</li>
+<li>买股票，本质上是买公司的一部分。</li>
+<li>它离价值性最近，离市场性最远。</li>
+</ul>
+<p>这一类龙头，更多体现的是现实世界中的行业地位和公司竞争力。</p>
+<h4 class="minor-heading">2. 黑马龙头</h4>
+<p>黑马龙头是盘面人气龙头，是最典型、最容易被短线交易者识别和追逐的一类龙头。</p>
+<ul>
+<li>龙头股规律博弈化、短线化。</li>
+<li>价值引出热点，热点舞动龙头，龙头再自我封神与异化。</li>
+<li>它离市场性最近，离价值性最远。</li>
+</ul>
+<p>一般来说，黑马龙头有几个常见特征：</p>
+<ul>
+<li>往往与涨停板深度绑定。</li>
+<li>具有绝对的第一性。</li>
+<li>第一时间启动，第一时间封住涨停板，人气第一。</li>
+<li>盘子通常较小。</li>
+<li>股价通常不高。</li>
+<li>喜欢一字板和 T 字板，流动性未必很好。</li>
+</ul>
+<h4 class="minor-heading">3. 白马龙头</h4>
+<p>白马龙头可以看作中间路线，是价值与投机的结合。</p>
+<ul>
+<li>价值投机。</li>
+<li>既看价值，也看博弈。</li>
+<li>选股思路是价值当先，选择存在价值发现空间的标的。</li>
+<li>一般盘子较大、市值较大，也可以视作“中军”。</li>
+<li>这一类龙头更强调“价值正宗性”。</li>
+</ul>
+<p>从交易角度讲，白马龙头未必像黑马龙头那样依赖连续涨停来确认，但它一旦走成，也往往拥有更好的承载力和更大的级别。</p>
+<h3 class="subheading">二、龙头的三个极致</h3>
+<p>龙头之所以是龙头，不是因为它只是“比别人好一点”，而是在某些关键维度上体现出极致。</p>
+<h4 class="minor-heading">1. 极端</h4>
+<p>上涨速度与上涨幅度都很极端。它不是温吞地涨，而是以一种明显超过同类个股的方式走出来。</p>
+<h4 class="minor-heading">2. 强力</h4>
+<p>本质上是股性强，资金愿意反复做，市场愿意反复看，辨识度和承接力都明显强于一般个股。</p>
+<h4 class="minor-heading">3. 高度</h4>
+<p>最终体现为涨幅高、空间高、地位高。高度不是唯一标准，但真正的大龙头最终往往都要打出足够的高度。</p>
+<h3 class="subheading">三、龙头的根本规律</h3>
+<p>脑图中提炼了几个根本规律：</p>
+<ul>
+<li>强者恒强</li>
+<li>物极必反</li>
+<li>确定性和规律性相结合，稳定性和安全性最高</li>
+</ul>
+<p>其中，“强者恒强”是龙头战法最核心的底层逻辑之一。很多时候，拥有“第一”比“做得不错”更重要。投资上，要么拥抱第一，要么成为第一；如果既不是第一，又没有明显差异化，那就很难成为市场真正的合力中心。</p>
+<p>但与此同时，任何极致都包含反转的种子。龙头越强，后面一旦反转，波动也会越剧烈，所以“强者恒强”和“物极必反”必须一起看，不能只看一面。</p>
+</section>
+<section class="chapter" id="section-04">
+<h2><span class="heading-index">04</span><span>第三部分：龙头的判断框架</span></h2>
+<h3 class="subheading">一、龙头四维</h3>
+<p>脑图将龙头的识别拆成四个维度：价值性、领涨性、市场性、第一性。这四维，是对“什么样的股票才能称为龙头”的总体判断框架。</p>
+<h4 class="minor-heading">1. 价值性</h4>
+<p>价值性是龙头真实性的重要底座。没有价值加持的龙头，容易只是情绪泡沫；有价值支撑的龙头，往往更容易走得远、扛得住、被更多资金接受。</p>
+<p>价值性又可以分为硬价值和软价值。</p>
+<p>硬价值包括：</p>
+<ul>
+<li>业绩</li>
+<li>新技术</li>
+<li>新产品和新项目</li>
+</ul>
+<p>其中，业绩是根本。价值最终会靠向业绩，但价值又并不简单等于业绩。市场很多时候交易的是“未来的业绩”“潜在的兑现”“结构性变化带来的重估”。</p>
+<p>脑图里还提到一个很关键的判断：当价值变成炒作的理由和噱头时，价值就被称为题材。也就是说，题材不是价值的对立面，而往往是价值在市场中的表达方式。</p>
+<p>价值还可以从四个来源理解：</p>
+<ul>
+<li>价值从“争”中来：越是别人追捧、越是买不到的，往往越值钱。</li>
+<li>价值从“有用”中来：股票价值千千万，业绩二字是定海神针。</li>
+<li>价值从政策中来：国家政策的强力推动，会改变资源配置，进而改变行业和公司的价值预期。很多时候，不必等结果兑现，只要有预期和想象力，市场就会先交易。</li>
+<li>价值从“相信”中来：市场对未来的共同相信，本身也会构成价格推动力。</li>
+</ul>
+<p>软价值则包括：</p>
+<ul>
+<li>政策</li>
+<li>重大事件和消息</li>
+<li>周期性、行业预期、资产重组等因素</li>
+</ul>
+<p>所以，价值性的真正意义，不只是为了“看起来更合理”，而是为了保证龙头的真实性，并在一定程度上控制龙头的回撤。</p>
+<h4 class="minor-heading">2. 领涨性</h4>
+<p>龙头必须领涨，但“领涨”并不等于涨完之后回头看，才知道它是领涨。真正的龙头战法，要求我们在上涨初期就能识别谁具有领涨势头。</p>
+<p>脑图里提出了“一涨三领”的概念。可以理解为：</p>
+<ul>
+<li>第一，自己涨得快，甚至涨得最快。</li>
+<li>第二，带动性强，不是独涨，而是能够带动更多同板块、同路径、同逻辑的个股一起涨。</li>
+<li>第三，具备路径和逻辑领涨的能力，也就是整个产业链上下游、题材分支、情绪扩散路径都跟着它走。</li>
+</ul>
+<p>更高的境界，是领着大盘涨。</p>
+<p>所以，“领涨”的关键不是简单的价格领先，而是价格、逻辑、路径、情绪、带动性的综合领先。</p>
+<h4 class="minor-heading">3. 市场性</h4>
+<p>龙头股不是谁钦定出来的，而是在市场竞争中斗出来的。</p>
+<ul>
+<li>龙头股是市场中竞争出来的，是斗争的产物。</li>
+<li>真正的龙头战法不是跑到市场前面去，而是与市场同步，甚至宁可慢一点，等市场选出来后再参与。</li>
+<li>人气很重要。市场和情绪好的时候，人气越高，辨识度越强，越容易形成真龙头。</li>
+<li>龙头战法参与的是主升浪，是已经定性的主升浪，而不是在还没有开启主升浪时就盲目潜伏。</li>
+</ul>
+<p>这意味着，做龙头本身就要接受一个现实：当你确认它是龙头时，它往往已经不低了，涨幅也已经不小了。但这并不一定是坏事。很多率先上涨、率先新高的股票，后面的涨幅往往远超那些迟迟没有动的股票，因为强者恒强。</p>
+<h4 class="minor-heading">4. 第一性</h4>
+<p>龙头不是“平均意义上的最优”，而是在关键维度上明确第一。脑图里提到，最好还要加一个“唯一性”。</p>
+<p>第一性主要体现在三个方面：</p>
+<ul>
+<li>时间的第一性：率先启动，率先上涨，率先涨停。</li>
+<li>空间的第一性：涨幅最大，空间最能打开。</li>
+<li>地位的第一性：是板块老大，能带领整个板块一起上涨。</li>
+</ul>
+<p>第一性本质上解决的是“为什么是它，而不是别人”。只有回答清楚这个问题，定龙这件事才有坚实基础。</p>
+<h4 class="minor-heading">5. 龙头核心的定义</h4>
+<p>脑图将龙头核心定义为两部分：</p>
+<ul>
+<li>内在价值性</li>
+<li>外在影响力</li>
+</ul>
+<p>内在价值性又可分为：</p>
+<ul>
+<li>事实价值：例如已经存在的业绩。</li>
+<li>预期价值：例如尚未兑现、但有望改变公司价值的事件和政策。</li>
+</ul>
+<p>外在影响力则指：</p>
+<ul>
+<li>能影响大盘</li>
+<li>能影响其他股票</li>
+</ul>
+<p>也就是说，真正的龙头，不只是自己强，还要能让别人跟着强。</p>
+<h4 class="minor-heading">6. 真善美龙头</h4>
+<p>理想中的龙头，应该是“真、善、美”兼备的：</p>
+<ul>
+<li>真：逻辑真实，价值真实，身份真实。</li>
+<li>善：承载性好，给机会，不轻易坑人。</li>
+<li>美：走势流畅，结构协调，市场认同度高。</li>
+</ul>
+<p>当然，现实里的龙头很少一开始就完美。脑图里提到，现实龙头总会在某个维度上有所欠缺，但关键在于，它会在后续进程中不断补齐。</p>
+<h3 class="subheading">二、龙头三核</h3>
+<p>如果说“四维”解决的是“怎么识别龙头”，那么“三核”解决的就是“围绕龙头怎么做”。</p>
+<h4 class="minor-heading">1. 风控</h4>
+<p>风控不是附属项，而是龙头战法的前提。因为龙头一旦做错，回撤往往也最剧烈。越是高辨识度、越是高弹性的标的，越需要事先设定风控边界。</p>
+<p class="soft-note">结合当前补充，风控可以先落成几个非常明确的原则：</p>
+<ul>
+<li>低位阶段允许更积极一些。处于低位时，试错仓可以上得更足，甚至可以适度偏重。</li>
+<li>高位阶段要明显收敛。位置越高，越要轻仓，越要尊重波动和兑现压力。</li>
+<li>监管红线必须提前预判，不能等触发后再被动处理。</li>
+<li>尤其要高度注意 <code>10日100%</code> 和 <code>30日200%</code> 这两类监管约束，这不是事后复盘项，而是盘前和盘中都要提前盯住的风险项。</li>
+</ul>
+<p>从这个意义上说，龙头战法里的仓位从来不是固定的，而是跟位置、监管、情绪和空间同步变化的动态仓位。</p>
+<h4 class="minor-heading">2. 定龙</h4>
+<p>定龙是龙头战法的核心。脑图里明确写了：这是龙头战法的核心。</p>
+<p>所谓定龙，不只是认出“它今天最强”，而是综合价值性、领涨性、市场性、第一性之后，判断它是否有资格成为那个阶段真正的龙头。</p>
+<p>按照目前补充的规则，定龙至少可以先抓住三条核心信号：</p>
+<ul>
+<li>分歧之后总是能承接住，总是能够弱转强。</li>
+<li>整体题材能够与大盘指数、市场情绪形成共振。</li>
+<li>新题材卡位不严重，原有题材本身够大、够强，且资金认可度非常高。</li>
+</ul>
+<p>这三条很关键，因为它们分别对应了龙头确认中的三个层面：</p>
+<ul>
+<li>个股层面：是否具备反复承接、反复转强的能力。</li>
+<li>题材层面：是否不是孤立上涨，而是处在一条有生命力的主线里。</li>
+<li>市场层面：是否没有被新方向快速替代，是否仍然拥有资金合力。</li>
+</ul>
+<p>再往执行层走，对“分歧之后能承接住、能弱转强”的盘面确认，目前最看重四类信号：</p>
+<ul>
+<li>分时承接。</li>
+<li>低开高走。</li>
+<li>充分换手。</li>
+<li>炸板回封。</li>
+</ul>
+<p>也就是说，真正值得重视的，不是它有没有短暂转弱，而是它在转弱之后，是否总能被市场重新接起来，重新转强。</p>
+<p>如果再把“强承接”写得更实战一点，目前可以先这样定义：</p>
+<ul>
+<li>盘中始终不轻易跌破分时均线。</li>
+<li>全天成交额是逐步放大的，而且最好高于昨日。</li>
+<li>所谓“分时承接”，最典型的表现就是下杀之后，能够被迅速猛然拉回来。</li>
+</ul>
+<p>这类承接说明的不是简单有人接，而是说明市场愿意在分歧时继续把它往上推，说明这只票仍然具备龙性，而不是只剩情绪惯性。</p>
+<p>而对“题材与指数、情绪共振”的判断，目前最看重的则是：</p>
+<ul>
+<li>涨停家数。</li>
+<li>连板高度。</li>
+<li>成交额。</li>
+<li>核按钮。</li>
+<li>红盘家数。</li>
+</ul>
+<p>这些指标一起看，才能判断它到底只是个股独强，还是题材、情绪、资金与指数共振下的真主线。</p>
+<p>进一步往下，在个股筛选上，目前这套体系还带有比较鲜明的偏好属性。理想中的候选龙头，往往尽量满足以下条件：</p>
+<ul>
+<li>股价低于 <code>20</code> 元。</li>
+<li>市值低于 <code>200</code> 亿。</li>
+<li>有强题材支持。</li>
+<li>连板身位靠前。</li>
+<li>个股股性良好，最好曾经用涨停板试过盘，且横盘整理时间足够长。</li>
+<li>三板或四板之后能够创价格新高。</li>
+<li>新高最好是历史新高；如果不是，至少也尽量是近三年内的新高。</li>
+<li>人气榜靠前，而且越靠前越好。</li>
+</ul>
+<p>这些条件并不等于“满足了就一定是龙头”，但它们构成了一个很实用的候选池过滤器。它的作用，是先把最容易走成龙头的个股提前筛出来，再配合题材强度、情绪周期和盘中转强去做最后确认。</p>
+<p class="soft-note">结合当前补充，这里面还有两个条件可以进一步落地：</p>
+<ul>
+<li>所谓“横盘整理时间足够长”，当前先定义为横盘超过 <code>3</code> 个月。</li>
+<li>所谓“试过盘”，当前先定义为近期有过辨识度表现，例如上过人气榜，或者近 <code>3</code> 个月内有过涨停。</li>
+</ul>
+<h4 class="minor-heading">3. 买卖点</h4>
+<p>脑图里写得非常直接：买点大于卖点。</p>
+<p>这句话背后的意思是，龙头战法最关键的能力，首先是拿到真龙头，而不是事后卖在最顶。只要定龙正确，买在关键节点，后面的卖点会相对从容；但如果一开始没买对，后面再怎么研究卖点，也只是修修补补。</p>
+<p>就目前的补充来看，这里的“买点大于卖点”，可以进一步落成一个比较明确的优先级：</p>
+<ol>
+<li>二板定龙。</li>
+<li>分歧转一致的三板。</li>
+<li>人气非常高的首板。</li>
+</ol>
+<p>这组优先级其实非常有代表性。它说明这套体系既不是纯首板体系，也不是只做高位加速，而是更重视“确认之后的核心节点”：</p>
+<ul>
+<li>二板是最关键的定龙战场。</li>
+<li>三板更看重分歧后的再次一致，确认龙头不是一闪而过，而是经得起换手和检验。</li>
+<li>首板只有在人气和辨识度非常突出的情况下，才具有更高优先级。</li>
+</ul>
+<p>后续如果继续展开，这一部分还可以细分成：</p>
+<ul>
+<li>什么样的二板才算“定龙二板”。</li>
+<li>什么样的三板才算“分歧转一致”。</li>
+<li>什么样的首板才称得上“高人气首板”。</li>
+</ul>
+<p>进一步说，龙头买卖并不是“一次买对，一次卖完”的单次交易，而更像围绕核心龙头持续博弈的过程。只要龙头没有彻底出局，那就应该反复在上面做；直到它彻底走弱，再真正离开。</p>
+<h4 class="minor-heading">4. 卖点与退出规则</h4>
+<p>在当前体系里，退出不只是单一卖点，而是几类信号共同决定的：</p>
+<ul>
+<li>主动止盈：满足高位卖点时离场。高位卖点目前包括 <code>爆量长上影</code>、<code>爆量十字星</code>、<code>高位封死跌停</code>、<code>破十日趋势线</code>。</li>
+<li>被动止损：当利润回吐超过 <code>10%</code> 时，要高度警惕并执行退出。</li>
+<li>监管预警：重点关注 <code>10日100%</code> 和 <code>30日200%</code>，一旦逼近或触发，就不能再按普通节奏处理。</li>
+<li>新题材卡位：如果本题材后排出现很大负反馈，说明原题材地位开始松动，这时应及时走人。</li>
+<li>板块走弱：应逐步减仓，直到整个题材再也没有低位补涨出现。</li>
+</ul>
+<p class="insight">这套退出逻辑的核心，不是死守一个点位，而是持续判断龙头是否还在局中。一旦它还没有彻底出局，就可以继续围绕它反复做；一旦确认它彻底走弱，就必须离开，不再恋战。</p>
+<p class="soft-note">结合当前补充，“彻底走弱”和“彻底出局”也已经可以先明确下来：只要出现以下高位卖点，就视为龙头已经进入出局区间：</p>
+<ul>
+<li>爆量长上影</li>
+<li>爆量十字星</li>
+<li>高位封死跌停</li>
+<li>破十日趋势线</li>
+</ul>
+<p>其中，前面三个目前权重最高：</p>
+<ul>
+<li>爆量长上影</li>
+<li>爆量十字星</li>
+<li>高位封死跌停</li>
+</ul>
+<p>这三类信号一旦出现，就不是“再看看”，而是必须走。相比之下，<code>破十日趋势线</code> 更像是趋势层面的最终确认，一旦出现，同样说明龙头的主升结构已经明显转弱。</p>
+<p>所以，这套体系里“反复做龙头”的前提非常明确：只要它没有触发这些彻底走弱信号，就可以继续围绕它反复做；一旦触发，就应当退出，不再抱侥幸。</p>
+</section>
+<section class="chapter" id="section-05">
+<h2><span class="heading-index">05</span><span>第四部分：龙头的风险与代价</span></h2>
+<h3 class="subheading">龙头六险</h3>
+<p>龙头的高收益，从来都伴随着高风险。脑图将其总结为“龙头六险”，这是对龙头战法负面一面的集中提醒。</p>
+<h4 class="minor-heading">1. 领跌风险</h4>
+<p>龙头不只会领涨，也会领跌。所谓领跌，就是它跌得比别人更快、比别人更久，甚至带动整个市场下跌。</p>
+<p>脑图中提到，龙头容易领跌的几个场景包括：</p>
+<ul>
+<li>市场退潮期</li>
+<li>板块退潮，尤其是个股“裸泳”的时候</li>
+<li>题材逻辑被证伪的时候</li>
+<li>遇到龙头杀的时候</li>
+<li>遇到强烈监管的时候</li>
+</ul>
+<p>其中，龙头杀常常来自别的题材抢走资金，或者别的题材更大、更强、更有人气。</p>
+<h4 class="minor-heading">2. 高处不胜寒的天然性风险</h4>
+<p>龙头一旦被市场确认，很多时候已经涨了很大一段，甚至累计涨幅超过 50%。这就会带来天然性矛盾：</p>
+<ul>
+<li>有时候市场喜欢高，因为高说明强。</li>
+<li>有时候市场又讨厌高，因为高意味着风险。</li>
+</ul>
+<p>更麻烦的是，很多时候我们难以立刻分辨，到底这是“领涨的高”，还是“虚高”，也就是被游资或机构做出来的假龙头高度。</p>
+<h4 class="minor-heading">3. 稀缺性风险</h4>
+<p>龙头本身就是稀少资源。真正能被称为龙头的股票并不多，真正值得重仓的龙头更少。稀缺性既带来溢价，也带来拥挤。</p>
+<h4 class="minor-heading">4. 逆天风险</h4>
+<p>所谓逆天，指的是在大盘不支持、市场并不配合的情况下，龙头股还想强行引领行情。</p>
+<p>这种情况有可能成功，也有可能被大盘带进沟里。脑图提示，可以用赚钱效应和情绪周期来处理这类矛盾，但本质上，这依然是一种逆势承担额外风险的做法。</p>
+<h4 class="minor-heading">5. 同质化风险</h4>
+<p>同质化风险，本质上是大家都用差不多的方法、盯着差不多的股票、在差不多的位置做差不多的动作，最后形成极致一致性。</p>
+<p>它通常表现为两个方面：</p>
+<ul>
+<li>核按钮：一旦做错，容错率极低。</li>
+<li>交易过于一致：看多看空都容易出现高度一致。</li>
+</ul>
+<p>脑图中有一个很重要的判断：同质化做法太多，缺乏独立思考的人太多。这其实已经不是单纯的技术问题，而是认知和人性问题。</p>
+<h4 class="minor-heading">6. 攀比乱心风险</h4>
+<p>龙头股最容易激发人的比较心理。别人赚到了、别人上车了、别人拿住了、别人翻倍了，都会反过来扰乱自己的交易节奏。很多错误并不是因为看不懂，而是因为心乱了。</p>
+<h3 class="subheading">小结</h3>
+<p>龙头越强，越容易吸引资金；越容易吸引资金，也越容易聚集风险。龙头战法不是只研究“怎么赚更多”，更要研究“在什么情况下会大亏”。六险的意义，不在于让人不做龙头，而是让人知道：只有真正理解风险，才有资格谈信仰。</p>
+</section>
+<section class="chapter" id="section-06">
+<h2><span class="heading-index">06</span><span>第五部分：龙头战法的破执</span></h2>
+<h3 class="subheading">一、为什么要破执</h3>
+<p>龙头战法最容易让人陷入某些表象，比如执着于涨停板、执着于形态、执着于某种技术指标，甚至执着于“结果看起来最强”的股票。脑图中的“五破执”，本质上就是把这些容易误导人的执念一一拆掉。</p>
+<p>破执，不是否定工具，而是把工具放回它该在的位置。</p>
+<h3 class="subheading">二、破以结果定义结果之执</h3>
+<p>不能因为某只股票后来暴涨了，就倒推它一开始一定是龙头。龙头不能只靠结果定义，而要靠逻辑和过程定义。</p>
+<p>也就是说，真正的定龙，是对过程的判断，而不是对结果的追认。</p>
+<h3 class="subheading">三、破涨停板之执</h3>
+<p>并不是所有连续涨停的股票都是龙头，也不是所有龙头都必须靠涨停确认。</p>
+<p>脑图里区分得很清楚：</p>
+<ul>
+<li>黑马龙头往往需要涨停板确认，并且以涨停板为主要特征。</li>
+<li>但白马龙头和股权龙头，并不一定需要涨停板来确认。</li>
+</ul>
+<p>同时，脑图也提到，即使在“黑马龙头需要涨停确认”这一点上，也存在具体案例和例外，例如：</p>
+<ul>
+<li>万邦德：创新药龙头案例</li>
+<li>华电能源：电力龙头案例</li>
+</ul>
+<p>这一破执的关键在于，不要把“涨停板”当成龙头的本质，而要把它视作某一类龙头常见但非唯一的表现形式。</p>
+<h3 class="subheading">四、破形态之执</h3>
+<p>形态不是不重要，而是不能把形态当成龙头的根源。</p>
+<ul>
+<li>不是不要形态。</li>
+<li>不是否定形态。</li>
+<li>而是不要被形态禁锢。</li>
+</ul>
+<p>龙头不是从形态里推导出来的，而是从市场竞争中走出来的。形态什么时候才重要？脑图里的答案是：当一只股票已经具备龙头苗头时，形态才会与之共振。</p>
+<p>也就是说，形态更多是结果的映照，是强势的外化，而不是龙头诞生的原因。</p>
+<h3 class="subheading">五、破技术之执</h3>
+<p>技术分析是工具，但不是神。</p>
+<p>脑图列举的技术内容包括：</p>
+<ul>
+<li>K 线</li>
+<li>形态</li>
+<li>均线</li>
+<li>成交量</li>
+<li>筹码</li>
+<li>波浪</li>
+<li>切线</li>
+<li>黄金分割</li>
+</ul>
+<p>这些都可以看、都可以学，但不应该成为束缚。技术分析的重要性在于辅助判断，而不是替代对市场、价值、情绪和地位的综合理解。</p>
+<h3 class="subheading">六、破追涨停板之执</h3>
+<p>拿龙头，不一定非得打板。</p>
+<p>脑图指出，有时候在涨停板上买入，是因为行情推进太快、同质化太强、没有更舒服的位置，这是迫不得已，而不是唯一正确。</p>
+<p>真正更重要的是：</p>
+<ul>
+<li>在确定空间之后买</li>
+<li>定龙即买</li>
+<li>看懂即买</li>
+<li>在节点买入</li>
+</ul>
+<p>这意味着，龙头战法真正要研究的，不是“是不是一定得追板”，而是“在什么样的节点，买入的赔率和胜率最好”。</p>
+</section>
+<section class="chapter" id="section-07">
+<h2><span class="heading-index">07</span><span>第六部分：龙头战法的两大难关</span></h2>
+<p>脑图里说得很实在：龙头战法最害怕的，就是买到假龙头，买在错位置。归根结底，龙头战法有两大难关：真假与位置。</p>
+<h3 class="subheading">一、真假之难</h3>
+<p>市场中经常会出现“假龙头”。尤其在游资主导、情绪亢奋、散户跟风的时候，完全可能被人为做出一只“看起来像龙头”的股票，甚至形态很好、节奏很强，但它的真实地位并不稳固。</p>
+<p>脑图里提到两种寻找“真龙头”的方法：</p>
+<h4 class="minor-heading">1. 现实世界中的龙头映射</h4>
+<p>有些公司在现实商业世界中本就是龙头，这种情况在股权龙头中尤其明显。例如阿里巴巴、京东、拼多多、茅台、腾讯这类公司，它们的龙头地位不是盘面短暂赋予的，而是现实竞争中形成的。</p>
+<h4 class="minor-heading">2. 价值证明</h4>
+<p>对白马龙头和黑马龙头而言，更重要的是价值证明。无论是硬价值还是软价值，都必须有东西能够支撑它不只是“像龙头”，而是真有资格成为龙头。</p>
+<h3 class="subheading">二、位置之难</h3>
+<p>空间高度的拿捏，是第二个难关。不是所有股票都值得无脑上，必须在合适的价格区间和空间结构里进入。</p>
+<h4 class="minor-heading">1. 恐高是做龙头的第一道坎</h4>
+<p>很多人在做龙头时，最大的拦路虎就是恐高，总想等更低的位置。但龙头的一大特点恰恰是“高”。</p>
+<p>脑图里有几句非常关键的话：</p>
+<ul>
+<li>如果创新高，其实定龙即买。</li>
+<li>只要空间还很大，不要恐高，高是强的表现形式。</li>
+<li>通过高来发现强，这个是本质。</li>
+</ul>
+<h4 class="minor-heading">2. “无高，则无龙性；无低，则无利润”</h4>
+<p>这句话把位置问题讲得很透。</p>
+<ul>
+<li>前面的高，是因为要确认龙性，要买强股。</li>
+<li>后面的低，是为了成本优势，要有利润垫，才能拿得住。</li>
+</ul>
+<p>也就是说，先接受高，是为了确认它真强；后面再通过合适的节奏和结构，把成本和持仓体验降下来。</p>
+<h4 class="minor-heading">3. 位置定性，不是看原点，而是看全局</h4>
+<p>高低不是由原始价格决定的，而是由整体和未来决定的。</p>
+<ul>
+<li>用未来来定义现在。</li>
+<li>不能做到定量正确，只能做到大致正确。</li>
+<li>只做看得懂未来的那几个企业。</li>
+<li>从价值性上去做。</li>
+<li>只做能定性、看得懂其价值性的股票。</li>
+</ul>
+<p>所以，位置问题不是死算涨幅，而是看它后面还有没有空间、有没有逻辑、有没有级别。</p>
+<p class="soft-note">结合当前补充，这套体系对高低位置已经有了一个初步的量化边界：</p>
+<ul>
+<li>低位置：距离近期最低点的涨幅不超过 <code>40%</code>。</li>
+<li>高位置：距离近期最低点的涨幅超过 <code>70%</code>。</li>
+</ul>
+<p>在高低位置的判断优先级上，目前你的排序也已经比较清楚：</p>
+<ol>
+<li>最看重情绪周期。</li>
+<li>其次看涨幅和估值空间。</li>
+<li>最后才看板数。</li>
+</ol>
+<p>这很重要，因为它说明“高低”在你的体系里不是机械看板数，也不是只看涨了多少，而是先看它处在什么样的情绪环境里。也就是说，同样的三板、同样的涨幅，在不同情绪周期里，位置感受和风险收益比可能完全不同。</p>
+<h3 class="subheading">三、黄金博弈：真假与位置的四象限</h3>
+<p>把真假与位置结合起来，可以形成一个很实用的四象限框架：</p>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>结论</th></tr></thead><tbody><tr><td>假龙头 + 高位置</td><td>最危险，容易出现重大回撤。脑图举例提到顺灏股份那一拨。</td></tr><tr><td>假龙头 + 低位置</td><td>容易变成杂毛战法，浪费时间，消耗精力。</td></tr><tr><td>真龙头 + 高位置</td><td>核心问题转化为空间估值问题，关键在于后续还能否继续打开空间。</td></tr><tr><td>真龙头 + 低位置</td><td>这是最理想的状态，是至高无上的追求。</td></tr></tbody></table></div>
+<p>其中，脑图特别强调：真龙头、低位置，往往出现在刚启动的时候，例如第一个板或者二板附近。虽然第一个板很多时候还是混沌板，但“二板定龙头”是非常关键的战场。</p>
+</section>
+<section class="chapter" id="section-08">
+<h2><span class="heading-index">08</span><span>第七部分：龙头交易者的自我修行</span></h2>
+<p>龙头战法的难，不只难在市场，更难在自己。脑图中“龙头的自我修行”部分，实际上是在回答：什么样的人，才有资格长期做龙头。</p>
+<h3 class="subheading">一、敬畏天地</h3>
+<ul>
+<li>行情差的时候，龙头难以求真，所以应当慎做龙头。</li>
+<li>真正的龙头战法，应该是拥抱最好的行情，拥抱最好的股票。</li>
+<li>没有赚钱效应的行情，强行使用龙头战法，往往会把方法做坏。</li>
+</ul>
+<p>这里强调的是顺势。再好的方法，也不能脱离环境。</p>
+<h3 class="subheading">二、重塑自我</h3>
+<h4 class="minor-heading">1. 奉道不奉钱</h4>
+<p>这是整个修行部分最核心的一条。</p>
+<ul>
+<li>完全遵守自己的交易体系、交易方法和交易纪律。</li>
+<li>不是因为能赚钱就去买，而是因为符合自己的“道”才买。</li>
+<li>要主动抵御金钱对体系的破坏性。</li>
+<li>不要见到股价涨就买，那是赌徒思维。</li>
+<li>真正的投资是“守”，守住自己的窄门，守住自己的体系。</li>
+</ul>
+<h4 class="minor-heading">2. 不顾诸神，对抗全世界</h4>
+<p>投资到最后，必须摆脱从众。</p>
+<ul>
+<li>彻底地孤独。</li>
+<li>完全独立思考。</li>
+<li>不依赖他人，不依赖游资，不依赖机构。</li>
+<li>心外无物，心外无人。</li>
+</ul>
+<p>这不是故作清高，而是为了避免被市场里各种声音牵着走。</p>
+<h4 class="minor-heading">3. 空性</h4>
+<p>内心不被市场污染，坚守自己既定的规则，守住自己内心的道。</p>
+<h4 class="minor-heading">4. 无成就感</h4>
+<p>没有成就感的交易，反而可能是好交易。因为真正好的交易，不一定刺激、不一定炫耀、不一定充满戏剧性，它往往只是顺势而为，是别人也能按规则做好的交易。</p>
+<h4 class="minor-heading">5. 无情</h4>
+<p>错了就认输，果断斩仓，不要留恋。这是龙头交易里非常重要的一种品质。</p>
+<h4 class="minor-heading">6. 严肃</h4>
+<p>这一点在脑图中被单独列出，但尚未展开。可以理解为，对市场、对规则、对错误、对风险保持足够严肃的态度。</p>
+<h4 class="minor-heading">7. 观我</h4>
+<p>这一点在脑图中也尚未展开。后续可以重点补充：如何观察自己的起心动念、如何识别自己的情绪偏差、如何在交易中校正自我。</p>
+<h4 class="minor-heading">8. 随缘</h4>
+<ul>
+<li>人和人之间讲缘分，股票和人之间也讲缘分。</li>
+<li>我们会错过很多股票，有的是故意的，有的是精力顾不上，有的则是没有缘分。</li>
+</ul>
+<p>真正成熟的交易者，不会因为错过而失衡。</p>
+<h4 class="minor-heading">9. 干净</h4>
+<ul>
+<li>不要到处乱买股票。</li>
+<li>高手的账户只会反复做少数几只股票。</li>
+<li>在少数重点标的上做到极致。</li>
+<li>把研究、思考、逻辑和执行都做到极致。</li>
+<li>轻易不出手，出手必重仓。</li>
+</ul>
+<h3 class="subheading">三、有所取舍</h3>
+<p>脑图里提到：君子，有所为而有所不为。</p>
+<p>龙头信仰的核心，不是宽门，而是窄门。取舍不是简单地把差的扔掉，而是连好的里面也要继续筛选。</p>
+<p>要尽量去取：</p>
+<ul>
+<li>真善美龙头</li>
+<li>龙中龙</li>
+<li>大级别、高价值加持的龙头</li>
+<li>行情好的时候的龙头</li>
+<li>低位置龙头</li>
+<li>清澈干净的龙头</li>
+</ul>
+<p>同时还要坚持：</p>
+<ul>
+<li>原则主义，不是结果导向，而是原则导向。</li>
+<li>超越短期性和局部性。</li>
+<li>保持纯粹，正信正念，与邪念做斗争。</li>
+</ul>
+<h3 class="subheading">四、香象渡河，定龙即买</h3>
+<p class="insight">这句话很像这套体系的收束之句。意思不是无脑冲动，而是在认知成熟、判断清楚之后，不再迟疑，不再反复，不再被枝节问题拖住手脚。真正的困难不在于“敢不敢买”，而在于你是否真的完成了定龙。</p>
+<p>如果再往前推进一步，这句话还可以延伸出一个更实战的核心原则：定龙之后，不是一次性做完，而是只要龙头没有彻底出局，就反复在上面做；直到它确认彻底走弱，再真正离开。</p>
+<p>而“没有彻底出局”的判断，也不是模糊的感觉判断，而是要回到前面的退出规则上去看。只要没有出现那几个高位卖点，龙头逻辑没有被彻底破坏，就仍然可以把它当作核心战场反复博弈。</p>
+</section>
+<section class="chapter" id="section-09">
+<h2><span class="heading-index">09</span><span>第八部分：龙头综合与实战派别</span></h2>
+<h3 class="subheading">一、龙头真善美</h3>
+<p>脑图里提到，有些龙头操盘手心胸狭隘，不愿意给别人上车机会；有时一旦给机会，反而可能是暴跌前夜。</p>
+<p>所以，真正值得反复做的，不只是“强”，还要有承载性：</p>
+<ul>
+<li>每天都能买进去</li>
+<li>也能从容卖出来</li>
+<li>不是只给极少数人一瞬间的上车窗口</li>
+</ul>
+<p>这类龙头，往往更适合大资金、更适合持续博弈，也更容易走成大级别行情。</p>
+<p class="soft-note">结合当前补充，“真善美龙头”“清澈干净的龙头”“有承载性的龙头”，可以先统一理解成这样一类股票：</p>
+<ul>
+<li>总是给机会买卖，不会完全不给机会买卖。</li>
+<li>水上总是有承接。</li>
+</ul>
+<p>也就是说，这类龙头不是靠极端缩量、不给参与机会来维持强势，而是在强的同时，仍然具备可交易性、可承接性和可反复操作性。</p>
+<h3 class="subheading">二、龙头派别</h3>
+<p>脑图中提到了几种常见的龙头参与派别：</p>
+<ul>
+<li>拐点派：首板或二板附近参与。</li>
+<li>低吸派：等待首阴回调等更舒服的位置。</li>
+<li>打板派：在强度确认时直接打板。</li>
+<li>形态派：从结构与形态切入。</li>
+<li>半路派：在板上之前或板间切入。</li>
+<li>波浪派：从波段结构理解龙头。</li>
+<li>量化派：依赖更规则化、模型化的方式参与。</li>
+</ul>
+<p>从脑图的标记看，你目前相对更倾向于前面几个更贴近启动与确认阶段的派别。后续完全可以把这部分展开成“不同派别适合什么市场、什么龙头、什么性格、什么仓位”的专题章节。</p>
+</section>
+<section class="chapter" id="section-10">
+<h2><span class="heading-index">10</span><span>第九部分：案例篇 · 浙江建投</span></h2>
+<p>这一节把桌面上的《浙江建投案例拆解》并回《龙头信仰》的主文里。原因很简单：浙江建投不是一个孤立的妖股故事，而是你这套龙头体系里很多核心判断的真实样本。它能够把“定龙”“分歧转一致”“反复做龙头”“什么时候彻底走弱”这些原则，从抽象方法变成具体节奏。</p>
+<p>更完整的图文版拆解，仍然保留在桌面原文件《浙江建投案例拆解.html》中；这里放进主文的，是更适合服务整套“龙头信仰”体系的浓缩案例版。</p>
+<h3 class="subheading">一、这个案例最值得留下的总纲</h3>
+<p>浙江建投这个案例最重要的，不是告诉我们“龙头能涨多高”，而是告诉我们：龙头不是先涨停的那只，而是在高位分歧里，市场一次次仍然选择它的那只。</p>
+<p>把它放进《龙头信仰》里，至少有四个原因：</p>
+<ul>
+<li>它完整展示了“分歧之后仍有承接、仍能弱转强”的定龙逻辑。</li>
+<li>它同时包含两段不同性质的主升，适合拆开研究，而不是笼统说成一只妖股。</li>
+<li>它天然适合验证你的“锁仓、做T、退出”三段切换。</li>
+<li>它把“彻底走弱”从模糊感觉，变成了可以回看的节奏破坏信号。</li>
+</ul>
+<p>如果把这个案例压缩成一句最重要的话，那就是：</p>
+<ul>
+<li>龙头的本质，不是先涨停，而是在一众高位票里，市场一次次还是选择它。</li>
+</ul>
+<h3 class="subheading">二、浙江建投为什么能够成为龙头</h3>
+<p>从案例拆解里提炼，浙江建投之所以能走出来，不只是因为题材热，而是因为它在几个关键层面不断完成了龙头确认：</p>
+<ul>
+<li>环境层面：它所处的阶段，市场仍然愿意容纳高辨识度高标。</li>
+<li>情绪层面：连板高度还在，情绪没有被新方向快速替代。</li>
+<li>个股层面：高位里真正被反复验证的，是它的辨识度、承接、换手和再转强能力。</li>
+<li>节奏层面：不是一路无脑加速，而是在分歧后还能重新转强。</li>
+</ul>
+<p>这和你前面总结出的定龙信号高度一致：</p>
+<ul>
+<li>分歧之后总是能承接住，总是能够弱转强。</li>
+<li>整体题材能够与大盘指数、市场情绪形成共振。</li>
+<li>新题材卡位不严重，原有题材本身够大、够强，且资金认可度非常高。</li>
+</ul>
+<h3 class="subheading">三、第一波主升：真正的核心不是板数，而是反复承接</h3>
+<p>浙江建投第一波最有价值的地方，不是它后来打到了高板，而是它在中段连续把分歧重新转回一致。也就是说，真正完成“定龙”的，不是结果，而是过程中一次次被市场重新接住。</p>
+<h4 class="minor-heading">第一波节奏总览</h4>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>性质</th><th>关键信号</th><th>执行含义</th></tr></thead><tbody><tr><td>二板</td><td>买点</td><td>开盘强势，直接走强</td><td>这是最早确认它具备前排核心气质的节点，可以纳入核心观察与参与名单。</td></tr><tr><td>四板</td><td>先卖后看</td><td>盘中冲高回落，但尾盘重新转强</td><td>说明它开始有真正分歧，盘中先做风险处理，尾盘弱转强又给出重新确认。</td></tr><tr><td>五板</td><td>买点</td><td>开盘大分歧，随后水上均线承接、再度转强</td><td>这是非常典型的龙头买点，不是一致追板，而是分歧后的再次选择。</td></tr><tr><td>七板</td><td>卖点预警</td><td>断板下杀，分歧剧烈</td><td>这里首先要尊重风险，不要把炸板自动理解成强换手。</td></tr><tr><td>八板</td><td>超预期买点</td><td>前一日大分歧后，次日高开再上板</td><td>真正值得做的是“炸过之后还能再强”，而不是单纯去赌炸板本身。</td></tr><tr><td>十一板</td><td>终极卖点</td><td>碰监管、爆量、大烂板、炸板</td><td>高度、监管、爆量、烂板叠在一起时，已经进入高危兑现区。</td></tr></tbody></table></div>
+<h4 class="minor-heading">第一波真正验证了什么</h4>
+<p>第一波最能验证你体系的地方，在于四板和五板这类节点。它们不是“因为已经很高所以不能看”，反而是因为高位分歧后仍能被承接住，所以龙性被进一步确认。</p>
+<p>这也正好印证了你前面的两句核心：</p>
+<ul>
+<li>通过高来发现强，这个是本质。</li>
+<li>无高，则无龙性；无低，则无利润。</li>
+</ul>
+<p>也就是说，第一波真正的价值不在于“它连了多少板”，而在于它让你看见：龙头真正的确认，常常发生在分歧后重新转强的那一刻。</p>
+<h3 class="subheading">四、第二波主升：平台后再起一波，关键在重新给出超预期</h3>
+<p>浙江建投第二波并不是简单的情绪延续，而更像是平台后的重新起势。它和第一波的不同在于：</p>
+<ul>
+<li>第一波更像高位里不断完成分歧转一致。</li>
+<li>第二波更像平台突破后，先洗筹，再给超预期转强，再加速，最后结束。</li>
+</ul>
+<h4 class="minor-heading">第二波节奏总览</h4>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>性质</th><th>关键信号</th><th>执行含义</th></tr></thead><tbody><tr><td>二板</td><td>观察</td><td>断板大烂板，先把分歧做出来</td><td>这一天本身不是直接追的节点，而是看它是否值得等次日反包。</td></tr><tr><td>三板</td><td>买点</td><td>二板大分歧后，三板反包强势上板</td><td>这是第二波最明确的参与点，属于典型的“分歧后的再次选择”。</td></tr><tr><td>七板</td><td>卖点</td><td>放量收阴线十字星</td><td>这是很成熟的主升尾声离场点，不必非等跌停才承认走弱。</td></tr></tbody></table></div>
+<h4 class="minor-heading">第二波为什么重要</h4>
+<p>第二波特别适合拿来验证你的卖点体系，因为它后半段加速很漂亮，但真正结束时，并不是简单地“一根大阴线宣告结束”，而是先用爆量分歧消耗强势，再连续低于预期，最终确认“彻底走弱，再彻底出局”。</p>
+<p>这和你现在的退出红线是完全一致的：</p>
+<ul>
+<li>爆量长上影</li>
+<li>爆量十字星</li>
+<li>高位封死跌停</li>
+<li>破十日趋势线</li>
+</ul>
+<p>尤其是第二波七板的放量阴线十字星，非常适合写进《龙头信仰》里，作为“不是跌停才叫卖点”的案例注脚。</p>
+<h3 class="subheading">五、这个案例如何验证你的做T与持股逻辑</h3>
+<p>浙江建投这个案例还有一个很重要的价值，就是它天然适合解释“什么时候锁仓，什么时候做T，什么时候只剩卖点思维”。</p>
+<p>可以把它压缩成三种模式：</p>
+<h4 class="minor-heading">1. 一致加速段</h4>
+<ul>
+<li>分歧很小</li>
+<li>持续加速</li>
+<li>封板质量高</li>
+<li>盘中没有明显漏单</li>
+</ul>
+<p>这种阶段更适合锁仓，不适合为了小波动乱做T。</p>
+<h4 class="minor-heading">2. 分歧震荡段</h4>
+<ul>
+<li>每个板都有分歧</li>
+<li>但最后还能重新封住</li>
+<li>龙头地位没有被破坏</li>
+</ul>
+<p>这种阶段最适合围绕同一只龙头做T。做T的目的不是炫技，而是降成本、提容错、避免被震下车。</p>
+<p>这正好对应你已经明确的做T规则：</p>
+<ul>
+<li>冲高无上板就先抛出去</li>
+<li>震荡有承接之后再慢慢分批吸回来</li>
+<li>失败没什么，承受</li>
+</ul>
+<h4 class="minor-heading">3. 结构破坏段</h4>
+<ul>
+<li>连续两天爆量炸板</li>
+<li>分歧后再也转不强</li>
+<li>后续连续低于预期</li>
+</ul>
+<p>到了这里，主逻辑已经不再是“如何持有”，而是“如何退出”。</p>
+<p>这就是你那句核心原则真正落地的地方：</p>
+<ul>
+<li>只要龙头没有彻底出局，那就反复在上面做。</li>
+<li>直到彻底走弱，再走。</li>
+</ul>
+<p>浙江建投这个案例之所以重要，就是因为它把这句话走完整了。它既证明了龙头可以反复做，也证明了龙头一旦出现结构性破坏，就必须承认结束。</p>
+<h3 class="subheading">六、浙江建投案例最后沉淀出的三条案例法则</h3>
+<p>如果只从浙江建投这一例里，提三条最值得写回《龙头信仰》的案例法则，我会保留下面这三条：</p>
+<ol>
+<li>龙头不是在最一致的时候最好买，而是在分歧之后还能被继续选择的时候最好买。</li>
+<li>炸板不是结论，炸板之后能不能超预期转强，才是结论。</li>
+<li>龙头不是不能分歧，而是分歧之后必须还能转强；一旦连续低于预期，就要从持股思维切到退出思维。</li>
+</ol>
+<h3 class="subheading">七、这个案例在《龙头信仰》里的位置</h3>
+<p>把浙江建投放进这份文档，不是为了增加一个“经典股票故事”，而是为了让整套方法论第一次有一个真正能落地的标本。</p>
+<p>它至少帮这份文档完成了三件事：</p>
+<ul>
+<li>给“定龙”提供了真实样本。</li>
+<li>给“买点大于卖点”提供了具体节点。</li>
+<li>给“反复做龙头，直到彻底走弱再走”提供了完整节奏验证。</li>
+</ul>
+<p>所以，浙江建投适合作为《龙头信仰》里第一个正式案例。后面如果继续扩充案例篇，它也可以作为“分歧转一致型龙头”的代表样本，去对照别的龙头、假龙头和失败案例。</p>
+</section>
+<section class="chapter chapter-draft" id="section-11">
+<h2><span class="heading-index">11</span><span>第十部分：当前最值得继续补强的内容</span></h2>
+<p>这份文档已经把骨架搭出来了，但如果要继续写成一套成熟的方法论，下面这些地方最值得优先补强：</p>
+<ol>
+<li>“定龙”的明确定义和操作标准。</li>
+<li>“风控”的具体规则，包括止损、止盈、仓位、回撤控制、监管应对。</li>
+<li>“买点大于卖点”在实战中的节点划分。</li>
+<li>三类龙头的适用环境、确认方式和持有逻辑。</li>
+<li>“真善美龙头”“清澈干净的龙头”“有承载性的龙头”的可执行定义。</li>
+<li>“高位置/低位置”的实战判定标准。</li>
+<li>二板定龙头、节点买入、真假辨别等部分的代表案例。</li>
+<li>自我修行如何落到每日复盘、盘中纪律和交易清单上。</li>
+<li>各派别之间的边界、适配周期与优劣势比较。</li>
+<li>从脑图到完整书稿时，需要补充的案例图、时间轴、情绪周期图和买卖点示意图。</li>
+</ol>
+</section>
+<section class="chapter chapter-draft" id="section-12">
+<h2><span class="heading-index">12</span><span>第十一部分：接下来我建议你优先补充回答的问题</span></h2>
+<p>为了把这份初稿继续写厚、写透，下面这些问题最值得你先回答。你可以一条一条答，我再继续帮你往文档里补。</p>
+<h3 class="subheading">1. 你说的“定龙”，到底用什么标准来定？</h3>
+<p>请你尽量明确：</p>
+<ul>
+<li>你最看重的 3 到 5 个信号是什么？</li>
+<li>是先看题材，还是先看个股？</li>
+<li>二板定龙头在你体系里是不是核心规则？</li>
+</ul>
+<h3 class="subheading">2. 你的风控规则具体是什么？</h3>
+<p>例如：</p>
+<ul>
+<li>单笔最大亏损容忍多少？</li>
+<li>仓位怎么分配？</li>
+<li>什么情况下直接止损？</li>
+<li>什么情况下允许格局？</li>
+<li>遇到监管、龙头杀、题材证伪时如何处理？</li>
+</ul>
+<h3 class="subheading">3. “买点大于卖点”这句话，你最想表达什么？</h3>
+<p>请你进一步拆开：</p>
+<ul>
+<li>你最认可的买点类型有哪些？</li>
+<li>首板、二板、分歧转一致、回封、半路、首阴低吸，优先级怎么排？</li>
+<li>卖点你是更重视情绪、结构，还是量价、分时？</li>
+</ul>
+<h3 class="subheading">4. 你怎么区分“真龙头”和“假龙头”？</h3>
+<p>尤其请你补充：</p>
+<ul>
+<li>你判断“真”的最核心证据是什么？</li>
+<li>是现实龙头映射更重要，还是盘面资金选择更重要？</li>
+<li>你能不能举 3 到 5 个你最认可的真假龙头案例？</li>
+</ul>
+<h3 class="subheading">5. 你怎么定义“高位置”和“低位置”？</h3>
+<p>请你尽量说细一点：</p>
+<ul>
+<li>是按板数？</li>
+<li>按涨幅？</li>
+<li>按估值空间？</li>
+<li>按题材所处阶段？</li>
+<li>按情绪周期？</li>
+</ul>
+<h3 class="subheading">6. 你提到的“真善美龙头”“清澈干净的龙头”“有承载性的龙头”，分别怎么定义？</h3>
+<p>这几个词非常有你的个人风格，也是这份文档未来最容易形成辨识度的地方，值得重点展开。</p>
+<h3 class="subheading">7. 你最想写进这份文档的经典案例有哪些？</h3>
+<p>建议你至少先给我：</p>
+<ul>
+<li>3 个你最认可的成功案例</li>
+<li>3 个典型失败案例</li>
+<li>3 个“看起来像龙头但其实不是”的案例</li>
+</ul>
+<h3 class="subheading">8. “严肃”“观我”“香象渡河，定龙即买”这几个词，你希望怎么展开？</h3>
+<p>这几个词都有很强的个人体系意味，写开之后，这份文档会从“方法总结”升级成“完整的交易哲学”。</p>
+</section>
+<section class="chapter chapter-draft" id="section-13">
+<h2><span class="heading-index">13</span><span>第十二部分：基于当前补充的下一轮待细化问题</span></h2>
+<p>你这一轮补充之后，文档已经把“强承接”“共振指标”“高位卖点”“彻底出局”的骨架都搭出来了。接下来最值得继续补的，是把这套规则继续从“经验性表达”推进到“更少歧义的执行表达”。</p>
+<h3 class="subheading">1. 你最不喜欢哪种“假承接”？</h3>
+<p>现在“强承接”的特征已经比较清楚了，下一步最值得补的就是反面：</p>
+<ul>
+<li>什么样的拉回看起来像承接，其实是假承接？</li>
+<li>哪种分时最容易骗你上车？</li>
+<li>哪种回封你会直接判定成弱？</li>
+</ul>
+<h3 class="subheading">2. “共振”里，什么情况最容易骗线？</h3>
+<p>你已经明确最看重 <code>涨停家数 / 连板高度 / 成交额 / 核按钮 / 红盘家数</code>。接下来可以继续补：</p>
+<ul>
+<li>哪些指标看起来不错，但其实是虚强？</li>
+<li>哪种情况下你会判断“个股强，但题材不值得重仓”？</li>
+<li>哪种情况下你会判断“情绪高潮了，虽然强，但不适合追了”？</li>
+</ul>
+<h3 class="subheading">3. “爆量”你准备怎么定义？</h3>
+<p>当前卖点已经很明确了，但“爆量”仍然可以再细一点。后面如果补上，会让整套体系更容易执行：</p>
+<ul>
+<li>是相对前 <code>3</code> 日均量？</li>
+<li>还是相对前 <code>5</code> 日、前 <code>10</code> 日均量？</li>
+<li>有没有你自己的经验阈值？</li>
+</ul>
+<h3 class="subheading">4. “回吐利润超过 10%”怎么执行？</h3>
+<p>这一条已经很有用了，后面可以继续补成更细的规则：</p>
+<ul>
+<li>是从浮盈最高点回撤 <code>10%</code> 算，还是从某一笔成本算？</li>
+<li>龙头加仓后，这条规则如何重算？</li>
+<li>如果题材仍然很强，但单票已经回吐超 <code>10%</code>，你是先减仓还是全走？</li>
+</ul>
+<h3 class="subheading">5. “股性良好”以后可以单独写一节</h3>
+<p>现在“试过盘”和“横盘够久”已经开始落地了，但“股性良好”还是一个非常有经验味道的词。以后完全可以单独写成一小节，专门回答：</p>
+<ul>
+<li>什么是好股性？</li>
+<li>什么是坏股性？</li>
+<li>什么股票看着强，但股性其实不好？</li>
+</ul>
+<h3 class="subheading">6. 案例现在仍然可以先空着</h3>
+<p>案例部分不着急。等你后面想到名字，哪怕只是零散列几个股票名、题材名、时间段，我们都可以再单独整理成“案例篇”。</p>
+</section>
+<section class="chapter" id="section-14">
+<h2><span class="heading-index">14</span><span>结语</span></h2>
+<p>龙头战法，从来不是一套只研究强势股的技巧，而是一套关于市场选择、价值判断、位置拿捏、纪律执行和自我修行的综合体系。它既要你相信强者恒强，也要你承认物极必反；既要你敢于在关键时刻上车，也要你能在错误时无情离场；既要你懂市场，也要你管住自己。</p>
+<p>这份初稿的意义，在于先把你的脑图翻译成一份“可继续写下去的文档”。后面只要你继续补充自己的定义、案例、规则和语感，我们就可以一步一步把它扩展成一份真正成体系、成风格、成方法论的完整文稿。</p>
+</section>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>这是一份持续迭代的网页阅读版。后续只要继续补 Markdown 内容，就可以重新生成新的页面版本。</p>
+  </footer>
+
+  <button class="backtop" id="backtop" type="button">回到顶部</button>
+
+  <script>
+    const progress = document.getElementById("progress");
+    const backtop = document.getElementById("backtop");
+    const sections = Array.from(document.querySelectorAll(".chapter[id]"));
+    const links = Array.from(document.querySelectorAll(".toc a"));
+    const linkMap = new Map(links.map((link) => [link.getAttribute("href").slice(1), link]));
+
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+    }
+
+    function updateToc() {
+      const threshold = window.scrollY + 160;
+      let currentId = sections.length ? sections[0].id : null;
+
+      for (const section of sections) {
+        if (section.offsetTop <= threshold) {
+          currentId = section.id;
+        }
+      }
+
+      links.forEach((link) => {
+        const active = link.getAttribute("href") === `#${currentId}`;
+        link.classList.toggle("active", active);
+      });
+    }
+
+    function updateBacktop() {
+      backtop.classList.toggle("visible", window.scrollY > 720);
+    }
+
+    function onScroll() {
+      updateProgress();
+      updateToc();
+      updateBacktop();
+    }
+
+    backtop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    requestAnimationFrame(onScroll);
+  </script>
+</body>
+</html>

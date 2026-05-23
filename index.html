@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>有龙做龙，无龙接力｜超短线交易体系</title>
+  <meta name="description" content="有龙做龙，无龙接力超短线交易体系网页手册。以情绪周期为前提，区分龙头主升与低位1进2接力，并落实仓位、风控和复盘纪律。" />
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="返回顶部">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="img"><path d="M4 19V5m0 14h16M8 17v-5m4 5V8m4 9v-8m4 8v-3" /></svg>
+      </span>
+      <span>A股短线交易系统手册</span>
+    </a>
+    <div class="topbar-meta">
+      <span>版本 1.0</span>
+      <span>更新 2026-05-17</span>
+      <span>来源 Notion + 两套旧网页</span>
+    </div>
+  </header>
+
+  <div class="layout" id="top">
+    <aside class="sidebar" aria-label="页面目录">
+      <div class="toc-head">
+        <p>目录</p>
+        <span>先判断，再出手</span>
+      </div>
+      <nav class="toc">
+        <a class="toc-link is-active" href="#overview"><span>01</span>核心总览</a>
+        <a class="toc-link" href="#decision"><span>02</span>决策流程</a>
+        <a class="toc-link" href="#cycle"><span>03</span>情绪周期</a>
+        <a class="toc-link" href="#dragon"><span>04</span>有龙主升</a>
+        <a class="toc-link" href="#relay"><span>05</span>无龙接力</a>
+        <a class="toc-link" href="#risk"><span>06</span>风控纪律</a>
+        <a class="toc-link" href="#position"><span>07</span>仓位规则</a>
+        <a class="toc-link" href="#review"><span>08</span>复盘闭环</a>
+        <a class="toc-link" href="#appendix"><span>09</span>附录术语</a>
+      </nav>
+      <div class="sidebar-note">
+        <strong>一句话</strong>
+        <p>有龙只聚焦真龙，无龙只轻仓试错，退潮期空仓也是交易。</p>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero section" id="overview">
+        <div class="hero-copy">
+          <p class="label">核心总纲</p>
+          <h1>有龙做龙，<br />无龙接力</h1>
+          <p class="hero-lead">主线明朗做龙头，混沌无龙做低位接力，退潮空仓。</p>
+          <p class="hero-sub">全套体系只解决一个问题：在不同情绪周期里，用不同仓位做不同确定性，不把龙头主升、低位试错和退潮防守混在一起。</p>
+          <div class="hero-entry" aria-label="细分战法入口">
+            <p>两个具体战法入口</p>
+            <div class="hero-entry-actions">
+              <a class="entry-link entry-green" href="./战法1 - 龙头信仰/龙头信仰-阅读版.html" target="_blank" rel="noopener">
+                <span>
+                  <strong>战法1：龙头信仰</strong>
+                  <em>有龙主升期 · 定龙 / 买点 / 卖点</em>
+                </span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+              </a>
+              <a class="entry-link entry-teal" href="./战法2 - 低位接力/A股一进二战法手册网页版/index.html" target="_blank" rel="noopener">
+                <span>
+                  <strong>战法2：低位接力</strong>
+                  <em>无龙混沌期 · 1进2试错 / 退出</em>
+                </span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="今日三态判断">
+          <button class="state-card is-active" type="button" data-mode="dragon" aria-pressed="true">
+            <span class="state-icon state-green" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3v18m5-15H9.5a3.5 3.5 0 0 0 0 7H15a3.5 3.5 0 0 1 0 7H6" /></svg>
+            </span>
+            <strong>有龙</strong>
+            <span>主线明确 + 真龙出现</span>
+            <em>龙头主升</em>
+          </button>
+          <button class="state-card" type="button" data-mode="relay" aria-pressed="false">
+            <span class="state-icon state-teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 7h8a4 4 0 0 1 0 8H6m0 0 4-4m-4 4 4 4" /></svg>
+            </span>
+            <strong>无龙</strong>
+            <span>混沌试错 + 冰点回暖</span>
+            <em>低位1进2</em>
+          </button>
+          <button class="state-card" type="button" data-mode="defense" aria-pressed="false">
+            <span class="state-icon state-red" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z" /><path d="m9 9 6 6m0-6-6 6" /></svg>
+            </span>
+            <strong>退潮</strong>
+            <span>高潮次日 / 分歧退潮</span>
+            <em>空仓防守</em>
+          </button>
+        </div>
+      </section>
+
+      <section class="decision section" id="decision">
+        <div class="section-head">
+          <p class="label">今日选择哪个战法</p>
+          <h2>先过三道门，再谈买卖点</h2>
+          <p>每天只需要先回答三个问题：有没有真龙、处在哪个情绪阶段、明天是否有足够溢价。</p>
+        </div>
+
+        <div class="decision-grid">
+          <article class="decision-card tone-green">
+            <div class="card-title">
+              <span>01</span>
+              <h3>主线明确，真龙出现</h3>
+            </div>
+            <p>题材持续发酵，市场有公认高位人气总龙，资金聚焦，板块内梯队清晰。</p>
+            <ul class="check-list">
+              <li>五维定龙通过：第一性、市场性、领涨性、抗跌性、价值性。</li>
+              <li>竞价未过热，竞昨比低于30%，高开不超过纪律边界。</li>
+              <li>优先做弱转强次日，仓位向核心龙头集中。</li>
+            </ul>
+            <strong class="card-action">执行：有龙主升期</strong>
+          </article>
+
+          <article class="decision-card tone-teal">
+            <div class="card-title">
+              <span>02</span>
+              <h3>没有总龙，情绪回暖</h3>
+            </div>
+            <p>市场混沌，题材散乱，但连续冰点后出现新题材共振，或板块分歧后留下活口。</p>
+            <ul class="check-list">
+              <li>只做低位核心试错，单票1到2成，总持仓不超过3只。</li>
+              <li>优先竞价强度前三、量能在线、大长腿实体阳线。</li>
+              <li>不做杂毛补涨，不把低位试错误当龙头格局。</li>
+            </ul>
+            <strong class="card-action">执行：无龙低位1进2</strong>
+          </article>
+
+          <article class="decision-card tone-red">
+            <div class="card-title">
+              <span>03</span>
+              <h3>高潮次日或退潮信号</h3>
+            </div>
+            <p>板块一致高潮、竞价崩盘、涨停指数走弱、题材电风扇轮动，任何一个都足够让交易降速。</p>
+            <ul class="check-list">
+              <li>高潮次日不接力，只减仓、清仓，不新开仓。</li>
+              <li>分歧退潮期优先空仓，闲置资金可做逆回购。</li>
+              <li>周回撤触及-5%，总仓降至20%以下。</li>
+            </ul>
+            <strong class="card-action">执行：空仓防守</strong>
+          </article>
+        </div>
+
+        <div class="mode-panel" id="modePanel" aria-live="polite">
+          <div>
+            <span class="mode-tag">当前选中</span>
+            <h3>有龙：聚焦真龙，做主升浪</h3>
+          </div>
+          <p>只在主线明确、真龙已被市场选择时提高仓位。买点优先弱转强次日，卖点优先高位爆量、长上影、放量断板和封死跌停。</p>
+        </div>
+      </section>
+
+      <section class="section" id="cycle">
+        <div class="section-head">
+          <p class="label">交易前提</p>
+          <h2>情绪周期六阶段</h2>
+          <p>所有买点都必须服从周期。逆周期没有英雄主义，只有回撤。</p>
+        </div>
+
+        <ol class="cycle">
+          <li><span>1</span><strong>冰点</strong><em>亏钱效应极致，情绪最低点</em></li>
+          <li><span>2</span><strong>回暖</strong><em>低位试错资金回流</em></li>
+          <li><span>3</span><strong>发酵</strong><em>题材扩散，赚钱效应提升</em></li>
+          <li><span>4</span><strong>高潮</strong><em>一致看多，后续不接力</em></li>
+          <li><span>5</span><strong>分歧</strong><em>分歧加大，高低切换</em></li>
+          <li><span>6</span><strong>退潮</strong><em>资金撤退，空仓防守</em></li>
+        </ol>
+
+        <div class="compact-table">
+          <div class="table-row table-head">
+            <span>高潮日判定</span>
+            <span>满足2条以上即按高潮处理</span>
+          </div>
+          <div class="table-row">
+            <span>数量</span>
+            <span>主线板块涨停家数不少于8家，且以核心标的为主。</span>
+          </div>
+          <div class="table-row">
+            <span>量能</span>
+            <span>板块成交量较前日放量50%以上，占两市成交量不少于8%。</span>
+          </div>
+          <div class="table-row">
+            <span>人气</span>
+            <span>龙虎榜前20名中该板块占比不少于40%，资金认可度高。</span>
+          </div>
+          <div class="table-row">
+            <span>辅助</span>
+            <span>板块涨幅中位数不少于5%，炸板率不高于5%。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="systems section">
+        <div class="section-head">
+          <p class="label">两大战法</p>
+          <h2>同一套周期，两个不同动作</h2>
+          <p>龙头战法解决“确定性主升”，低位接力解决“无龙时的轻仓试错”。两者不交叉。</p>
+        </div>
+
+        <div class="strategy-columns">
+          <article class="strategy-card" id="dragon">
+            <div class="strategy-head green">
+              <span class="strategy-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m4 18 6-6 4 4 6-8" /><path d="M14 8h6v6" /></svg>
+              </span>
+              <div>
+                <p>有龙主升期</p>
+                <h3>中位龙头博弈</h3>
+              </div>
+            </div>
+
+            <dl class="rule-list">
+              <div>
+                <dt>适用环境</dt>
+                <dd>主线题材明确，题材持续发酵，市场走出公认高位人气总龙。</dd>
+              </div>
+              <div>
+                <dt>定龙标准</dt>
+                <dd>第一性、市场性、领涨性、抗跌性、价值性五维同时观察，杜绝伪龙头。</dd>
+              </div>
+              <div>
+                <dt>买点</dt>
+                <dd>左侧弱转强当日3到5成试错；右侧弱转强次日5到7成重点；加速期只小仓再加。</dd>
+              </div>
+              <div>
+                <dt>卖点</dt>
+                <dd>高位爆量长上影、放量十字星、放量断板大阴线、封死跌停，触发必走。</dd>
+              </div>
+            </dl>
+
+            <div class="detail-links">
+              <p>细分手册</p>
+              <a href="./战法1 - 龙头信仰/龙头信仰-阅读版.html" target="_blank" rel="noopener">
+                打开《龙头信仰》阅读版
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+              </a>
+              <a href="./战法1 - 龙头信仰/浙江建投案例拆解.html" target="_blank" rel="noopener">
+                查看浙江建投案例拆解
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="strategy-card" id="relay">
+            <div class="strategy-head teal">
+              <span class="strategy-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M7 7h10a4 4 0 0 1 0 8H5" /><path d="m8 12-3 3 3 3" /></svg>
+              </span>
+              <div>
+                <p>无龙混沌期</p>
+                <h3>低位1进2接力</h3>
+              </div>
+            </div>
+
+            <dl class="rule-list">
+              <div>
+                <dt>适用环境</dt>
+                <dd>市场无高位总龙，题材散乱，情绪反复震荡，处于混沌试错阶段。</dd>
+              </div>
+              <div>
+                <dt>允许场景</dt>
+                <dd>连续冰点后新题材共振、分歧活口反包、独立硬逻辑趋势股回踩。</dd>
+              </div>
+              <div>
+                <dt>进场标准</dt>
+                <dd>竞价强度前三、量能在线、首板大长腿实体阳线，且明日溢价概率足够高。</dd>
+              </div>
+              <div>
+                <dt>退出机制</dt>
+                <dd>次日水下低开直接走；高开下杀按+1%和+5%节点止盈；3板无条件清仓。</dd>
+              </div>
+            </dl>
+
+            <div class="detail-links">
+              <p>细分手册</p>
+              <a href="./战法2 - 低位接力/A股一进二战法手册网页版/index.html" target="_blank" rel="noopener">
+                打开《A股一进二战法手册》
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <div class="compare-wrap" aria-label="两大战法左右对照表">
+          <table class="compare-table mode-dragon" id="compareTable">
+            <thead>
+              <tr>
+                <th>维度</th>
+                <th>有龙主升期：中位龙头博弈</th>
+                <th>无龙混沌期：低位1进2接力</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>适用环境</td>
+                <td>主线题材明确，题材持续发酵，市场走出公认高位人气总龙。</td>
+                <td>市场无高位总龙，题材散乱，情绪反复震荡，处于混沌试错阶段。</td>
+              </tr>
+              <tr>
+                <td>入场条件</td>
+                <td>五维定龙成立；竞昨比低于30%；弱转强次日优先，高开过热则放弃。</td>
+                <td>只做三种允许场景；竞价强度前三；量能在线；大长腿实体阳线优先。</td>
+              </tr>
+              <tr>
+                <td>仓位建议</td>
+                <td>真龙单票5到7成，最多加仓2次，总仓不超过7成，专注一只核心。</td>
+                <td>单票1到2成，总持仓不超过3只，分散试错，不集中单一标的。</td>
+              </tr>
+              <tr>
+                <td>离场规则</td>
+                <td>高位爆量长上影、放量十字星、放量断板大阴线、封死跌停，触发必走。</td>
+                <td>次日水下低开直接走；2板无龙头属性减半；3板无条件清仓。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="risk">
+        <div class="section-head">
+          <p class="label red-label">不可逾越</p>
+          <h2>全局风控纪律</h2>
+          <p>这部分不用于讨论，只用于执行。触发条件就离场，不能用临盘情绪重新解释。</p>
+        </div>
+
+        <div class="risk-grid">
+          <article class="risk-item">
+            <span>止损</span>
+            <h3>普通标的≤-3%</h3>
+            <p>触及无条件离场。龙头可放宽至≤-4%，但必须结合分时承接，无承接不犹豫。</p>
+          </article>
+          <article class="risk-item">
+            <span>止盈</span>
+            <h3>低位5%到8%，龙头8%到12%</h3>
+            <p>低位接力不恋战，龙头可适度格局，但必须随强弱变化抬升保护线。</p>
+          </article>
+          <article class="risk-item">
+            <span>回撤</span>
+            <h3>单周总回撤≤-5%</h3>
+            <p>触及后仓位降至20%以下，停止新交易，先复盘再恢复。</p>
+          </article>
+          <article class="risk-item">
+            <span>禁忌</span>
+            <h3>不做三无杂毛</h3>
+            <p>无题材、无人气、无资金关注的标的直接剔除；退潮期不强行博弈。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="position">
+        <div class="section-head">
+          <p class="label">风险核心</p>
+          <h2>仓位规则一张表</h2>
+          <p>仓位不是胆量，是市场确定性的函数。越不确定，越要让仓位说话。</p>
+        </div>
+
+        <div class="matrix">
+          <div class="matrix-row matrix-head">
+            <span>场景</span>
+            <span>总仓位</span>
+            <span>单票</span>
+            <span>动作</span>
+          </div>
+          <div class="matrix-row">
+            <span>常态</span>
+            <span>60%到80%</span>
+            <span>保留20%备用</span>
+            <span>不满仓，不单票赌行情。</span>
+          </div>
+          <div class="matrix-row">
+            <span>有龙</span>
+            <span>向龙头集中</span>
+            <span>真龙5到7成</span>
+            <span>缩减低位接力，专注核心。</span>
+          </div>
+          <div class="matrix-row">
+            <span>无龙</span>
+            <span>轻仓试错</span>
+            <span>1到2成</span>
+            <span>不超过3只，分散失败风险。</span>
+          </div>
+          <div class="matrix-row">
+            <span>退潮</span>
+            <span>0到20%</span>
+            <span>原则空仓</span>
+            <span>不合格机会直接放弃。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="review">
+        <div class="section-head">
+          <p class="label">闭环</p>
+          <h2>复盘体系：做一天，看四天</h2>
+          <p>每一笔交易前，先回顾前日、昨日，研判今日，预判明日。明日溢价不足70%，直接放弃。</p>
+        </div>
+
+        <div class="review-flow">
+          <article>
+            <span>盘后 2.5h</span>
+            <h3>深度复盘</h3>
+            <p>大盘量能、市场情绪、题材强弱、个股梯队，按固定顺序梳理。</p>
+          </article>
+          <article>
+            <span>盘前 1h</span>
+            <h3>交易计划</h3>
+            <p>锁定主线和优先级，写好标的、仓位、买点、止损和止盈。</p>
+          </article>
+          <article>
+            <span>盘中 1.5h</span>
+            <h3>执行观察</h3>
+            <p>早盘抓竞价和开盘情绪，尾盘确认次日思路并调整仓位。</p>
+          </article>
+          <article>
+            <span>每周</span>
+            <h3>交割单复盘</h3>
+            <p>逐笔核对盈利逻辑和亏损原因，修正仓位、预判和纪律漏洞。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section appendix" id="appendix">
+        <div class="section-head">
+          <p class="label">附录</p>
+          <h2>术语与版本取舍</h2>
+          <p>首版只保留会影响交易决策的定义，后续可以继续补案例和图表。</p>
+        </div>
+
+        <div class="details-grid">
+          <details open>
+            <summary>为什么旧版“补涨优先”被收束？</summary>
+            <p>新版总纲明确“摒弃补涨套利”。因此本页将旧版一进二里的补涨内容收束为无龙期的低位核心试错，只做主线前排、活口反包和硬逻辑趋势，不做跟风杂毛。</p>
+          </details>
+          <details>
+            <summary>竞昨比≥30%怎么处理？</summary>
+            <p>直接放弃。竞价资金分歧过大，容易开盘吃面。个股高开超过7%，若没有板块高潮加速预期，也不参与。</p>
+          </details>
+          <details>
+            <summary>三种无龙期出手场景</summary>
+            <p>连续冰点后新题材共振、板块分歧活口反包、独立硬逻辑趋势股缩量回踩关键均线。除此之外默认空仓。</p>
+          </details>
+          <details>
+            <summary>最终底线</summary>
+            <p>严格区分两大战法的使用场景，有龙做龙，无龙接力，互不混淆、不交叉操作。一切操作优先保护本金，稳定复利大于短期暴利。</p>
+          </details>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>免责声明：本页面仅用于个人交易体系整理与复盘记录，不构成任何投资建议。市场有风险，交易需谨慎。</p>
+        <p>坚持纪律 · 持续进化 · 长期生存</p>
+      </footer>
+    </main>
+  </div>
+
+  <button class="backtop" id="backtop" type="button" aria-label="回到顶部">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6" /></svg>
+  </button>
+
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>

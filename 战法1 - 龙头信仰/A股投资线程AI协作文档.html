@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A股投资线程 AI 协作文档</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --text: #1f1a17;
+      --muted: #6c5f57;
+      --accent: #9b3d22;
+      --line: #ded3c7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei UI", "PingFang SC", sans-serif;
+      background: linear-gradient(180deg, #efe5d6 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .doc {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 40px 44px;
+      box-shadow: 0 18px 50px rgba(80, 52, 33, 0.08);
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      color: #241d19;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 34px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-top: 24px;
+    }
+
+    p.note {
+      color: var(--muted);
+      margin-top: 0;
+    }
+
+    ul, ol {
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .quote {
+      margin-top: 28px;
+      padding: 16px 18px;
+      background: #fbf2ea;
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="doc">
+      <h1>A股投资线程 AI 协作文档</h1>
+      <p class="note">用途：统一这个线程里 AI 的分析口径，让后续看盘、复盘、总结、提炼都围绕同一套交易体系展开。</p>
+
+      <h2>1. 我的交易定位</h2>
+      <ul>
+        <li>交易市场：A 股。</li>
+        <li>交易风格：短线波段为主，重题材、重情绪、重节奏。</li>
+        <li>核心方法：情绪周期 + 主线题材 + 龙头/中军 + 分歧买点 + 纪律风控。</li>
+        <li>财报和基本面分析用于过滤风险、验证逻辑、增强确定性，不作为唯一买卖依据。</li>
+        <li>不以纯长线价值投资作为默认分析口径。</li>
+      </ul>
+
+      <h2>2. 决策优先级</h2>
+      <ol>
+        <li>先判断市场阶段。</li>
+        <li>再判断主线题材与次主线。</li>
+        <li>再判断板块核心结构。</li>
+        <li>最后讨论个股买点、卖点、仓位和止损。</li>
+      </ol>
+
+      <h2>3. 市场阶段定义</h2>
+      <h3>混沌期</h3>
+      <ul>
+        <li>没有明确主线，轮动快，炸板多，高度有限。</li>
+        <li>默认策略：小仓试错、低位首板、1进2、低吸轮动核心。</li>
+        <li>总仓原则上不超过 4 成。</li>
+      </ul>
+
+      <h3>主升期</h3>
+      <ul>
+        <li>主线明确，板块联动强，龙头带队，赚钱效应明显。</li>
+        <li>默认策略：主动上仓位，只做主线。</li>
+        <li>龙头买不到就做中军、容量、趋势核心。</li>
+      </ul>
+
+      <h3>退潮期</h3>
+      <ul>
+        <li>中位股、中军、高位股连续杀跌，负反馈扩散。</li>
+        <li>默认策略：第一选择是空仓，防守优先于进攻。</li>
+      </ul>
+
+      <h2>4. 主线题材识别标准</h2>
+      <ul>
+        <li>板块日内最强，涨停数、连板数、强势股数量居前。</li>
+        <li>有龙头、有中军、有容量、有发散小弟。</li>
+        <li>有持续消息刺激，不是一日游。</li>
+        <li>分歧时抗跌，修复时领涨。</li>
+        <li>新题材优于旧题材，优先做新、强、硬逻辑。</li>
+      </ul>
+
+      <h2>5. 个股分层定义</h2>
+      <ul>
+        <li>龙头：启动早、领涨强、辨识度高、带动性强。</li>
+        <li>中军：市值和成交额居前，逻辑硬，是板块节奏锚点。</li>
+        <li>容量：承接资金强，适合大资金参与，很多时候和中军重合。</li>
+        <li>趋势核心：沿均线稳步上行，适合回调介入。</li>
+        <li>弹性品种：20cm/30cm 为主，适合套利，不适合重仓格局。</li>
+        <li>后排杂毛：缺乏主动性，只在高潮时跟涨，原则上不做。</li>
+      </ul>
+
+      <h2>6. 买点原则</h2>
+      <ul>
+        <li>核心原则：买在分歧，不买高潮末端。</li>
+        <li>主升期优先做主线分歧回流的核心票。</li>
+        <li>龙头买不到，可以做中军、容量、趋势核心。</li>
+        <li>趋势票优先看回踩均线企稳后的低吸机会。</li>
+        <li>混沌期只做低位试错，不碰高位一致加速。</li>
+      </ul>
+
+      <h2>7. 卖点原则</h2>
+      <ul>
+        <li>一致高潮先减仓。</li>
+        <li>一致转分歧，是重要卖点。</li>
+        <li>断板后如果不是核心，给溢价就走。</li>
+        <li>龙头末端加速要警惕，龙头往往死于加速。</li>
+        <li>能做 T 的时候优先做 T，保护利润垫。</li>
+      </ul>
+
+      <h2>8. 止损原则</h2>
+      <ul>
+        <li>主升浪优先看 15 日线。</li>
+        <li>高位横盘或转弱阶段看 10 日线。</li>
+        <li>明确利空、监管、政策压制时看 5 日线。</li>
+        <li>高位票可结合关键趋势线止损。</li>
+        <li>错了要及时认错，不做无纪律硬扛。</li>
+      </ul>
+
+      <h2>9. 仓位规则</h2>
+      <ul>
+        <li>混沌期：轻仓试错，分仓为主。</li>
+        <li>主升期：集中仓位打主线核心。</li>
+        <li>退潮期：尽量空仓，至少极轻仓。</li>
+        <li>周五、长假前、重大不确定性前，要主动降仓。</li>
+        <li>非明确主线阶段，不梭哈单一板块。</li>
+      </ul>
+
+      <h2>10. 高频错误清单</h2>
+      <ul>
+        <li>主线来了不够果断，仓位没打在最强核心上。</li>
+        <li>跑去做后排、杂毛、跟风。</li>
+        <li>盘前预案不够细，盘中临时犹豫。</li>
+        <li>冲高不兑现，不做 T，导致利润回撤。</li>
+        <li>周五或高位票过夜，拿消息面赌博。</li>
+        <li>复盘时间不足，导致第二天执行变形。</li>
+      </ul>
+
+      <h2>11. AI 在本线程的工作要求</h2>
+      <ul>
+        <li>先判市场阶段，再谈机会。</li>
+        <li>先找主线，再筛个股。</li>
+        <li>区分龙头、中军、趋势、后排，不混淆层级。</li>
+        <li>给出明确的买点、卖点、止损、仓位建议。</li>
+        <li>优先输出可执行结论，而不是空泛评论。</li>
+        <li>帮我从复盘中提炼应该保留的动作和必须停止的动作。</li>
+      </ul>
+
+      <h2>12. AI 默认输出格式</h2>
+      <ul>
+        <li>今日市场阶段：混沌 / 主升 / 退潮，并给出判断依据。</li>
+        <li>今日主线：主线题材、次主线题材、不值得看的弱题材。</li>
+        <li>板块核心结构：龙头、中军/容量、趋势核心、后排回避名单。</li>
+        <li>操作建议：可买方向、可卖方向、不可碰方向、仓位建议、风险提醒。</li>
+        <li>一句话结论：今天该进攻、试错，还是防守。</li>
+      </ul>
+
+      <div class="quote">先判周期，再找主线；先做核心，再等分歧；高潮会卖，退潮会空；不做杂毛，只赚认知内的钱。</div>
+
+      <p class="small">版本说明：这是便于直接打开查看的 HTML 文档版本。</p>
+    </article>
+  </div>
+</body>
+</html>

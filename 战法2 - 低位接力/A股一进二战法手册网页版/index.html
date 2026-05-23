@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A股一进二战法手册网页版</title>
+  <style>
+    :root {
+      --bg: #07070b;
+      --panel: rgba(16, 17, 22, 0.84);
+      --panel-strong: rgba(23, 24, 30, 0.94);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #f5f6fa;
+      --muted: #a8acb8;
+      --red: #e52836;
+      --red-deep: #7f1822;
+      --gold: #d5b157;
+      --green: #4dbc7d;
+      --gray: #868a95;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Bahnschrift", "Segoe UI Variable", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(229, 40, 54, 0.18), transparent 0 24%),
+        radial-gradient(circle at 88% 14%, rgba(213, 177, 87, 0.12), transparent 0 22%),
+        linear-gradient(180deg, #090a0f 0%, #06070a 36%, #09090d 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, black 42%, transparent 100%);
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      z-index: 99;
+      box-shadow: 0 0 18px rgba(229, 40, 54, 0.8);
+    }
+
+    .hero {
+      position: relative;
+      padding: 76px 24px 36px;
+    }
+
+    .hero-shell {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .article,
+    .toc {
+      background: linear-gradient(180deg, rgba(18, 19, 25, 0.92), rgba(10, 11, 16, 0.94));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      position: relative;
+      padding: 38px 34px 34px;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      right: -140px;
+      top: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(229, 40, 54, 0.35) 0, rgba(229, 40, 54, 0) 70%);
+      filter: blur(10px);
+    }
+
+    .manual-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(229, 40, 54, 0.12);
+      color: #ffd5d9;
+      border: 1px solid rgba(229, 40, 54, 0.28);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero-main h1 {
+      margin: 18px 0 10px;
+      font-size: clamp(34px, 5vw, 68px);
+      line-height: 1.02;
+      max-width: 12ch;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-main p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .hero-lead {
+      max-width: 64ch;
+      margin-top: 14px !important;
+    }
+
+    .hero-quote {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border-radius: 22px;
+      border: 1px solid rgba(213, 177, 87, 0.24);
+      background: linear-gradient(135deg, rgba(213, 177, 87, 0.12), rgba(229, 40, 54, 0.08));
+      color: #fff8eb !important;
+      font-size: 18px !important;
+      font-weight: 700;
+    }
+
+    .hero-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .hero-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f7d6d9;
+      font-size: 14px;
+    }
+
+    .hero-side {
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: space-between;
+    }
+
+    .side-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #f0c5ca;
+      margin: 0 0 4px;
+    }
+
+    .side-block {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .side-block:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .side-block h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .side-block p,
+    .side-block li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .side-block ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .page-shell {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 26px;
+      padding: 24px 20px 22px;
+    }
+
+    .toc h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .toc p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .toc ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .toc a {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.02);
+      transition: transform 180ms ease, border-color 180ms ease, color 180ms ease, background 180ms ease;
+    }
+
+    .toc a span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(229, 40, 54, 0.12);
+      color: #ffdde0;
+      font-weight: 700;
+    }
+
+    .toc a:hover,
+    .toc a.active {
+      transform: translateX(3px);
+      background: rgba(229, 40, 54, 0.08);
+      border-color: rgba(229, 40, 54, 0.2);
+      color: var(--text);
+    }
+
+    .article {
+      padding: 28px;
+      display: grid;
+      gap: 24px;
+    }
+
+    section {
+      position: relative;
+      padding: 28px;
+      border-radius: 26px;
+      background:
+        linear-gradient(180deg, rgba(22,23,29,0.9), rgba(10,11,16,0.92)),
+        linear-gradient(135deg, rgba(229,40,54,0.08), transparent 40%);
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--gold), transparent);
+      opacity: 0.9;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      color: #f0c4ca;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .manual-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+    }
+
+    .pill-red {
+      background: rgba(229,40,54,0.12);
+      border-color: rgba(229,40,54,0.24);
+      color: #ffdadd;
+    }
+
+    .pill-gold {
+      background: rgba(213,177,87,0.12);
+      border-color: rgba(213,177,87,0.24);
+      color: #f7e7c0;
+    }
+
+    .pill-green {
+      background: rgba(76,188,125,0.12);
+      border-color: rgba(76,188,125,0.24);
+      color: #d6ffe7;
+    }
+
+    .pill-gray {
+      background: rgba(134,138,149,0.12);
+      border-color: rgba(134,138,149,0.24);
+      color: #e6e8ee;
+    }
+
+    .section-lead {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+      max-width: 70ch;
+    }
+
+    .highlight-bar {
+      margin: 0 0 24px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, rgba(229,40,54,0.16), rgba(229,40,54,0.06));
+      border: 1px solid rgba(229,40,54,0.18);
+      color: #fff5f6;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .manual-card {
+      position: relative;
+      min-height: 100%;
+      padding: 22px 20px 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(27,29,36,0.92), rgba(13,14,19,0.96));
+      overflow: hidden;
+    }
+
+    .card-glow {
+      position: absolute;
+      inset: -40px auto auto -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      filter: blur(26px);
+      opacity: 0.26;
+    }
+
+    .tone-red .card-glow { background: rgba(229,40,54,0.9); }
+    .tone-gold .card-glow { background: rgba(213,177,87,0.9); }
+    .tone-green .card-glow { background: rgba(76,188,125,0.9); }
+    .tone-gray .card-glow { background: rgba(134,138,149,0.9); }
+
+    .card-label {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 10px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #f7cfd4;
+    }
+
+    .manual-card h3 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 12px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .manual-card ul,
+    .manual-card ol {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .manual-card li {
+      margin: 0 0 8px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10, 11, 16, 0.72);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 780px;
+    }
+
+    th,
+    td {
+      padding: 15px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.7;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: rgba(126, 22, 32, 0.72);
+      color: #fff9fa;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    td {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .gallery-card {
+      margin: 0;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(16,17,22,0.72);
+    }
+
+    .gallery-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: #0b0c11;
+    }
+
+    .gallery-card figcaption {
+      padding: 12px 14px 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .timeline-step {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .timeline-step strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 26px;
+      color: #fff2e4;
+    }
+
+    details {
+      margin-top: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(12, 13, 18, 0.76);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 18px 20px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    details > div {
+      padding: 0 20px 20px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .footer {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      color: var(--muted);
+    }
+
+    .footer-box {
+      padding: 22px 24px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(15, 16, 21, 0.88);
+      box-shadow: var(--shadow);
+      line-height: 1.8;
+    }
+
+    .backtop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      border: none;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: rgba(21, 23, 31, 0.92);
+      color: var(--text);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 180ms ease, transform 180ms ease, background 180ms ease;
+      z-index: 20;
+    }
+
+    .backtop.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .backtop:hover {
+      background: rgba(229,40,54,0.92);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 420ms ease, transform 420ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1120px) {
+      .hero-shell,
+      .page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: relative;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero,
+      .page-shell,
+      .footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .article {
+        border-radius: 24px;
+      }
+
+      .article,
+      section {
+        padding: 20px;
+      }
+
+      .card-grid,
+      .gallery-grid,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main h1 {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <header class="hero">
+    <div class="hero-shell">
+      <section class="hero-main reveal">
+        <p class="manual-kicker">Trading Manual · A-Share Relay Setup</p>
+        <h1>A股一进二战法认知与实战要点</h1>
+        <p class="hero-lead">这是一份按“交易手册”方式重组的网页版本，只使用你给的 Notion 页面《具体策略》里的内容来拆解。整体逻辑保持原文核心：隔日套利，二进三博弈高溢价，试错龙头，补涨优先。</p>
+        <p class="hero-quote">核心观点：一进二的核心是“拿先手”，而不是“赌妖股”。目的明确，买在启动点，为了在次日板块高潮时拥有主动权。</p>
+        <div class="hero-chip-row">
+          <span class="hero-chip">低位确定性优先</span>
+          <span class="hero-chip">补涨优先</span>
+          <span class="hero-chip">板块联动先看</span>
+          <span class="hero-chip">纪律先于想象</span>
+        </div>
+      </section>
+
+      <aside class="hero-side reveal">
+        <div class="side-block">
+          <p class="side-label">战法摘要</p>
+          <h2>只做模式内的主动权</h2>
+          <ul>
+            <li>不做高位追涨，坚守低位确定性。</li>
+            <li>二进三看高溢价，一进二拿先手。</li>
+            <li>混沌期偏补涨和切换，退潮期直接空仓。</li>
+          </ul>
+        </div>
+        <div class="side-block">
+          <p class="side-label">执行核心</p>
+          <ul>
+            <li>预期一致，竞价爆量偏卖点。</li>
+            <li>预期分歧，竞价爆量偏买点。</li>
+            <li>9:25-9:30 先挂保护单，再开打。</li>
+          </ul>
+        </div>
+        <div class="side-block">
+          <p class="side-label">来源说明</p>
+          <p>内容摘编并重组自 Notion 页面《具体策略》。网页仅用于教学与复盘，不构成任何投资建议。</p>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <nav class="toc reveal" aria-label="目录">
+      <h2>目录</h2>
+      <p>按手册章节快速跳转浏览。</p>
+      <ol><li><a href="#定位"><span>01</span>核心打法定位</a></li><li><a href="#矩阵"><span>02</span>核心短线模式矩阵</a></li><li><a href="#周期"><span>03</span>情绪周期判断</a></li><li><a href="#标准"><span>04</span>高审美一进二硬标准</a></li><li><a href="#过滤"><span>05</span>五不做与五大标准</a></li><li><a href="#参与"><span>06</span>参与技巧</a></li><li><a href="#竞价"><span>07</span>竞价与扫板铁律</a></li><li><a href="#切换"><span>08</span>题材切换与弱轮动</a></li><li><a href="#风控"><span>09</span>炸板离场与终极风控</a></li><li><a href="#补涨"><span>10</span>补涨与切换</a></li></ol>
+    </nav>
+
+    <article class="article">
+      <section id="定位">
+        <p class="section-kicker">Part 01 · 战法总纲</p>
+        <div class="section-title-row">
+          <h2>核心打法定位</h2>
+          <span class="manual-pill pill-red">判断卡</span>
+        </div>
+        <p class="section-lead">本套战法的核心逻辑非常明确：隔日套利 + 二进三博弈高溢价 + 低位试错抓龙 + 补涨优先。彻底摒弃高位追涨，坚守低位确定性，同时兼顾风控与盈利。</p>
+        <p class="highlight-bar">核心打法定位：隔日套利，二进三博弈高溢价，试错龙头，补涨优先。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>隔日套利</h3>
+              <ul><li>以次日主动权为目标，不以长拿为默认。</li><li>先拿先手，再看市场是否给溢价。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>二进三高溢价</h3>
+              <ul><li>核心是围绕二进三的高溢价博弈。</li><li>板块高潮日优先兑现，不盲目幻想。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>试错抓龙</h3>
+              <ul><li>混沌期用小回撤去试错潜在龙头。</li><li>买在启动点，不赌高位妖股。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gray reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GRAY</p>
+              <h3>补涨优先</h3>
+              <ul><li>高位贵了就找低位补涨。</li><li>板块内补涨，板块间切换。</li></ul>
+            </article>
+            </div>
+      </section>
+
+      <section id="矩阵">
+        <p class="section-kicker">Part 02 · 模式边界</p>
+        <div class="section-title-row">
+          <h2>核心短线模式矩阵</h2>
+          <span class="manual-pill pill-green">对照卡</span>
+        </div>
+        <p class="section-lead">先把模式边界看清楚，再决定今天到底做哪一类机会。不同情绪区间，用不同的战法，不混做。</p>
+        <div class="table-wrap"><table><thead><tr><th>模式</th><th>适用场景</th><th>核心标的</th><th>持股周期</th><th>仓位规则</th></tr></thead><tbody><tr><td>龙头战法</td><td>主线明确、情绪主升期（有周期龙5板+）</td><td>市场核心龙头（5板+高度）</td><td>随龙头晋级持有，断板即止</td><td>非主升期1成试错；主升期可加仓至5成</td></tr><tr><td>补涨战法</td><td>主线分歧/混沌期，无明确周期龙</td><td>同题材低位一进二标的</td><td>1-2天，隔日必离场</td><td>单只≤2成，多只合计≤5成</td></tr><tr><td>题材切换</td><td>旧题材衰竭、新题材启动初期</td><td>新题材低位首板/一进二标的</td><td>2-3天，分化即砍</td><td>2-3成仓，不超仓</td></tr><tr><td>低位抓龙试错战法</td><td>混沌期/主升初期，无明确龙头</td><td>具备领涨潜力的低位首板标的</td><td>1-2天，试错为主</td><td>单只≤1.5成，多只合计≤4成</td></tr></tbody></table></div>
+      </section>
+
+      <section id="周期">
+        <p class="section-kicker">Part 03 · 情绪判断</p>
+        <div class="section-title-row">
+          <h2>情绪周期判断</h2>
+          <span class="manual-pill pill-gold">判断卡</span>
+        </div>
+        <p class="section-lead">原文强调一件事：拒绝过度量化数字，以市场真实反馈为唯一标准。情绪周期是大前提，不先看市场状态，就没有后面的买点质量。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>主升期</h3>
+              <ul><li>出现5板及以上周期龙。</li><li>市场情绪高涨，可适度加仓。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>混沌期</h3>
+              <ul><li>无5板周期龙，情绪尚可。</li><li>只做补涨 + 题材切换。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>退潮期</h3>
+              <ul><li>高位股批量跌停，情绪极差。</li><li>直接空仓观望。</li></ul>
+            </article>
+            </div>
+      </section>
+
+      <section id="标准">
+        <p class="section-kicker">Part 04 · 一进二标准</p>
+        <div class="section-title-row">
+          <h2>高审美一进二硬标准</h2>
+          <span class="manual-pill pill-red">标准卡</span>
+        </div>
+        <p class="section-lead">这部分是整套手册里最关键的筛选模块。它不只是找涨停票，而是找“有可能给你次日主动权”的低位候选。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>人气与地位</h3>
+              <ul><li>低位一进二最好选人气排名50名之后的标的。</li><li>前20容易变明牌，容易接盘。</li><li>要的就是买在无人问津。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>量价与筹码</h3>
+              <ul><li>首板实体阳线放量涨停，换手5%-15%。</li><li>二板最好比一板更放量，做健康筹码结构。</li><li>筹码集中度＜15%，抛压更小。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>资金强度</h3>
+              <ul><li>成交额/流通市值＞10%，15以上更好。</li><li>竞价成交额/流通市值＞0.5%。</li><li>封单额/流通市值＞2%，封成比＞0.5%。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gray reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GRAY</p>
+              <h3>板块共振</h3>
+              <ul><li>至少4只涨停 + 整体高开 + 有高度龙头。</li><li>板块指数涨幅＞2%最好。</li><li>板块最前排一字时，只做能买到的最强前排。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>风险过滤</h3>
+              <ul><li>剔除ST、利空、减持、跟风股。</li><li>最好不含可转债或融券形式。</li><li>避开首板中有藏獒、上塘路、东财席位过多的标的。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>趋势与结构</h3>
+              <ul><li>出现新高最好，站稳5日/10日线。</li><li>涨停时间尽量早，但不是唯一标准。</li><li>若二板加速，三板最好爆量消化分歧。</li></ul>
+            </article>
+            </div>
+        
+      </section>
+
+      <section id="过滤">
+        <p class="section-kicker">Part 05 · 风险过滤</p>
+        <div class="section-title-row">
+          <h2>五不做与五大标准</h2>
+          <span class="manual-pill pill-gray">纪律卡</span>
+        </div>
+        <p class="section-lead">筛选的上半段是找机会，下半段是砍掉那些看起来像机会、实际容易吃面的标的。纪律部分越清晰，盈亏比才越稳定。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>五不做</h3>
+              <ul><li>首板一字板不做。</li><li>首板炸板很严重的不做。</li><li>尾盘半小时拉涨停的不做。</li><li>近期前面走过一波大行情的大概率不做。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>五大标准</h3>
+              <ul><li>缩量调整越长越好。</li><li>近段时间有过放量更佳，说明主力试盘。</li><li>有洗盘痕迹、市值百亿以内、近两个月有涨停更佳。</li></ul>
+            </article>
+            </div>
+      </section>
+
+      <section id="参与">
+        <p class="section-kicker">Part 06 · 分时执行</p>
+        <div class="section-title-row">
+          <h2>参与技巧</h2>
+          <span class="manual-pill pill-gold">流程卡</span>
+        </div>
+        <p class="section-lead">分时突破法的核心不是追涨，而是寻找“开盘回拉确认强支撑”或“二次回调不破新低”的攻击波结构。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>分时突破法</h3>
+              <ul><li>开盘下探后迅速拉回均线和零轴之上，可视作强支撑博弈点。</li><li>二次回调不破新低，呈现攻击波形态，才算更优结构。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>离场点</h3>
+              <ul><li>低开不及预期，冲高就卖。</li><li>不在弱修复里拖延，希望靠幻想续命。</li></ul>
+            </article>
+            </div>
+        
+      </section>
+
+      <section id="竞价">
+        <p class="section-kicker">Part 07 · 竞价与扫板</p>
+        <div class="section-title-row">
+          <h2>竞价与扫板铁律</h2>
+          <span class="manual-pill pill-red">流程卡</span>
+        </div>
+        <p class="section-lead">竞价的核心不是看热闹，而是借预期差判断买卖点。原文里对高开幅度、量能阈值、回落时点、扫板封单都给了非常明确的纪律。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>竞价量能</h3>
+              <ul><li>占昨日成交2%-20%为宜。</li><li>超30%偏向资金出逃，不参与。</li><li>最低也要达到昨日成交的0.5%。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>核心竞价铁律</h3>
+              <ul><li>预期一致，竞价爆量就是卖点。</li><li>预期分歧，竞价爆量就是买点。</li><li>买卖点闭环必须严格执行。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>扫板纪律</h3>
+              <ul><li>封单≥昨日成交额5%即为强。</li><li>必须看板块联动与题材延续。</li><li>不排单，直接扫板，炸板只看尾盘封单强度。</li></ul>
+            </article>
+            </div>
+        <div class="highlight-bar">核心竞价铁律：预期一致，竞价爆量就是卖点；预期分歧，竞价爆量就是买点。</div>
+        <div class="table-wrap"><table><thead><tr><th>首板涨停时间</th><th>次日超预期高开</th><th>符合预期高开</th><th>不及预期</th></tr></thead><tbody><tr><td>10:00前</td><td>＞6%</td><td>4%-6%</td><td>＜4%</td></tr><tr><td>10:00-11:30</td><td>＞4%</td><td>2%-4%</td><td>＜2%</td></tr><tr><td>13:00-14:00</td><td>＞2%</td><td>0%-2%（平开）</td><td>＜0%（低开）</td></tr><tr><td>14:00-15:00</td><td>＞0%（高开）</td><td>0%（平开）</td><td>＜0%（低开）</td></tr><tr><td>分歧烂板</td><td>＞2%</td><td>0%（平开）</td><td>＜0%（低开）</td></tr><tr><td>一字板（首板）</td><td>继续一字板</td><td>＞6%</td><td>＜6%</td></tr></tbody></table></div>
+        
+        <details>
+          <summary>展开看扫板补充纪律</summary>
+          <div>
+            <p>封单≥昨日成交额5%才算强，且必须看板块联动。二板爆量需要比一板更大，才是良性低位抢筹。连续一字板类型的二板默认直接放弃，不把不可买到的票硬纳入模式。若属于高辨识度核心情绪票，且市场预期次日仍强，可提前小仓挂单博弈，但这属于情绪特例，不是常规动作。</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="切换">
+        <p class="section-kicker">Part 08 · 轮动切换</p>
+        <div class="section-title-row">
+          <h2>题材切换与弱轮动</h2>
+          <span class="manual-pill pill-gold">推演卡</span>
+        </div>
+        <p class="section-lead">主线衰竭、新题材启动、旧题材被抽血，这些都是切换的条件。非主线和弱轮动板块则只能做最强龙头，并把离场纪律收得更紧。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>题材切换铁律</h3>
+              <ul><li>新题材首日涨停≥5只 + 2只以上一字/早板，才算有持续性。</li><li>持股可拿2-3天，但次日强分化直接砍。</li><li>不幻想题材延续，一切以盘面为准。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>非主线轮动</h3>
+              <ul><li>只锚定板块内强势龙头，拒绝跟风。</li><li>次日高开就兑现，不考虑拿超过2天。</li><li>这类行情有小肉，但绝不能恋战。</li></ul>
+            </article>
+            </div>
+      </section>
+
+      <section id="风控">
+        <p class="section-kicker">Part 09 · 离场与风控</p>
+        <div class="section-title-row">
+          <h2>炸板离场与终极风控</h2>
+          <span class="manual-pill pill-gray">纪律卡</span>
+        </div>
+        <p class="section-lead">离场纪律决定你是不是在做交易，而不是在做愿望管理。原文把离场拆成 1% / 5% / 9% 三个节点，并把仓位、回撤和日内节奏都写得很细。</p>
+        <div class="card-grid">
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>炸板分类</h3>
+              <ul><li>良性炸板：量能温和，炸板后稳在均价线上，按5%止盈点离场。</li><li>恶性炸板：量能暴增、跌破均价线、回封无力，炸板瞬间直接砸在9%附近。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>三节点离场</h3>
+              <ul><li>1%：开盘后跌破1%，直接止损。</li><li>5%：冲高回落跌破5%，立即止盈。</li><li>9%：涨停炸板回封无力，砸在9%附近。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>终极风控</h3>
+              <ul><li>单票首笔≤2成，最高加仓至5成。</li><li>账户回撤＞10%：空仓休息并提取部分资金解压。</li><li>只做补涨、题材切换、龙头三种模式。</li></ul>
+            </article>
+            </div>
+        <div class="timeline">
+          <div class="timeline-step reveal"><strong>1%</strong><span>开盘后跌破 1%，直接止损。</span></div>
+          <div class="timeline-step reveal"><strong>5%</strong><span>冲高回落跌破 5%，立即止盈。</span></div>
+          <div class="timeline-step reveal"><strong>9%</strong><span>涨停炸板回封无力，砸在 9% 附近。</span></div>
+        </div>
+        <div style="margin-top:20px"><div class="card-grid">
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>早盘 9:00-10:00</h3>
+              <ul><li>既是主要买票时间，也是主要卖票时间。</li><li>一进二扫板、新题材低位介入、止盈止损都集中在这段。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>午盘观察</h3>
+              <ul><li>重点盯情绪变化、板块轮动和高位股状态。</li><li>不盲动，午盘更多是为下午做预判。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-gray reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GRAY</p>
+              <h3>收盘复盘</h3>
+              <ul><li>午盘收盘后快速复盘，调整午后策略。</li><li>晚盘重点看“每日复盘”，确认新题材是否达标。</li></ul>
+            </article>
+            </div></div>
+      </section>
+
+      <section id="补涨">
+        <p class="section-kicker">Part 10 · 认知进阶</p>
+        <div class="section-title-row">
+          <h2>补涨与切换</h2>
+          <span class="manual-pill pill-green">对照卡</span>
+        </div>
+        <p class="section-lead">原文对“补涨”和“切换”的定义很清晰：补涨是板块内的低位个股补涨，切换是板块之间的低位题材补涨。理解这两个动作，本质是在理解资金为什么从高位流向低位。</p>
+        <div class="table-wrap"><table><thead><tr><th>维度</th><th>补涨</th><th>切换</th></tr></thead><tbody><tr><td>核心范围</td><td>板块内</td><td>板块间</td></tr><tr><td>资金性质</td><td>存量资金挖掘（同一板块内流动）</td><td>存量/增量资金转移（从一个板块到另一个板块）</td></tr><tr><td>驱动逻辑</td><td>比价效应 + 情绪扩散（龙头打开空间，小弟跟上）</td><td>比价效应 + 风格轮动 + 避险需求（此板块贵了，换到彼板块）</td></tr><tr><td>常见现象</td><td>龙头翻倍后，同板块二线、三线股开始大涨</td><td>科技股熄火，资金涌入低位医药或消费</td></tr><tr><td>时间节奏</td><td>发生在板块主升浪的中后期</td><td>发生在一个周期结束、另一个周期开始的衔接点</td></tr><tr><td>持续性</td><td>相对较短，速度快，跟风性质强</td><td>可能较长，可能形成新的主线，开启新周期</td></tr></tbody></table></div>
+        <div style="margin-top:20px"><div class="card-grid">
+            <article class="manual-card tone-gold reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GOLD</p>
+              <h3>为什么会有补涨</h3>
+              <ul><li>高位股涨不动后，性价比下降。</li><li>资金自然流向同板块低位个股，去追求更高效率。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-red reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">RED</p>
+              <h3>为什么会有切换</h3>
+              <ul><li>切换本质是主导资金集体调仓。</li><li>背后是恐高与贪低的心理博弈。</li></ul>
+            </article>
+            
+            <article class="manual-card tone-green reveal">
+              <div class="card-glow"></div>
+              <p class="card-label">GREEN</p>
+              <h3>最佳时机</h3>
+              <ul><li>龙头断板或高位震荡时，市场恐高。</li><li>这个阶段最容易自发去做低位补涨或题材切换。</li></ul>
+            </article>
+            </div></div>
+        
+        <details>
+          <summary>展开看补涨与切换背后的底层逻辑</summary>
+          <div>
+            <p>高位股涨多了，边际效率下降，低位股更便宜、抛压更小，资金用更少的钱就能撬动更大的弹性，这就是补涨的效率来源。切换则是主导资金的集体调仓行为，本质是“卖出高位”和“买入低位”同时发生。市场自身存在负反馈：涨多了是最大的利空，跌多了是最大的利好。</p>
+            <p>最佳时机通常出现在龙头断板或高位震荡的时候。这个阶段市场开始恐高，资金会自发在板块内做低位补涨，或在板块之间做新题材切换。此时要么找与龙头同属性的低位票，要么找全新题材，不做无属性、无共振的普通跟风。</p>
+          </div>
+        </details>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-box">
+      内容摘编与重组自 Notion 页面 <a href="https://www.notion.so/3337af2f574e80179710f95b018cc385" target="_blank" rel="noreferrer">《具体策略》</a>。
+      本网页用于教学与个人复盘，不构成任何投资建议。
+    </div>
+  </footer>
+
+  <button class="backtop" id="backtop" type="button">回到顶部</button>
+
+  <script>
+    const progress = document.getElementById("progress");
+    const backtop = document.getElementById("backtop");
+    const sections = Array.from(document.querySelectorAll("section[id]"));
+    const tocLinks = Array.from(document.querySelectorAll(".toc a"));
+    const revealNodes = Array.from(document.querySelectorAll(".reveal"));
+
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+    }
+
+    function updateActiveSection() {
+      const threshold = window.scrollY + 180;
+      let currentId = sections[0]?.id;
+      for (const section of sections) {
+        if (section.offsetTop <= threshold) currentId = section.id;
+      }
+      tocLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${currentId}`);
+      });
+    }
+
+    function updateBacktop() {
+      backtop.classList.toggle("visible", window.scrollY > 720);
+    }
+
+    function onScroll() {
+      updateProgress();
+      updateActiveSection();
+      updateBacktop();
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealNodes.forEach((node) => observer.observe(node));
+
+    backtop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    requestAnimationFrame(onScroll);
+  </script>
+</body>
+</html>
