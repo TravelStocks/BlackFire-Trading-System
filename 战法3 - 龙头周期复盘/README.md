@@ -18,7 +18,10 @@
 - `app.js`：目录、筛选、搜索、展开收起、右侧锚点。
 - `cycles-data.js`：页面实际读取的数据。
 - `cycles-data.json`：同一份数据的 JSON 备份，方便后续处理。
+- `intraday-data.js`：龙头票关键日期分钟线静态数据。
+- `intraday-data.json`：同一份分时数据的 JSON 备份。
 - `export_notion_cycles.py`：从 Notion 桌面端本地缓存只读导出数据。
+- `build_intraday_data.py`：从腾讯历史分钟线接口生成分时数据。
 
 ## 本地预览
 
