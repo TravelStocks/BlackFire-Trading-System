@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>龙头周期复盘</title>
+  <meta name="description" content="内容优先的龙头周期投研复盘工作台，整合 Notion toggle heading1 周期内容。" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <header class="toolbar" id="top">
+    <a class="brand" href="#top">龙头周期复盘</a>
+    <div class="toolbar-controls" role="search">
+      <label class="search-box">
+        <span>搜索</span>
+        <input id="search-input" type="search" placeholder="周期、主线、标的" autocomplete="off" />
+      </label>
+      <label class="filter-box">
+        <span>筛选</span>
+        <select id="stage-filter">
+          <option value="all">全部周期</option>
+        </select>
+      </label>
+      <button class="toolbar-button" id="toolbar-backtop" type="button">回到顶部</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="left-rail" aria-label="周期目录">
+      <div class="mobile-toc">
+        <label for="mobile-cycle-select">周期跳转</label>
+        <select id="mobile-cycle-select"></select>
+      </div>
+      <nav class="toc-card">
+        <div class="rail-title">目录</div>
+        <ol id="toc-list"></ol>
+      </nav>
+    </aside>
+
+    <section class="main-column" aria-label="周期复盘内容">
+      <section class="summary-panel" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Research Review Desk</p>
+          <h1 id="page-title">龙头周期复盘</h1>
+          <p>
+            从 Notion 页面“龙头周期复盘”提取 toggle heading1 内容，按周期单独成章。
+            已排除 Seedance 超小周期，当前先做清爽、可持续迭代的第一版页面。
+          </p>
+        </div>
+        <dl class="metrics" id="metrics"></dl>
+      </section>
+
+      <section class="chip-row" id="cycle-chips" aria-label="周期快捷入口"></section>
+      <section class="cycles" id="cycle-list" aria-live="polite"></section>
+    </section>
+
+    <aside class="right-rail" aria-label="当前周期锚点">
+      <section class="anchor-card">
+        <div class="rail-title">当前周期</div>
+        <div id="active-cycle-name" class="active-cycle-name">待选择</div>
+        <nav id="section-anchors" class="section-anchors"></nav>
+      </section>
+    </aside>
+  </main>
+
+  <button class="floating-backtop" id="floating-backtop" type="button" aria-label="回到顶部">↑</button>
+
+  <script src="./cycles-data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

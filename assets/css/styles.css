@@ -368,6 +368,11 @@ svg {
   background: linear-gradient(180deg, rgba(0, 140, 140, 0.08), #fff 48%);
 }
 
+.entry-blue {
+  border-top: 3px solid #2563eb;
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.08), #fff 48%);
+}
+
 .hero-panel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
