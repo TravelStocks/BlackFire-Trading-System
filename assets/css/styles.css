@@ -528,6 +528,148 @@ svg {
   background: rgba(223, 44, 44, 0.1);
 }
 
+.classification-entry {
+  padding: 0;
+  background:
+    linear-gradient(135deg, rgba(7, 135, 93, 0.05), transparent 46%),
+    rgba(255, 255, 255, 0.86);
+}
+
+.classification-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.7fr) auto;
+  gap: 24px;
+  align-items: center;
+  min-height: 230px;
+  padding: 32px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(7, 135, 93, 0.1), rgba(0, 140, 140, 0.04) 44%, #fff);
+  border-radius: var(--radius);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.classification-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 46px rgba(20, 31, 28, 0.1);
+}
+
+.classification-card:focus-visible {
+  outline: 3px solid rgba(7, 135, 93, 0.28);
+  outline-offset: 4px;
+}
+
+.classification-accent {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--teal), var(--amber));
+}
+
+.classification-copy h2 {
+  margin: 8px 0 10px;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.classification-copy p:not(.label) {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.classification-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.classification-tags span {
+  padding: 7px 10px;
+  color: var(--green);
+  background: rgba(7, 135, 93, 0.08);
+  border: 1px solid rgba(7, 135, 93, 0.18);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.classification-map {
+  display: grid;
+  gap: 12px;
+  min-height: 164px;
+  padding: 18px;
+  background:
+    linear-gradient(90deg, rgba(21, 23, 22, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(21, 23, 22, 0.04) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.72);
+  background-size: 28px 28px;
+  border: 1px solid rgba(7, 135, 93, 0.18);
+  border-radius: var(--radius);
+}
+
+.map-axis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.map-axis span,
+.map-grid span {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.map-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8px;
+}
+
+.map-grid .node-primary {
+  min-height: 82px;
+  color: var(--green);
+  background: rgba(7, 135, 93, 0.08);
+  border-color: rgba(7, 135, 93, 0.24);
+  grid-row: span 2;
+  font-size: 14px;
+}
+
+.classification-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 15px;
+  color: #fff;
+  background: var(--green);
+  border-radius: var(--radius);
+  font-weight: 900;
+  white-space: nowrap;
+  transition: background 180ms ease;
+}
+
+.classification-card:hover .classification-cta {
+  background: #056f4e;
+}
+
+.classification-cta svg {
+  width: 18px;
+  height: 18px;
+}
+
 .section-head {
   padding: 26px 28px 18px;
   border-bottom: 1px solid var(--line);
@@ -1241,6 +1383,7 @@ svg {
   }
 
   .hero,
+  .classification-card,
   .strategy-columns {
     grid-template-columns: 1fr;
   }
@@ -1289,6 +1432,21 @@ svg {
 
   .hero-entry-actions {
     grid-template-columns: 1fr;
+  }
+
+  .classification-card {
+    gap: 18px;
+    min-height: auto;
+    padding: 24px 18px;
+  }
+
+  .classification-map,
+  .classification-cta {
+    width: 100%;
+  }
+
+  .map-axis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-prereq,
