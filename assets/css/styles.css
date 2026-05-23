@@ -414,16 +414,47 @@ svg {
 }
 
 .entry-secondary {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  min-height: 36px;
-  width: fit-content;
-  color: var(--muted);
-  font-size: 13px;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 14px;
+  color: var(--ink);
+  background:
+    linear-gradient(90deg, rgba(56, 103, 214, 0.12), rgba(255, 255, 255, 0.88)),
+    var(--surface);
+  border: 1px solid rgba(56, 103, 214, 0.28);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
   font-weight: 800;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .entry-secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(56, 103, 214, 0.46);
+  box-shadow: 0 12px 26px rgba(56, 103, 214, 0.12);
+}
+
+.entry-secondary span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px 8px;
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.1);
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.entry-secondary strong {
+  font-size: 16px;
+}
+
+.entry-secondary svg {
+  width: 18px;
+  height: 18px;
   color: var(--blue);
 }
 
