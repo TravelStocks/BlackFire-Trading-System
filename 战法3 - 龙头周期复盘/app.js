@@ -3,6 +3,7 @@ const EXCLUDED_TITLE =
 
 let allCycles = [];
 let filteredCycles = [];
+let intradayChartsByCycle = {};
 
 const byId = (id) => document.getElementById(id);
 const formatIndex = (index) => String(index + 1).padStart(2, "0");
@@ -46,15 +47,22 @@ const loadCycles = () => {
   return [];
 };
 
+const loadIntradayCharts = () => {
+  const charts = window.LONGTOU_INTRADAY?.chartsByCycle;
+  return charts && typeof charts === "object" ? charts : {};
+};
+
 const renderMetrics = () => {
   const leaders = allCycles.flatMap((cycle) => cycle.leaders || []).filter(Boolean);
   const timelineNodes = allCycles.reduce((sum, cycle) => sum + (cycle.timeline?.length || 0), 0);
   const insightNodes = allCycles.reduce((sum, cycle) => sum + (cycle.insights?.length || 0), 0);
+  const intradayNodes = Object.values(intradayChartsByCycle).reduce((sum, charts) => sum + (charts?.length || 0), 0);
   const metrics = [
     ["纳入周期", allCycles.length],
     ["排除周期", "1"],
     ["核心标的", new Set(leaders).size],
     ["规律总结", insightNodes],
+    ["分时图", intradayNodes],
     ["时间节点", timelineNodes]
   ];
 
@@ -206,6 +214,117 @@ const renderTimeline = (timeline = []) => {
   `;
 };
 
+const formatNumber = (value, digits = 2) => {
+  const number = Number(value);
+  return Number.isFinite(number) ? number.toFixed(digits) : "--";
+};
+
+const formatPct = (value) => {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "--";
+  return `${number > 0 ? "+" : ""}${number.toFixed(2)}%`;
+};
+
+const makeChartPath = (points, width, height, padding) => {
+  const prices = points.map((point) => Number(point.close)).filter(Number.isFinite);
+  if (!prices.length) return "";
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const range = max - min || 1;
+  const innerWidth = width - padding.left - padding.right;
+  const innerHeight = height - padding.top - padding.bottom;
+
+  return points
+    .map((point, index) => {
+      const x = padding.left + (points.length === 1 ? innerWidth / 2 : (index / (points.length - 1)) * innerWidth);
+      const y = padding.top + (1 - (Number(point.close) - min) / range) * innerHeight;
+      return `${index === 0 ? "M" : "L"}${x.toFixed(2)} ${y.toFixed(2)}`;
+    })
+    .join(" ");
+};
+
+const makeVolumeBars = (points, width, height, padding) => {
+  const volumes = points.map((point) => Number(point.volume)).filter(Number.isFinite);
+  if (!volumes.length) return "";
+  const maxVolume = Math.max(...volumes) || 1;
+  const innerWidth = width - padding.left - padding.right;
+  const barWidth = Math.max(1.8, innerWidth / points.length - 1);
+  const baseY = height - padding.bottom;
+  const maxBarHeight = 26;
+
+  return points
+    .map((point, index) => {
+      const volume = Number(point.volume) || 0;
+      const x = padding.left + (index / Math.max(1, points.length - 1)) * innerWidth - barWidth / 2;
+      const barHeight = (volume / maxVolume) * maxBarHeight;
+      return `<rect x="${x.toFixed(2)}" y="${(baseY - barHeight).toFixed(2)}" width="${barWidth.toFixed(2)}" height="${barHeight.toFixed(2)}" />`;
+    })
+    .join("");
+};
+
+const renderIntradayChart = (chart) => {
+  const points = chart.points || [];
+  if (!points.length) {
+    return `
+      <article class="intraday-card intraday-card-empty">
+        <div class="intraday-head">
+          <div>
+            <h3>${escapeHtml(chart.stockName || "标的")}</h3>
+            <p>${escapeHtml(chart.date || "日期待确认")} · ${escapeHtml(chart.code || "")}</p>
+          </div>
+        </div>
+        <p class="empty-note">${escapeHtml(chart.message || "暂未抓到可用分时数据。")}</p>
+      </article>
+    `;
+  }
+
+  const width = 320;
+  const height = 152;
+  const padding = { top: 14, right: 12, bottom: 28, left: 12 };
+  const first = points[0];
+  const last = points[points.length - 1];
+  const closes = points.map((point) => Number(point.close)).filter(Number.isFinite);
+  const highs = points.map((point) => Number(point.high)).filter(Number.isFinite);
+  const lows = points.map((point) => Number(point.low)).filter(Number.isFinite);
+  const start = Number(first.close);
+  const end = Number(last.close);
+  const pct = start ? ((end - start) / start) * 100 : 0;
+  const tone = pct >= 0 ? "up" : "down";
+  const path = makeChartPath(points, width, height, padding);
+  const bars = makeVolumeBars(points, width, height, padding);
+  const high = Math.max(...highs);
+  const low = Math.min(...lows);
+
+  return `
+    <article class="intraday-card ${tone}">
+      <div class="intraday-head">
+        <div>
+          <h3>${escapeHtml(chart.stockName)} <span>${escapeHtml(chart.code)}</span></h3>
+          <p>${escapeHtml(chart.date)} · ${escapeHtml(chart.label || "关键节点")} · ${escapeHtml(chart.resolutionLabel || chart.resolution || "分时")}</p>
+        </div>
+        <strong>${formatPct(pct)}</strong>
+      </div>
+      <svg class="intraday-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(chart.stockName)} ${escapeHtml(chart.date)} 分时走势">
+        <line class="intraday-axis" x1="${padding.left}" y1="${height - padding.bottom}" x2="${width - padding.right}" y2="${height - padding.bottom}" />
+        <g class="intraday-volume">${bars}</g>
+        <path class="intraday-line" d="${path}" />
+      </svg>
+      <div class="intraday-stats">
+        <span>收 ${formatNumber(end)}</span>
+        <span>高 ${formatNumber(high)}</span>
+        <span>低 ${formatNumber(low)}</span>
+      </div>
+      <p class="intraday-note">${escapeHtml(chart.note || "")}</p>
+    </article>
+  `;
+};
+
+const renderIntraday = (cycle) => {
+  const charts = intradayChartsByCycle[cycle.id] || [];
+  if (!charts.length) return `<p class="empty-note">龙头分时待补充。</p>`;
+  return `<div class="intraday-grid">${charts.map(renderIntradayChart).join("")}</div>`;
+};
+
 const renderList = (items = [], emptyText) => {
   if (!items.length) return `<p class="empty-note">${emptyText}</p>`;
   return `<ul class="note-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
@@ -291,6 +410,11 @@ const renderCycles = () => {
               ${renderInsights(cycle.insights)}
             </section>
 
+            <section class="content-block" id="${id}-intraday">
+              <h2>龙头分时</h2>
+              ${renderIntraday(cycle)}
+            </section>
+
             <section class="content-block" id="${id}-timeline">
               <h2>时间轴</h2>
               ${renderTimeline(cycle.timeline)}
@@ -328,6 +452,7 @@ const applyFilters = () => {
       cycle.summary,
       ...(cycle.tags || []),
       ...(cycle.leaders || []),
+      ...((intradayChartsByCycle[cycle.id] || []).flatMap((chart) => [chart.stockName, chart.code, chart.date, chart.label])),
       ...((cycle.insights || []).flatMap((node) => [node.text || "", ...((node.children || []).map((child) => child.text || ""))])),
       ...(cycle.lessons || [])
     ]
@@ -355,6 +480,44 @@ const bindCycleToggles = () => {
   });
 };
 
+const expandCycleSection = (section) => {
+  if (!section?.classList.contains("collapsed")) return;
+  const button = section.querySelector(".cycle-toggle");
+  section.classList.remove("collapsed");
+  if (button) {
+    button.setAttribute("aria-expanded", "true");
+    const mark = button.querySelector(".toggle-mark");
+    if (mark) mark.textContent = "收起";
+  }
+};
+
+const scrollInstantTo = (top) => {
+  const root = document.documentElement;
+  const previousBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = "auto";
+  window.scrollTo(0, Math.max(0, top));
+  root.style.scrollBehavior = previousBehavior;
+};
+
+const jumpToTarget = (hash) => {
+  if (!hash || hash === "#") return;
+  if (hash === "#top") {
+    scrollInstantTo(0);
+    history.replaceState(null, "", hash);
+    return;
+  }
+
+  const target = document.getElementById(hash.slice(1));
+  if (!target) return;
+  expandCycleSection(target.closest(".cycle-section"));
+  history.replaceState(null, "", hash);
+  requestAnimationFrame(() => {
+    const top = target.getBoundingClientRect().top + window.scrollY - 80;
+    scrollInstantTo(top);
+    updateScrollState();
+  });
+};
+
 const updateRightAnchors = (section) => {
   const name = byId("active-cycle-name");
   const anchors = byId("section-anchors");
@@ -367,6 +530,7 @@ const updateRightAnchors = (section) => {
   anchors.innerHTML = [
     ["overview", "一屏概览"],
     ["insights", "龙特点规律"],
+    ["intraday", "龙头分时"],
     ["timeline", "时间轴"],
     ["hierarchy", "龙头梯队"],
     ["lessons", "复盘结论"],
@@ -399,18 +563,25 @@ const bindControls = () => {
   byId("search-input").addEventListener("input", applyFilters);
   byId("stage-filter").addEventListener("change", applyFilters);
   byId("mobile-cycle-select").addEventListener("change", (event) => {
-    document.getElementById(event.target.value)?.scrollIntoView({ behavior: "smooth" });
+    jumpToTarget(`#${event.target.value}`);
   });
 
   const goTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   byId("toolbar-backtop").addEventListener("click", goTop);
   byId("floating-backtop").addEventListener("click", goTop);
+  document.addEventListener("click", (event) => {
+    const anchor = event.target.closest("a[href^='#']");
+    if (!anchor?.closest("#toc-list, #cycle-chips, #section-anchors, .brand")) return;
+    event.preventDefault();
+    jumpToTarget(anchor.getAttribute("href"));
+  });
   window.addEventListener("scroll", updateScrollState, { passive: true });
   window.addEventListener("resize", updateScrollState);
 };
 
 const init = () => {
   allCycles = normalizeCycles(loadCycles());
+  intradayChartsByCycle = loadIntradayCharts();
   filteredCycles = [...allCycles];
   renderMetrics();
   renderFilter();

@@ -450,6 +450,121 @@ h2 {
   background: var(--accent-soft);
 }
 
+.intraday-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.intraday-card {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.intraday-card.up {
+  border-color: rgba(22, 163, 74, 0.22);
+}
+
+.intraday-card.down {
+  border-color: rgba(220, 38, 38, 0.22);
+}
+
+.intraday-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.intraday-head h3 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.intraday-head h3 span {
+  color: var(--muted-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.intraday-head p,
+.intraday-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.intraday-head strong {
+  flex: 0 0 auto;
+  color: var(--success);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.intraday-card.down .intraday-head strong {
+  color: var(--danger);
+}
+
+.intraday-svg {
+  width: 100%;
+  height: auto;
+  min-height: 132px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    #fff;
+  background-size: 100% 50%, 50% 100%;
+}
+
+.intraday-axis {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.intraday-volume rect {
+  fill: rgba(37, 99, 235, 0.16);
+}
+
+.intraday-line {
+  fill: none;
+  stroke: var(--success);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.intraday-card.down .intraday-line {
+  stroke: var(--danger);
+}
+
+.intraday-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.intraday-stats span {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.intraday-card-empty {
+  background: var(--surface-soft);
+}
+
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -726,6 +841,10 @@ code {
   }
 
   .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intraday-grid {
     grid-template-columns: 1fr;
   }
 
