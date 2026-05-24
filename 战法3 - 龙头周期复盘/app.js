@@ -590,6 +590,9 @@ const init = () => {
   bindControls();
   bindCycleToggles();
   updateScrollState();
+  if (window.location.hash) {
+    requestAnimationFrame(() => jumpToTarget(window.location.hash));
+  }
 };
 
 init();
