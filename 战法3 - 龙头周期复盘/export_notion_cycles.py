@@ -185,7 +185,7 @@ def extract_timeline(nodes: list[dict[str, object]]) -> list[dict[str, str]]:
 
     def visit(node: dict[str, object]) -> None:
         text = str(node.get("text") or "")
-        match = re.match(r"((?:\d{4}/)?\d{1,2}/\d{1,2})\s*[-—]\s*(.+)", text)
+        match = re.match(r"((?:\d{4}/)?\d{1,2}/\d{1,2})\s*[-—:：]\s*(.+)", text)
         if match and len(timeline) < 24:
             timeline.append({"date": match.group(1), "event": match.group(2).strip()})
         for child in node.get("children") or []:
