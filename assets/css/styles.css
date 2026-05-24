@@ -480,6 +480,28 @@ svg {
   color: var(--green);
 }
 
+.entry-confirm {
+  background:
+    linear-gradient(90deg, rgba(180, 123, 18, 0.13), rgba(255, 255, 255, 0.9)),
+    var(--surface);
+  border-color: rgba(180, 123, 18, 0.28);
+  border-left-color: var(--amber);
+}
+
+.entry-confirm:hover {
+  border-color: rgba(180, 123, 18, 0.46);
+  box-shadow: 0 12px 26px rgba(180, 123, 18, 0.12);
+}
+
+.entry-confirm span {
+  color: var(--amber);
+  background: rgba(180, 123, 18, 0.11);
+}
+
+.entry-confirm svg {
+  color: var(--amber);
+}
+
 .hero-panel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
