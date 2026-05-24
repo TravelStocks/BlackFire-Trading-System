@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>龙头股分类｜A股短线交易系统</title>
+  <meta name="description" content="把龙头股分类 PPT 重构为可编辑、可点击、可复习的网页学习卡片，覆盖角色逻辑、高度题材、结构特征与买点匹配。" />
+  <style>
+    :root {
+      --bg: #f7f9f6;
+      --surface: #ffffff;
+      --surface-soft: #f1f6f0;
+      --ink: #101714;
+      --muted: #5e6b64;
+      --muted-soft: #89958f;
+      --line: #d9e3dc;
+      --line-strong: #0f2f24;
+      --green: #16a05d;
+      --green-deep: #0b5e3a;
+      --green-soft: #e7f6ee;
+      --teal: #008c8c;
+      --blue: #3867d6;
+      --amber: #b7791f;
+      --red: #b42318;
+      --shadow: 0 18px 44px rgba(16, 23, 20, 0.08);
+      --radius: 8px;
+      --sans: "Microsoft YaHei UI", "PingFang SC", "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      min-width: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(20, 48, 38, 0.06) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(20, 48, 38, 0.05) 1px, transparent 1px),
+        var(--bg);
+      background-size: 44px 44px;
+      font-family: var(--sans);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    li,
+    span,
+    strong,
+    em,
+    dd {
+      overflow-wrap: anywhere;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 60;
+      width: 100%;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--green), var(--teal), var(--amber), var(--red));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 58px;
+      padding: 0 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand,
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .brand-mark,
+    .top-link svg {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      color: var(--ink);
+    }
+
+    .top-link {
+      min-height: 38px;
+      padding: 6px 12px;
+      color: var(--green-deep);
+      background: var(--green-soft);
+      border: 1px solid rgba(22, 160, 93, 0.22);
+      border-radius: var(--radius);
+      font-size: 14px;
+    }
+
+    .study-shell {
+      display: grid;
+      grid-template-columns: 224px minmax(0, 1fr) 286px;
+      gap: 22px;
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 26px 24px 56px;
+    }
+
+    .study-nav,
+    .memo {
+      position: sticky;
+      top: 82px;
+      align-self: start;
+    }
+
+    .nav-panel,
+    .memo-panel {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82);
+    }
+
+    .nav-head,
+    .memo-head {
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow,
+    .label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .nav-head strong,
+    .memo-head strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .lesson-nav {
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+      max-height: calc(100vh - 190px);
+      overflow: auto;
+    }
+
+    .lesson-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+      padding: 8px 10px;
+      color: var(--muted);
+      border-left: 3px solid transparent;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .lesson-nav span {
+      color: var(--muted-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lesson-nav a:hover,
+    .lesson-nav a.is-active {
+      color: var(--ink);
+      background: rgba(22, 160, 93, 0.08);
+      border-left-color: var(--green);
+    }
+
+    .study-content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .study-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.46fr);
+      gap: 28px;
+      align-items: stretch;
+      min-height: 360px;
+      padding: 38px;
+      background:
+        linear-gradient(135deg, rgba(22, 160, 93, 0.11), transparent 42%),
+        linear-gradient(180deg, #ffffff, #fbfcfa);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--green);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .study-hero h1 {
+      margin: 12px 0 12px;
+      max-width: 8ch;
+      font-size: clamp(42px, 6vw, 78px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-lead {
+      margin: 0;
+      max-width: 31ch;
+      color: var(--ink);
+      font-size: clamp(20px, 2.6vw, 28px);
+      font-weight: 900;
+      line-height: 1.42;
+    }
+
+    .hero-sub {
+      max-width: 66ch;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1.1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-map {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 22px;
+      background:
+        linear-gradient(90deg, rgba(16, 23, 20, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(16, 23, 20, 0.04) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.7);
+      background-size: 28px 28px;
+      border: 1px solid rgba(15, 47, 36, 0.16);
+      border-radius: var(--radius);
+    }
+
+    .hero-map strong {
+      font-size: 18px;
+    }
+
+    .map-stage {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .map-stage span {
+      min-height: 52px;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .map-stage em {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      color: var(--green-deep);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding: 26px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .catalog-column {
+      border-left: 3px solid var(--green);
+      padding: 0 0 0 16px;
+    }
+
+    .catalog-column:nth-child(2) {
+      border-left-color: var(--blue);
+    }
+
+    .catalog-column:nth-child(3) {
+      border-left-color: var(--amber);
+    }
+
+    .catalog-column h2 {
+      margin: 2px 0 12px;
+      font-size: 21px;
+      line-height: 1.3;
+    }
+
+    .catalog-column dl {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+    }
+
+    .catalog-column dt {
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .catalog-column dd {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .lesson-section {
+      scroll-margin-top: 82px;
+      padding: 32px 0 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .lesson-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 22px;
+      padding: 0 4px 18px;
+    }
+
+    .lesson-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .lesson-title span {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--green-deep);
+      background: var(--green-soft);
+      border: 1px solid rgba(22, 160, 93, 0.24);
+      border-radius: var(--radius);
+      font-weight: 900;
+    }
+
+    .lesson-head h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .lesson-head p {
+      max-width: 56ch;
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-kind {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      color: var(--green-deep);
+      background: var(--green-soft);
+      border: 1px solid rgba(22, 160, 93, 0.24);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .point-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .point-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .point {
+      min-height: 100%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82);
+    }
+
+    .point h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      line-height: 1.34;
+    }
+
+    .point p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .point dl {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .point dt {
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .point dd {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tone-green {
+      border-top: 3px solid var(--green);
+    }
+
+    .tone-blue {
+      border-top: 3px solid var(--blue);
+    }
+
+    .tone-amber {
+      border-top: 3px solid var(--amber);
+    }
+
+    .tone-red {
+      border-top: 3px solid var(--red);
+    }
+
+    .tone-teal {
+      border-top: 3px solid var(--teal);
+    }
+
+    .split-block {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stage-block {
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .stage-block h3 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    .stage-block dl {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+    }
+
+    .stage-block dt {
+      font-weight: 900;
+    }
+
+    .stage-block dd {
+      margin: 4px 0 0;
+      color: var(--muted);
+    }
+
+    .height-ladder {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .height-card {
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--green);
+      border-radius: var(--radius);
+    }
+
+    .height-card:nth-child(2) {
+      border-top-color: var(--teal);
+    }
+
+    .height-card:nth-child(3) {
+      border-top-color: var(--blue);
+    }
+
+    .height-card:nth-child(4) {
+      border-top-color: var(--red);
+    }
+
+    .height-card strong {
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .height-card dl {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+    }
+
+    .height-card dt {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .height-card dd {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .principle-band {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 24px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--green-deep), #13201a);
+      border-radius: var(--radius);
+    }
+
+    .principle-band h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .principle-band p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 15px;
+    }
+
+    .principle-band .formula {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      font-weight: 900;
+    }
+
+    .formula span {
+      padding: 8px 10px;
+      color: #073927;
+      background: #e7f6ee;
+      border-radius: var(--radius);
+      white-space: nowrap;
+    }
+
+    .memo-panel {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .memo-list {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .memo-list li {
+      padding: 15px 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .memo-list strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .memo-list span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .page-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 24px;
+    }
+
+    .nav-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 8px 13px;
+      color: var(--green-deep);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .nav-button:hover,
+    .top-link:hover {
+      border-color: rgba(22, 160, 93, 0.45);
+      box-shadow: 0 10px 26px rgba(16, 23, 20, 0.08);
+    }
+
+    .footer {
+      padding: 18px 4px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 1180px) {
+      .study-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .study-nav,
+      .memo {
+        position: static;
+      }
+
+      .lesson-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-height: none;
+      }
+
+      .study-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .memo-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 16px;
+      }
+
+      .study-shell {
+        padding: 16px 12px 42px;
+      }
+
+      .study-hero,
+      .catalog {
+        padding: 22px 18px;
+      }
+
+      .study-hero h1 {
+        font-size: 38px;
+      }
+
+      .hero-lead {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+      .hero-metrics,
+      .catalog,
+      .point-grid,
+      .point-grid.three,
+      .split-block,
+      .height-ladder,
+      .principle-band,
+      .memo-list {
+        grid-template-columns: 1fr;
+      }
+
+      .lesson-head {
+        flex-direction: column;
+      }
+
+      .lesson-kind {
+        align-self: flex-start;
+      }
+
+      .nav-head {
+        padding: 14px 16px 10px;
+      }
+
+      .lesson-nav {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      .lesson-nav a {
+        flex: 0 0 auto;
+        border-left: 0;
+        border-bottom: 3px solid transparent;
+        border-radius: var(--radius);
+      }
+
+      .lesson-nav a.is-active {
+        border-left-color: transparent;
+        border-bottom-color: var(--green);
+      }
+
+      .principle-band .formula {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="返回系统首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 17v-5m4 5V8m4 9v-8m4 8v-3" /></svg>
+      </span>
+      <span>A股短线交易系统手册</span>
+    </a>
+    <a class="top-link" href="../index.html#classification">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+      <span>回到首页模块</span>
+    </a>
+  </header>
+
+  <div class="study-shell" id="top">
+    <aside class="study-nav" aria-label="龙头股分类目录">
+      <div class="nav-panel">
+        <div class="nav-head">
+          <p class="eyebrow">目录</p>
+          <strong>龙头股分类</strong>
+        </div>
+        <nav class="lesson-nav">
+          <a class="is-active" href="#cover"><span>00</span>总览</a>
+          <a href="#lesson-01"><span>01</span>角色划分</a>
+          <a href="#lesson-02"><span>02</span>市场总龙</a>
+          <a href="#lesson-03"><span>03</span>周期补涨</a>
+          <a href="#lesson-04"><span>04</span>逻辑驱动</a>
+          <a href="#lesson-05"><span>05</span>连板高度</a>
+          <a href="#lesson-06"><span>06</span>题材属性</a>
+          <a href="#lesson-07"><span>07</span>多龙淘汰</a>
+          <a href="#lesson-08"><span>08</span>走势结构</a>
+          <a href="#lesson-09"><span>09</span>核心特征</a>
+          <a href="#lesson-10"><span>10</span>买点总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="study-content">
+      <section class="study-hero" id="cover">
+        <div>
+          <p class="label">核心学习卡</p>
+          <h1>龙头股分类</h1>
+          <p class="hero-lead">先识别角色，再匹配买点；先看周期，再决定仓位。</p>
+          <p class="hero-sub">这页把视频截图中的 PPT 内容整理成可复制、可修改、可复习的网页版本。分类不是为了背概念，而是为了在盘面中快速判断：现在是哪一种龙头，应该用哪一种买点。</p>
+          <div class="hero-metrics">
+            <div class="metric">
+              <strong>11</strong>
+              <span>张学习卡</span>
+            </div>
+            <div class="metric">
+              <strong>3</strong>
+              <span>分类维度</span>
+            </div>
+            <div class="metric">
+              <strong>1</strong>
+              <span>买点原则</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-map" aria-label="分类路径">
+          <strong>分类路径</strong>
+          <div class="map-stage">
+            <span>角色与逻辑</span>
+            <em>→</em>
+            <span>高度与题材</span>
+          </div>
+          <div class="map-stage">
+            <span>结构与特征</span>
+            <em>→</em>
+            <span>买点匹配</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="catalog" aria-labelledby="catalog-title">
+        <div class="catalog-column">
+          <p class="label">01</p>
+          <h2 id="catalog-title">按角色与逻辑划分</h2>
+          <dl>
+            <div>
+              <dt>角色维度定义</dt>
+              <dd>板块龙 / 一字龙 / 分支龙 / 市场总龙 / 周期龙 / 补涨龙</dd>
+            </div>
+            <div>
+              <dt>核心炒作逻辑</dt>
+              <dd>先手龙 / 卡位逻辑 / 补涨逻辑 / 自主强与独立逻辑体系</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="catalog-column">
+          <p class="label">02</p>
+          <h2>按高度与题材划分</h2>
+          <dl>
+            <div>
+              <dt>连板高度梯队</dt>
+              <dd>首板龙 / 二板龙 / 三板龙 / 高位震荡龙 / 空间高度龙</dd>
+            </div>
+            <div>
+              <dt>题材属性分类</dt>
+              <dd>新题材 / 主线题材 / 趋势题材 / 轮动题材 / 支线补涨题材</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="catalog-column">
+          <p class="label">03</p>
+          <h2>按结构与特征划分</h2>
+          <dl>
+            <div>
+              <dt>走势结构演变</dt>
+              <dd>连板龙、中枢龙、趋势龙、补涨龙之间的启动时间与切换</dd>
+            </div>
+            <div>
+              <dt>龙头核心共性</dt>
+              <dd>市场辨识度 / 资金关注度 / 人气凝聚力 / 抗风险属性</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-01" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>01</span>
+            <div>
+              <h2>按角色与逻辑划分</h2>
+              <p>先判断标的在板块与周期中的角色，再判断资金为什么愿意继续推它。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">角色维度</strong>
+        </div>
+        <div class="point-grid three">
+          <article class="point tone-green">
+            <h3>板块龙</h3>
+            <p>当日或题材中高度最高的标的，代表当下最强势的方向。</p>
+          </article>
+          <article class="point tone-blue">
+            <h3>一字龙</h3>
+            <p>通常在混沌期突发利好刺激秒板，具有极高的辨识度或补涨逻辑。</p>
+          </article>
+          <article class="point tone-amber">
+            <h3>分支龙</h3>
+            <p>诞生于大题材爆发后的细分领域，是主线逻辑的延伸与扩散。</p>
+          </article>
+          <article class="point tone-red">
+            <h3>市场总龙</h3>
+            <p>突破阶段高标压制，是全场的情绪核心与风向标，带动整体氛围。</p>
+          </article>
+          <article class="point tone-teal">
+            <h3>周期龙</h3>
+            <p>贯穿完整的情绪周期（启动-发酵-高潮-退潮），承载最大的资金容量。</p>
+          </article>
+          <article class="point tone-green">
+            <h3>补涨龙</h3>
+            <p>当市场总龙打出绝对高度后，资金在低位挖掘的同属性对标套利标的。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-02" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>02</span>
+            <div>
+              <h2>市场总龙：情绪的引领者</h2>
+              <p>市场总龙不是单纯最高板，而是高度、情绪、题材、指数共振后的全场核心。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">情绪核心</strong>
+        </div>
+        <div class="point-grid">
+          <article class="point tone-green">
+            <h3>高度标杆</h3>
+            <p>突破阶段高标压制，确立自身的高度优势，成为全市场短线资金的高度天花板。</p>
+          </article>
+          <article class="point tone-blue">
+            <h3>共振启动</h3>
+            <p>启动节点精准贴合市场情绪拐点，同时与大盘指数形成正向共振，具备强大的爆发基础。</p>
+          </article>
+          <article class="point tone-amber">
+            <h3>情绪风向</h3>
+            <p>是全场情绪的绝对风向标，其盘中走势直接影响短线资金的做多意愿与整体交易氛围。</p>
+          </article>
+          <article class="point tone-red">
+            <h3>核心加分</h3>
+            <p>往往叠加主流题材、完美技术形态以及情绪周期共振等多重优势，具备极高的市场辨识度。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-03" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>03</span>
+            <div>
+              <h2>周期龙与补涨龙：周期的不同阶段</h2>
+              <p>周期龙负责打开完整行情，补涨龙负责在总龙高度被确认后承接套利资金。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">阶段切换</strong>
+        </div>
+        <div class="split-block">
+          <article class="stage-block tone-green">
+            <h3>周期龙（容量龙）</h3>
+            <dl>
+              <div>
+                <dt>形成机制</dt>
+                <dd>由题材多次发酵、板块反复共振，在分歧与一致中逐步走出。</dd>
+              </div>
+              <div>
+                <dt>核心特征</dt>
+                <dd>贯穿完整情绪小周期，承载市场最大成交量与关注度。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="stage-block tone-amber">
+            <h3>补涨龙</h3>
+            <dl>
+              <div>
+                <dt>启动逻辑</dt>
+                <dd>总龙打出绝对高度后，资金挖掘的低位同属性对标。</dd>
+              </div>
+              <div>
+                <dt>高度预期</dt>
+                <dd>空间通常为前序总龙高度的 70% - 80%。</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-04" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>04</span>
+            <div>
+              <h2>逻辑维度：驱动龙头上涨的核心动力</h2>
+              <p>同样是上涨，不同逻辑对应的参与方式、持续性和退出纪律完全不同。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">上涨驱动</strong>
+        </div>
+        <div class="point-grid">
+          <article class="point tone-green">
+            <h3>先手龙（新题材逻辑）</h3>
+            <p>全新题材的启动龙头，追求先手溢价。分为换手先手龙和一字辨识度先手龙。</p>
+          </article>
+          <article class="point tone-blue">
+            <h3>卡位逻辑龙</h3>
+            <p>题材内部或跨题材争夺高度地位，是确立板块龙头地位的核心竞争逻辑。</p>
+          </article>
+          <article class="point tone-amber">
+            <h3>补涨逻辑龙</h3>
+            <p>依附总龙的套利行为，主要分为市场明牌补涨和深度挖掘补涨两种形式。</p>
+          </article>
+          <article class="point tone-red">
+            <h3>自走强逻辑龙（独立抱团龙）</h3>
+            <p>完全脱离板块联动效应，不依赖大盘情绪，单纯依靠自身超高人气和良好的筹码结构独立走强，走出辨识度极高的独立行情。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-05" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>05</span>
+            <div>
+              <h2>连板高度决定买点模式</h2>
+              <p>高度越往上，确定性、人气和风险同步放大，买点必须从试错切换到确认。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">高度梯队</strong>
+        </div>
+        <div class="height-ladder">
+          <article class="height-card">
+            <strong>首板龙（盲板）</strong>
+            <dl>
+              <div>
+                <dt>核心特点</dt>
+                <dd>不确定性最高，无梯队验证，属于纯试错阶段。</dd>
+              </div>
+              <div>
+                <dt>操作手法</dt>
+                <dd>轻仓试错套利，重点关注盘中弱转强的回封机会。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="height-card">
+            <strong>二板龙（晋级）</strong>
+            <dl>
+              <div>
+                <dt>核心特点</dt>
+                <dd>题材进行弱筛选，开始出现明显的板块联动效应。</dd>
+              </div>
+              <div>
+                <dt>操作手法</dt>
+                <dd>分歧转一致的换手接力，聚焦板块内最先上板的核心。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="height-card">
+            <strong>三板龙（定妖）</strong>
+            <dl>
+              <div>
+                <dt>核心特点</dt>
+                <dd>题材强弱的关键分水岭，积累了市场的绝对辨识度。</dd>
+              </div>
+              <div>
+                <dt>操作手法</dt>
+                <dd>核心卡位的低吸博弈，或确定性更高的打板确认。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="height-card">
+            <strong>高位龙（情绪）</strong>
+            <dl>
+              <div>
+                <dt>核心特点</dt>
+                <dd>阶段市场的最高标，是短线情绪的绝对风向标。</dd>
+              </div>
+              <div>
+                <dt>操作手法</dt>
+                <dd>博弈弱分歧下的低吸机会，或关注爆量后的承接力度。</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-06" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>06</span>
+            <div>
+              <h2>题材属性决定持仓周期</h2>
+              <p>题材的持续性决定仓位停留时间：主线可以反复做，轮动只适合极短套利。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">题材属性</strong>
+        </div>
+        <div class="point-grid">
+          <article class="point tone-green">
+            <h3>新题材龙头</h3>
+            <dl>
+              <div>
+                <dt>核心驱动</dt>
+                <dd>突发消息、行业政策或重大事件驱动，具有极强的时效性。</dd>
+              </div>
+              <div>
+                <dt>玩法</dt>
+                <dd>抓先手，快进快出，博弈短期套利。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="point tone-blue">
+            <h3>主线题材龙头</h3>
+            <dl>
+              <div>
+                <dt>核心特征</dt>
+                <dd>涨停数量多，板块梯队完整，资金关注度高，具备持续发酵能力。</dd>
+              </div>
+              <div>
+                <dt>玩法</dt>
+                <dd>围绕核心反复做，可波段持有，吃大肉。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="point tone-amber">
+            <h3>趋势题材龙头</h3>
+            <dl>
+              <div>
+                <dt>核心特征</dt>
+                <dd>不依赖连板高度，以趋势震荡向上为主，调整幅度较浅。</dd>
+              </div>
+              <div>
+                <dt>玩法</dt>
+                <dd>沿 5/10 日线低吸，耐心趋势持有。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="point tone-red">
+            <h3>波浪 / 轮动题材龙头</h3>
+            <dl>
+              <div>
+                <dt>核心特征</dt>
+                <dd>持续性较差，多为一日游套利，板块内部分化严重，难以持续。</dd>
+              </div>
+              <div>
+                <dt>玩法</dt>
+                <dd>极致短线思维，只做日内，绝不格局。</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-07" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>07</span>
+            <div>
+              <h2>多龙并进与补涨龙淘汰赛</h2>
+              <p>主线爆发初期看共振扩散，总龙打出高度后看低位筛选。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">结构演变</strong>
+        </div>
+        <div class="split-block">
+          <article class="stage-block tone-green">
+            <h3>多龙并进 · Multi-Dragon Parallel</h3>
+            <p>在同一个大题材爆发期内，资金均匀分布，同时走出多只高位强势标的。它们不分明显强弱，形成百花齐放、共同向上拓展空间的繁荣局面。</p>
+          </article>
+          <article class="stage-block tone-amber">
+            <h3>补涨龙淘汰赛 · Elimination Game</h3>
+            <p>当主线总龙已经打出绝对高度空间后，市场会批量诞生低位补涨标的。随着行情演进，资金会不断进行筛选，通过优胜劣汰机制，最终走出最强的那一只补涨龙。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-08" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>08</span>
+            <div>
+              <h2>走势结构：盘口的不同形态</h2>
+              <p>结构决定承接质量。加速、换手、独立抱团，对应不同的收益弹性和炸板风险。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">盘口形态</strong>
+        </div>
+        <div class="point-grid three">
+          <article class="point tone-red">
+            <h3>加速龙</h3>
+            <dl>
+              <div>
+                <dt>核心形态</dt>
+                <dd>以缩量加速、一字板或高开秒板为主，代表了市场情绪的高度一致预期。</dd>
+              </div>
+              <div>
+                <dt>内在逻辑</dt>
+                <dd>享受极致的辨识度溢价，但筹码断层严重。是高风险与高收益并存的博弈模式。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="point tone-green">
+            <h3>换手联动龙</h3>
+            <dl>
+              <div>
+                <dt>核心形态</dt>
+                <dd>盘中充分换手，量能健康放大，并与所属板块呈现深度联动效应。</dd>
+              </div>
+              <div>
+                <dt>内在逻辑</dt>
+                <dd>筹码交换充分无断层，大资金合力充足。板块联动提供持续的支撑，通常是走得最远的龙头。</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="point tone-blue">
+            <h3>独立抱团龙</h3>
+            <dl>
+              <div>
+                <dt>核心形态</dt>
+                <dd>脱离板块指数独立运行，独自走出趋势或连板，呈现纯筹码抱团特征。</dd>
+              </div>
+              <div>
+                <dt>内在逻辑</dt>
+                <dd>凭借自身极强的市场人气独立上涨，受板块整体调整的拖累较小，具有很高的弹性和博弈空间。</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-09" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>09</span>
+            <div>
+              <h2>顶级大龙头通用核心特征</h2>
+              <p>顶级龙头往往不是单一优点取胜，而是盘口、题材、周期、筹码共同叠加。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">共性清单</strong>
+        </div>
+        <div class="point-grid">
+          <article class="point tone-green">
+            <h3>核心盘口属性</h3>
+            <p>抗分歧能力强、分时承接扎实、进攻主动性强、具备极强的板块联动带动力。</p>
+          </article>
+          <article class="point tone-blue">
+            <h3>基本面 & 筹码优势</h3>
+            <p>低位低价启动、市值适中、流动性充足、换手率健康，市场人气高度拉满。</p>
+          </article>
+          <article class="point tone-amber">
+            <h3>周期 & 启动优势</h3>
+            <p>启动节点精准，完美贴合情绪拐点、与指数形成共振，具备显著的周期转机效应。</p>
+          </article>
+          <article class="point tone-red">
+            <h3>政策 & 监管韧性</h3>
+            <p>具备极强的抗压能力，无视短期利空消息，不惧交易所异动监管问询，走出超预期的连板高度。</p>
+          </article>
+          <article class="point tone-teal">
+            <h3>题材挖掘属性</h3>
+            <p>自身拥有多重叠加属性，不仅能穿越周期，还能持续带动所属题材的发酵、扩散与延伸。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson-10" data-lesson>
+        <div class="lesson-head">
+          <div class="lesson-title">
+            <span>10</span>
+            <div>
+              <h2>总结：分类 = 匹配对应买点</h2>
+              <p>最终目标不是命名，而是把龙头类型和交易动作绑定起来。</p>
+            </div>
+          </div>
+          <strong class="lesson-kind">买点原则</strong>
+        </div>
+        <div class="point-grid three">
+          <article class="point tone-green">
+            <h3>高度不同</h3>
+            <p>首板试错、二板初定、三板淘汰、高位分歧。不同的高度对应着不同的博弈策略。</p>
+          </article>
+          <article class="point tone-blue">
+            <h3>题材不同</h3>
+            <p>新题材做先手、主线做接力、趋势做低吸、轮动做套利。依据题材属性制定交易计划。</p>
+          </article>
+          <article class="point tone-amber">
+            <h3>结构不同</h3>
+            <p>多龙看淘汰赛、加速龙防炸板、换手龙做核心接力。识别盘口结构，灵活应对变化。</p>
+          </article>
+        </div>
+        <div class="principle-band">
+          <div>
+            <h3>核心原则 · The Core Principle</h3>
+            <p>所有龙头判断，都要结合：联动性 + 加速节奏 + 情绪共振三位一体。这是龙头战法的底层逻辑与根本依据。</p>
+          </div>
+          <div class="formula" aria-label="核心公式">
+            <span>联动性</span>
+            <span>加速节奏</span>
+            <span>情绪共振</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="page-actions" aria-label="页面导航">
+        <button class="nav-button" type="button" id="prevLesson">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          上一张
+        </button>
+        <button class="nav-button" type="button" id="nextLesson">
+          下一张
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </div>
+
+      <footer class="footer">
+        <p>内容来自《龙头股分类》PPT 的可编辑网页复刻版，适合盘前预习与盘后复盘。</p>
+      </footer>
+    </main>
+
+    <aside class="memo" aria-label="速记栏">
+      <div class="memo-panel">
+        <div class="memo-head">
+          <p class="eyebrow">速记</p>
+          <strong>判断顺序</strong>
+        </div>
+        <ul class="memo-list">
+          <li>
+            <strong>先看角色</strong>
+            <span>总龙、周期龙、补涨龙、分支龙，不同角色不混用买点。</span>
+          </li>
+          <li>
+            <strong>再看高度</strong>
+            <span>首板试错，二板晋级，三板定妖，高位看情绪承接。</span>
+          </li>
+          <li>
+            <strong>最后看结构</strong>
+            <span>加速防炸板，换手看合力，独立抱团看筹码韧性。</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const progress = document.querySelector("#progress");
+    const navLinks = [...document.querySelectorAll(".lesson-nav a")];
+    const sections = navLinks
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+    const prevButton = document.querySelector("#prevLesson");
+    const nextButton = document.querySelector("#nextLesson");
+    let activeIndex = 0;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.transform = `scaleX(${clamp(ratio, 0, 1)})`;
+    }
+
+    function updateActive() {
+      const marker = window.scrollY + 120;
+
+      sections.forEach((section, index) => {
+        if (section.offsetTop <= marker) {
+          activeIndex = index;
+        }
+      });
+
+      navLinks.forEach((link, index) => {
+        link.classList.toggle("is-active", index === activeIndex);
+      });
+    }
+
+    function goToLesson(delta) {
+      const nextIndex = clamp(activeIndex + delta, 0, sections.length - 1);
+      sections[nextIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    prevButton.addEventListener("click", () => goToLesson(-1));
+    nextButton.addEventListener("click", () => goToLesson(1));
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") goToLesson(-1);
+      if (event.key === "ArrowRight") goToLesson(1);
+    });
+
+    window.addEventListener("scroll", () => {
+      updateProgress();
+      updateActive();
+    }, { passive: true });
+
+    window.addEventListener("resize", updateProgress);
+
+    updateProgress();
+    updateActive();
+  </script>
+</body>
+</html>
