@@ -458,6 +458,28 @@ svg {
   color: var(--blue);
 }
 
+.entry-model {
+  background:
+    linear-gradient(90deg, rgba(7, 135, 93, 0.12), rgba(255, 255, 255, 0.9)),
+    var(--surface);
+  border-color: rgba(7, 135, 93, 0.28);
+  border-left-color: var(--green);
+}
+
+.entry-model:hover {
+  border-color: rgba(7, 135, 93, 0.46);
+  box-shadow: 0 12px 26px rgba(7, 135, 93, 0.12);
+}
+
+.entry-model span {
+  color: var(--green);
+  background: rgba(7, 135, 93, 0.1);
+}
+
+.entry-model svg {
+  color: var(--green);
+}
+
 .hero-panel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

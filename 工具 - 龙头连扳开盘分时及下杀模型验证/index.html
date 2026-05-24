@@ -1,0 +1,2633 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>龙头连扳的开盘分时及下杀模型验证</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-2: #f1f3f5;
+      --ink: #17202a;
+      --muted: #667085;
+      --muted-2: #8a94a6;
+      --border: #d8dde6;
+      --border-soft: #e7ebf0;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --pass: #16803c;
+      --borderline: #b7791f;
+      --fail: #c92a2a;
+      --exception: #5b5fc7;
+      --prelead: #475467;
+      --unknown: #667085;
+      --shadow: 0 10px 30px rgba(23, 32, 42, 0.08);
+      --radius: 8px;
+      --mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button, select, input {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(247, 248, 250, 0.94);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
+    }
+
+    .mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #b9c6d8;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--blue);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 720;
+      letter-spacing: 0;
+    }
+
+    .brand .sub {
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .field {
+      display: grid;
+      gap: 4px;
+    }
+
+    .field label,
+    .switch span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    select {
+      min-width: 150px;
+      height: 36px;
+      padding: 0 32px 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+    }
+
+    select:focus,
+    .switch:focus-within,
+    button:focus-visible {
+      outline: 2px solid rgba(37, 99, 235, 0.35);
+      outline-offset: 2px;
+    }
+
+    .switch {
+      height: 36px;
+      align-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switch input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      padding: 16px 22px 0;
+    }
+
+    .stock-card {
+      min-height: 112px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .16s ease, transform .16s ease, box-shadow .16s ease;
+    }
+
+    .stock-card:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .stock-card.active {
+      border-color: #8fb2ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .stock-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-weight: 760;
+      font-size: 15px;
+    }
+
+    .industry {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .run {
+      margin: 6px 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    .card-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .mini-stat {
+      padding: 7px 6px;
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      background: #fafbfc;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 308px minmax(0, 1fr);
+      gap: 14px;
+      padding: 14px 22px 24px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .side {
+      position: sticky;
+      top: 82px;
+      align-self: start;
+      max-height: calc(100vh - 104px);
+      overflow: auto;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 12px 10px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 760;
+    }
+
+    .section-head .note {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    .timeline {
+      padding: 8px;
+    }
+
+    .date-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 7px 8px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .date-row:hover {
+      background: #f7f9fc;
+      border-color: var(--border-soft);
+    }
+
+    .date-row.active {
+      background: #eff5ff;
+      border-color: #b7cdf8;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .dot.pass { background: var(--pass); }
+    .dot.borderline { background: var(--borderline); }
+    .dot.fail { background: var(--fail); }
+    .dot.exception { background: var(--exception); }
+    .dot.prelead { background: var(--prelead); }
+    .dot.unknown { background: var(--unknown); }
+
+    .date-main {
+      display: grid;
+      gap: 1px;
+    }
+
+    .date-main strong {
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .date-main span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 56px;
+      height: 24px;
+      padding: 0 8px;
+      border: 1px solid currentColor;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 720;
+      white-space: nowrap;
+    }
+
+    .pill.pass { color: var(--pass); background: #edf8f0; }
+    .pill.borderline { color: var(--borderline); background: #fff7e6; }
+    .pill.fail { color: var(--fail); background: #fff1f1; }
+    .pill.exception { color: var(--exception); background: #f1f1ff; }
+    .pill.prelead { color: var(--prelead); background: #eef1f5; }
+    .pill.unknown { color: var(--unknown); background: #f4f5f7; }
+
+    .workspace {
+      display: grid;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    .detail-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .selected-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .selected-title h2 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 780;
+    }
+
+    .selected-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      min-height: 74px;
+      padding: 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fbfcfd;
+    }
+
+    .metric .label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .metric .value {
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 760;
+    }
+
+    .delta {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .delta.ok { color: var(--pass); }
+    .delta.warn { color: var(--borderline); }
+    .delta.bad { color: var(--fail); }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .chart-card {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .chart-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px 0;
+    }
+
+    .chart-title h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 760;
+    }
+
+    .chart-title span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .chart {
+      height: 270px;
+      padding: 4px 10px 10px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .axis text {
+      fill: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .axis line,
+    .grid line {
+      stroke: #e7ebf0;
+      stroke-width: 1;
+    }
+
+    .model-system {
+      overflow: hidden;
+    }
+
+    .calculator-panel {
+      overflow: hidden;
+    }
+
+    .calculator-body {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .calculator-inputs {
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .calc-field {
+      display: grid;
+      gap: 5px;
+    }
+
+    .calc-field label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .calc-field input {
+      width: 100%;
+      height: 38px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--mono);
+      outline: none;
+    }
+
+    .calc-field input:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.35);
+      outline-offset: 2px;
+    }
+
+    .calc-action {
+      height: 38px;
+      border: 1px solid #b7cdf8;
+      border-radius: 7px;
+      background: #eff5ff;
+      color: var(--blue);
+      font-weight: 720;
+      cursor: pointer;
+    }
+
+    .calc-action:hover {
+      background: #e4efff;
+    }
+
+    .calculator-results {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .calc-result {
+      min-height: 88px;
+      padding: 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fbfcfd;
+    }
+
+    .calc-result span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .calc-result strong {
+      display: block;
+      margin-top: 7px;
+      font-family: var(--mono);
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .calc-result small {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .calculator-note {
+      grid-column: 1 / -1;
+      padding: 9px 10px;
+      border-left: 3px solid var(--borderline);
+      background: #fff8e8;
+      color: #5b4a1f;
+      font-size: 12px;
+    }
+
+    .profit-panel {
+      overflow: hidden;
+    }
+
+    .profit-body {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .profit-results {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .intraday-panel {
+      overflow: hidden;
+    }
+
+    .intraday-body {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .intraday-controls {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .intraday-controls p {
+      margin: 0;
+      color: #42526b;
+      font-size: 12px;
+    }
+
+    .intraday-controls textarea {
+      width: 100%;
+      min-height: 186px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      resize: vertical;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .intraday-controls textarea:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.35);
+      outline-offset: 2px;
+    }
+
+    .intraday-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .intraday-buttons button {
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 720;
+      cursor: pointer;
+    }
+
+    .intraday-buttons button:first-child {
+      border-color: #b7cdf8;
+      background: #eff5ff;
+      color: var(--blue);
+    }
+
+    .intraday-area {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .intraday-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .intraday-summary .model-stat {
+      min-height: 66px;
+    }
+
+    .intraday-chart-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 12px;
+    }
+
+    .empty-state {
+      min-height: 270px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 7px;
+      background: #fbfcfd;
+      font-size: 13px;
+    }
+
+    .model-body {
+      display: grid;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 12px;
+    }
+
+    .model-block {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fbfcfd;
+    }
+
+    .model-block h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 760;
+    }
+
+    .model-copy {
+      margin: 0;
+      color: #42526b;
+      font-size: 13px;
+    }
+
+    .formula-list {
+      display: grid;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .formula-line {
+      padding: 8px 9px;
+      border: 1px solid #e1e7ef;
+      border-radius: 6px;
+      background: #fff;
+      color: #182230;
+      font-family: var(--mono);
+      font-size: 12px;
+      white-space: normal;
+    }
+
+    .model-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .model-stat {
+      padding: 9px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .model-stat strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .model-stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .model-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .flow-step {
+      padding: 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .flow-step b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .flow-step span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .coef-table {
+      width: 100%;
+      min-width: 520px;
+      margin-top: 8px;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .coef-table th,
+    .coef-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--border-soft);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .coef-table th:first-child,
+    .coef-table td:first-child {
+      text-align: left;
+    }
+
+    .model-note {
+      margin-top: 9px;
+      padding: 9px;
+      border-left: 3px solid var(--blue);
+      background: #f3f7ff;
+      color: #42526b;
+      font-size: 12px;
+    }
+
+    .model-writeup {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #ffffff;
+    }
+
+    .writeup-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .writeup-section {
+      padding: 11px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fbfcfd;
+    }
+
+    .writeup-section h3 {
+      margin: 0 0 7px;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .writeup-section p {
+      margin: 0 0 7px;
+      color: #42526b;
+      font-size: 12px;
+    }
+
+    .writeup-section ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #42526b;
+      font-size: 12px;
+    }
+
+    .writeup-section li + li {
+      margin-top: 4px;
+    }
+
+    .table-panel {
+      overflow: hidden;
+    }
+
+    .table-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend i {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .table-wrap {
+      max-height: 460px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border-soft);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f5f7fa;
+      color: #42526b;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    th:first-child,
+    td:first-child,
+    th:nth-child(2),
+    td:nth-child(2),
+    th:last-child,
+    td:last-child {
+      text-align: left;
+    }
+
+    th:last-child,
+    td:last-child {
+      min-width: 280px;
+      white-space: normal;
+      line-height: 1.45;
+    }
+
+    td.num {
+      font-family: var(--mono);
+    }
+
+    tr.active-row {
+      background: #eff5ff;
+      box-shadow: inset 3px 0 0 var(--blue);
+    }
+
+    tr:hover {
+      background: #fafcff;
+    }
+
+    .source {
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .source strong {
+      color: var(--ink);
+    }
+
+    .source code {
+      font-family: var(--mono);
+      color: #42526b;
+    }
+
+    .tooltip {
+      position: fixed;
+      z-index: 50;
+      pointer-events: none;
+      max-width: 260px;
+      padding: 9px 10px;
+      border: 1px solid #c9d3e1;
+      border-radius: 7px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      color: var(--ink);
+      font-size: 12px;
+      opacity: 0;
+      transform: translate(-50%, calc(-100% - 12px));
+      transition: opacity .08s ease;
+    }
+
+    .tooltip.visible { opacity: 1; }
+    .tooltip b { display: block; margin-bottom: 4px; }
+    .tooltip .mono { font-family: var(--mono); }
+
+    @media (max-width: 1180px) {
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .main { grid-template-columns: 1fr; }
+      .side { position: static; max-height: none; }
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .controls { justify-content: flex-start; width: 100%; }
+      .field { min-width: 140px; }
+      select { width: 100%; }
+      .summary { grid-template-columns: 1fr; }
+      .detail-grid,
+      .chart-grid,
+      .model-grid,
+      .model-flow,
+      .writeup-grid,
+      .calculator-body,
+      .calculator-results,
+      .profit-body,
+      .profit-results,
+      .intraday-body,
+      .intraday-summary,
+      .intraday-chart-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19V5" />
+            <path d="M4 19h16" />
+            <path d="m7 15 4-4 3 3 5-7" />
+          </svg>
+        </div>
+        <div>
+          <h1>龙头连扳的开盘分时及下杀模型验证</h1>
+          <div class="sub">开盘竞价幅度 x 对应振幅、分时回落与最低下杀约束</div>
+        </div>
+      </div>
+      <div class="controls" aria-label="全局筛选">
+        <div class="field">
+          <label for="stockSelect">股票</label>
+          <select id="stockSelect"></select>
+        </div>
+        <div class="field">
+          <label for="stageSelect">连板阶段</label>
+          <select id="stageSelect">
+            <option value="all">全部连板日</option>
+            <option value="leader">定龙验证期（三板起）</option>
+            <option value="early">首板-三板</option>
+            <option value="mid">四板-六板</option>
+            <option value="late">七板及以后</option>
+          </select>
+        </div>
+        <label class="switch">
+          <input id="onlyIssues" type="checkbox" />
+          <span>只看异常</span>
+        </label>
+      </div>
+    </header>
+
+    <section class="summary" id="summary"></section>
+
+    <main class="main">
+      <aside class="panel side">
+        <div class="section-head">
+          <h2>日期序列</h2>
+          <span class="note" id="dateCount"></span>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </aside>
+
+      <section class="workspace">
+        <div class="detail-grid">
+          <section class="detail-card">
+            <div class="selected-title">
+              <div>
+                <h2 id="selectedHeading">--</h2>
+                <p id="selectedSub">--</p>
+              </div>
+              <span id="selectedPill" class="pill unknown">--</span>
+            </div>
+            <div class="metrics" id="metrics"></div>
+          </section>
+
+          <section class="chart-card">
+            <div class="chart-title">
+              <h3>开盘x-振幅阈值</h3>
+              <span>散点为实际交易日</span>
+            </div>
+            <div class="chart" id="ruleChart"></div>
+          </section>
+        </div>
+
+        <section class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-title">
+              <h3>实际振幅 vs 阈值</h3>
+              <span>超出段标红</span>
+            </div>
+            <div class="chart" id="amplitudeChart"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <h3>最低下杀约束</h3>
+              <span>低于虚线为破坏</span>
+            </div>
+            <div class="chart" id="drawdownChart"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <h3>量能分歧</h3>
+              <span>只看当日成交量</span>
+            </div>
+            <div class="chart" id="volumeChart"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <h3>规则表</h3>
+              <span>来自桌面 Excel</span>
+            </div>
+            <div class="chart" id="thresholdChart"></div>
+          </div>
+        </section>
+
+        <section class="panel calculator-panel">
+          <div class="section-head">
+            <h2>开盘条件计算器</h2>
+            <span class="note">输入开盘涨幅 x，输出下杀线与振幅阈值</span>
+          </div>
+          <div class="calculator-body">
+            <div class="calculator-inputs">
+              <div class="calc-field">
+                <label for="calcOpenPct">开盘涨幅 x（%）</label>
+                <input id="calcOpenPct" type="number" step="0.1" value="3" inputmode="decimal" />
+              </div>
+              <div class="calc-field">
+                <label for="calcPrevClose">昨日收盘价（可选）</label>
+                <input id="calcPrevClose" type="number" step="0.01" min="0" placeholder="填入后给出保护价" inputmode="decimal" />
+              </div>
+              <button id="calcUseSelected" class="calc-action" type="button">带入当前选中日</button>
+            </div>
+            <div class="calculator-results" id="calculatorResults"></div>
+            <div class="calculator-note" id="calculatorNote"></div>
+          </div>
+        </section>
+
+        <section class="panel profit-panel">
+          <div class="section-head">
+            <h2>冲高回落止盈模型</h2>
+            <span class="note">开盘 -> 一次冲高点 -> 第一次回落点</span>
+          </div>
+          <div class="profit-body">
+            <div class="calculator-inputs">
+              <div class="calc-field">
+                <label for="profitOpenPct">开盘涨幅 x（%）</label>
+                <input id="profitOpenPct" type="number" step="0.1" value="3" inputmode="decimal" />
+              </div>
+              <div class="calc-field">
+                <label for="profitHighPct">一次冲高点 h（%）</label>
+                <input id="profitHighPct" type="number" step="0.1" value="8" inputmode="decimal" />
+              </div>
+              <div class="calc-field">
+                <label for="profitPullbackPct">第一次回落点 p（%，可选）</label>
+                <input id="profitPullbackPct" type="number" step="0.1" placeholder="填入后自动判断" inputmode="decimal" />
+              </div>
+              <div class="calc-field">
+                <label for="profitPrevClose">昨日收盘价（可选）</label>
+                <input id="profitPrevClose" type="number" step="0.01" min="0" placeholder="填入后给出价格线" inputmode="decimal" />
+              </div>
+              <button id="profitUseSelected" class="calc-action" type="button">带入当前日K代理</button>
+            </div>
+            <div class="profit-results" id="profitResults"></div>
+            <div class="calculator-note" id="profitNote"></div>
+          </div>
+        </section>
+
+        <section class="panel intraday-panel">
+          <div class="section-head">
+            <h2>分时路径与量能</h2>
+            <span class="note" id="intradayStatus">等待分钟线</span>
+          </div>
+          <div class="intraday-body">
+            <div class="intraday-controls">
+              <p>
+                免费公开接口通常不能回溯这些历史连板日的 1 分钟数据。你可以从 iFinD、通达信、QMT、Choice 等导出当前选中日分钟线，再粘贴到这里渲染。
+              </p>
+              <textarea id="intradayCsv" placeholder="支持格式：
+time,price,volume
+09:31,9.12,2600
+09:32,9.12,1800
+
+也支持东财分钟K格式：
+2026-02-13 09:31,9.10,9.12,9.12,9.10,2600,2370000"></textarea>
+              <div class="intraday-buttons">
+                <button id="intradayLoad" type="button">渲染当前日</button>
+                <button id="intradayClear" type="button">清空当前日</button>
+              </div>
+            </div>
+            <div class="intraday-area">
+              <div class="intraday-summary" id="intradaySummary"></div>
+              <div class="intraday-chart-grid">
+                <div class="chart-card">
+                  <div class="chart-title">
+                    <h3>分时价格路径</h3>
+                    <span>蓝线价格，红线下杀线</span>
+                  </div>
+                  <div class="chart" id="intradayPriceChart"></div>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-title">
+                    <h3>分时量能</h3>
+                    <span>逐分钟成交量</span>
+                  </div>
+                  <div class="chart" id="intradayVolumeChart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel model-system">
+          <div class="section-head">
+            <h2>数学建模体系</h2>
+            <span class="note" id="modelSampleText"></span>
+          </div>
+          <div class="model-body">
+            <div class="model-grid">
+              <article class="model-block">
+                <h3>1. 状态空间与主假设</h3>
+                <p class="model-copy">
+                  把经验表先转成可检验的约束包络：每个连板日由价格状态、阶段状态和分歧状态共同决定，日内行为必须落在开盘竞价 x 对应的容许区域内。
+                </p>
+                <div class="formula-list">
+                  <div class="formula-line">x_t = O_t / C_{t-1} - 1；A_t = (H_t - L_t) / C_{t-1}</div>
+                  <div class="formula-line">M_t = L_t / C_{t-1} - 1；U_t = x_t - M_t</div>
+                  <div class="formula-line">H0：A_t <= F0(x_t) 且 M_t >= G0(x_t)</div>
+                  <div class="formula-line">rA_t = A_t - F0(x_t)；rL_t = G0(x_t) - M_t；B_t = max(0,rA_t) + max(0,rL_t)</div>
+                </div>
+              </article>
+              <article class="model-block">
+                <h3>2. 样本校准结果</h3>
+                <div class="model-stat-grid" id="modelStats"></div>
+              </article>
+            </div>
+
+            <div class="model-flow" aria-label="建模流程">
+              <div class="flow-step"><b>规则先验</b><span>Excel 阈值表作为 F0/G0 的先验包络。</span></div>
+              <div class="flow-step"><b>残差诊断</b><span>用 rA、rL 判断振幅破坏和下杀破坏。</span></div>
+              <div class="flow-step"><b>例外门</b><span>用当日成交量、换手、振幅偏离识别分歧日。</span></div>
+              <div class="flow-step"><b>参数校准</b><span>用新增样本更新 F/G 和例外概率。</span></div>
+              <div class="flow-step"><b>外推验证</b><span>滚动留出、跨题材、跨行情阶段复核。</span></div>
+            </div>
+
+            <div class="model-grid">
+              <article class="model-block">
+                <h3>3. OLS 探索拟合</h3>
+                <p class="model-copy">
+                  先用全样本做低阶线性拟合，目的不是替代规则，而是观察 x、连板阶段、当日成交量、换手对振幅和最低点的边际方向。
+                </p>
+                <div id="modelFit"></div>
+              </article>
+              <article class="model-block">
+                <h3>4. 例外门与验证协议</h3>
+                <div id="modelProtocol"></div>
+              </article>
+            </div>
+
+            <article class="model-writeup">
+              <div class="section-head" style="padding:0 0 8px;border:0;">
+                <h2>完整文字版：三板起定龙约束模型</h2>
+                <span class="note">规则、变量、判定、校准与局限</span>
+              </div>
+              <div id="modelWriteup"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel table-panel">
+          <div class="table-tools">
+            <div class="section-head" style="padding:0;border:0;">
+              <h2>逐日验证表</h2>
+              <span class="note" id="tableCount"></span>
+            </div>
+            <div class="legend" aria-label="状态图例">
+              <span><i style="background:var(--pass)"></i>满足</span>
+              <span><i style="background:var(--borderline)"></i>临界</span>
+              <span><i style="background:var(--fail)"></i>不满足</span>
+              <span><i style="background:var(--exception)"></i>解释性例外</span>
+              <span><i style="background:var(--prelead)"></i>定龙前例外</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>股票</th>
+                  <th>日期</th>
+                  <th>阶段</th>
+                  <th>开盘x</th>
+                  <th>阈值</th>
+                  <th>实际振幅</th>
+                  <th>最低下杀</th>
+                  <th>下杀线</th>
+                  <th>成交量</th>
+                  <th>换手</th>
+                  <th>结论</th>
+                  <th>异常说明</th>
+                </tr>
+              </thead>
+              <tbody id="detailTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel source">
+          <strong>口径：</strong>
+          行情来自 agent 1 整理的东方财富 push2his 日 K，<code>fqt=0</code> 不复权，连板筛选为 <code>pct_chg &gt;= 9.8%</code>。
+          Excel 阈值表按相邻开盘涨幅档位做线性插值，超出 -2% 至 +10% 的样本夹到边界。最低下杀按日低价相对前收涨跌幅估算；若要严谨验证分时下杀，需要再接入分钟线。
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="tooltip" class="tooltip" role="tooltip"></div>
+
+  <script>
+    const thresholdRows = [
+      { open: 10, minLow: 5, openToLow: 5, amp: 5 },
+      { open: 9, minLow: 4.2, openToLow: 4.8, amp: 5.8 },
+      { open: 8, minLow: 3.6, openToLow: 4.4, amp: 6.4 },
+      { open: 7, minLow: 3.2, openToLow: 3.8, amp: 6.8 },
+      { open: 6, minLow: 2.6, openToLow: 3.4, amp: 7.4 },
+      { open: 5, minLow: 1.6, openToLow: 3.4, amp: 8.4 },
+      { open: 4, minLow: 0.8, openToLow: 3.2, amp: 9.2 },
+      { open: 3, minLow: 0, openToLow: 3, amp: 10 },
+      { open: 2, minLow: -0.4, openToLow: 2.4, amp: 10.4 },
+      { open: 1, minLow: -1.2, openToLow: 2.2, amp: 11.2 },
+      { open: 0, minLow: -1.6, openToLow: 1.6, amp: 11.6 },
+      { open: -1, minLow: -2, openToLow: 1, amp: 12 },
+      { open: -2, minLow: -2.6, openToLow: 0.6, amp: 12.6 }
+    ].sort((a, b) => a.open - b.open);
+
+    const sourceStocks = [
+      {
+        code: "001896", name: "豫能控股", industry: "电力 争电",
+        run: { start: "2026-02-11", end: "2026-02-27", days: 7 },
+        candidates: ["2020-12-21 至 2020-12-28（6板）", "2021-03-31 至 2021-04-07（5板）"],
+        note: "2026-02-16至2026-02-23无日K记录，疑似停牌/无交易。",
+        daily: [
+          ["2026-02-11",7.54,10.0730,7.54,7.54,7.54,10.07,0,128794,97110811.72,0.84],
+          ["2026-02-12",8.29,9.9469,8.29,8.29,8.29,9.95,0,53435,44297590.13,0.35],
+          ["2026-02-13",9.12,10.0121,9.12,9.12,9.12,10.01,0,260335,237425720.64,1.71],
+          ["2026-02-24",10.03,9.9781,10.03,10.03,10.03,9.98,0,41481,41605302.58,0.27],
+          ["2026-02-25",10.50,4.6859,11.03,9.88,11.03,9.97,11.47,3204863,3359413625.45,21.00],
+          ["2026-02-26",11.04,0.0907,12.13,11.04,12.13,9.97,9.88,1031979,1211628967.17,6.76],
+          ["2026-02-27",12.76,5.1937,13.34,12.54,13.34,9.98,6.60,1280059,1683749704.47,8.39]
+        ]
+      },
+      {
+        code: "601991", name: "大唐发电", industry: "电力 储能",
+        run: { start: "2026-05-06", end: "2026-05-13", days: 6 },
+        candidates: ["2015-07-09 至 2015-07-13（3板）", "2021-09-22 至 2021-09-23（2板）"],
+        daily: [
+          ["2026-05-06",4.58,10.0962,4.58,4.51,4.58,10.10,1.68,3298102,1509568365,2.66],
+          ["2026-05-07",4.98,8.7336,5.04,4.88,5.04,10.04,3.49,3340447,1665333844,2.69],
+          ["2026-05-08",5.54,9.9206,5.54,5.32,5.54,9.92,4.37,12160814,6675181861,9.81],
+          ["2026-05-11",6.00,8.3032,6.09,5.88,6.09,9.93,3.79,2783118,1681210725,2.25],
+          ["2026-05-12",6.68,9.6880,6.70,6.40,6.70,10.02,4.93,6831487,4528701684,5.51],
+          ["2026-05-13",7.14,6.5672,7.37,7.08,7.37,10.00,4.33,2435885,1771086605,1.97]
+        ]
+      },
+      {
+        code: "600396", name: "华电辽能", industry: "电力 风电",
+        run: { start: "2026-03-16", end: "2026-03-25", days: 8 },
+        candidates: ["2021-12-13 至 2021-12-21（7板）", "2014-12-10 至 2014-12-15（4板）"],
+        daily: [
+          ["2026-03-16",4.27,10.0515,4.27,4.27,4.27,10.05,0,788495,336687297,5.35],
+          ["2026-03-17",4.31,0.9368,4.70,4.27,4.70,10.07,10.07,1845999,841329596,12.53],
+          ["2026-03-18",5.17,10.0000,5.17,5.17,5.17,10.00,0,640307,331038843,4.35],
+          ["2026-03-19",5.24,1.3540,5.69,5.19,5.69,10.06,9.67,1842490,1029183569,12.51],
+          ["2026-03-20",6.10,7.2056,6.26,5.58,6.26,10.02,11.95,3937304,2415906773,26.74],
+          ["2026-03-23",6.65,6.2300,6.89,6.60,6.89,10.06,4.63,1683238,1148215928,11.43],
+          ["2026-03-24",6.90,0.1451,7.58,6.89,7.58,10.01,10.01,2367293,1742915076,16.07],
+          ["2026-03-25",8.01,5.6728,8.34,8.01,8.34,10.03,4.35,998932,823882025,6.78]
+        ]
+      },
+      {
+        code: "002580", name: "圣阳股份", industry: "动力 电池",
+        run: { start: "2026-04-09", end: "2026-04-17", days: 7 },
+        candidates: ["2025-02-21 至 2025-02-27（5板）", "2024-11-25 至 2024-11-26（2板）"],
+        daily: [
+          ["2026-04-09",15.50,-1.1480,17.25,15.02,17.25,10.01,14.22,1136714,1824513315.28,25.15],
+          ["2026-04-10",17.25,0.0000,18.98,16.84,18.98,10.03,12.41,1879909,3464758656.57,41.59],
+          ["2026-04-13",19.45,2.4763,20.88,19.35,20.88,10.01,8.06,1021391,2074911511.16,22.60],
+          ["2026-04-14",22.79,9.1475,22.97,21.33,22.97,10.01,7.85,1765415,3926483802.76,39.06],
+          ["2026-04-15",24.48,6.5738,25.27,24.48,25.27,10.01,3.44,1079066,2708185811.96,23.87],
+          ["2026-04-16",26.57,5.1444,27.80,26.26,27.80,10.01,6.09,670389,1830774754.19,14.83],
+          ["2026-04-17",29.13,4.7842,30.58,29.07,30.58,10.00,5.43,822376,2496919988.73,18.19]
+        ]
+      },
+      {
+        code: "600488", name: "津药药业", industry: "医药 创新药",
+        run: { start: "2026-03-27", end: "2026-04-07", days: 7 },
+        candidates: ["2026-05-11 至 2026-05-12（2板）", "2020-06-17 至 2020-06-18（2板）"],
+        daily: [
+          ["2026-03-27",3.94,0.0000,4.33,3.92,4.33,9.90,10.41,389815,166042451,3.57],
+          ["2026-03-30",4.33,0.0000,4.76,4.33,4.76,9.93,9.93,699067,326920726,6.40],
+          ["2026-03-31",4.99,4.8319,5.24,4.97,5.24,10.08,5.67,897796,466914879,8.22],
+          ["2026-04-01",5.76,9.9237,5.76,5.65,5.76,9.92,2.10,368944,212279370,3.38],
+          ["2026-04-02",6.34,10.0694,6.34,6.34,6.34,10.07,0,148793,94334743,1.36],
+          ["2026-04-03",6.96,9.7792,6.97,6.85,6.97,9.94,1.89,937462,652492185,8.59],
+          ["2026-04-07",7.30,4.7346,7.67,7.10,7.67,10.04,8.18,1763537,1322689091,16.15]
+        ]
+      },
+      {
+        code: "601212", name: "白银有色", industry: "有色 金属",
+        run: { start: "2026-01-20", end: "2026-01-29", days: 8 },
+        candidates: ["2017-02-15 至 2017-03-16（19板，上市初期长连板）"],
+        daily: [
+          ["2026-01-20",7.15,0.9887,7.79,6.83,7.79,10.03,13.56,5703436,4211793221,7.70],
+          ["2026-01-21",7.95,2.0539,8.57,7.95,8.57,10.01,7.96,4950559,4134774702,6.69],
+          ["2026-01-22",8.25,-3.7340,9.43,8.20,9.43,10.04,14.35,6168018,5555277202,8.33],
+          ["2026-01-23",10.37,9.9682,10.37,9.81,10.37,9.97,5.94,3037856,3125733067,4.10],
+          ["2026-01-26",10.97,5.7859,11.41,10.83,11.41,10.03,5.59,6296080,7087143625,8.50],
+          ["2026-01-27",11.41,0.0000,12.55,10.80,12.55,9.99,15.34,7454592,9005348082,10.07],
+          ["2026-01-28",12.57,0.1594,13.81,12.57,13.81,10.04,9.88,4015572,5408662251,5.42],
+          ["2026-01-29",15.19,9.9928,15.19,14.02,15.19,9.99,8.47,6340011,9405853523,8.56]
+        ]
+      },
+      {
+        code: "003018", name: "金富科技", industry: "包装 材料",
+        run: { start: "2025-11-24", end: "2025-12-02", days: 7 },
+        candidates: ["2020-11-06 至 2020-11-12（5板）"],
+        daily: [
+          ["2025-11-24",14.01,9.9686,14.01,14.01,14.01,9.97,0,55322,77505575.61,5.65],
+          ["2025-11-25",15.09,7.7088,15.41,14.75,15.41,9.99,4.71,115737,175330414.30,11.81],
+          ["2025-11-26",16.15,4.8021,16.95,15.41,16.95,9.99,9.99,290421,477739199.96,29.64],
+          ["2025-11-27",18.65,10.0295,18.65,18.65,18.65,10.03,0,52689,98264332.25,5.38],
+          ["2025-11-28",20.52,10.0268,20.52,20.52,20.52,10.03,0,27457,56342687.40,2.80],
+          ["2025-12-01",22.57,9.9903,22.57,22.57,22.57,9.99,0,69465,156783069.25,7.09],
+          ["2025-12-02",24.83,10.0133,24.83,24.21,24.83,10.01,2.75,120223,298076342.38,12.27]
+        ]
+      },
+      {
+        code: "603122", name: "合富中国", industry: "医药 流通",
+        run: { start: "2025-10-28", end: "2025-11-07", days: 9 },
+        candidates: ["2022-02-16 至 2022-03-04（13板，上市初期长连板）"],
+        daily: [
+          ["2025-10-28",6.65,-0.4491,7.35,6.58,7.35,10.03,11.53,367162,262190110,9.22],
+          ["2025-10-29",7.87,7.0748,8.09,7.69,8.09,10.07,5.44,233706,186128590,5.87],
+          ["2025-10-30",8.27,2.2250,8.90,7.79,8.90,10.01,13.72,815212,700623315,20.48],
+          ["2025-10-31",9.56,7.4157,9.79,9.30,9.79,10.00,5.51,495431,479319407,12.45],
+          ["2025-11-03",10.77,10.0102,10.77,10.51,10.77,10.01,2.66,252254,271109160,6.34],
+          ["2025-11-04",11.85,10.0279,11.85,11.61,11.85,10.03,2.23,246988,292415981,6.20],
+          ["2025-11-05",13.04,10.0422,13.04,13.04,13.04,10.04,0,58671,76507114,1.47],
+          ["2025-11-06",14.34,9.9693,14.34,13.14,14.34,9.97,9.20,1254054,1757103347,31.50],
+          ["2025-11-07",14.14,-1.3947,15.77,13.00,15.77,9.97,19.32,1267708,1781413029,31.85]
+        ]
+      },
+      {
+        code: "002361", name: "神剑股份", industry: "军工 化工",
+        run: { start: "2025-12-18", end: "2025-12-29", days: 8 },
+        candidates: ["2015-05-12 至 2015-05-29（14板）"],
+        daily: [
+          ["2025-12-18",6.69,-0.8889,7.43,6.64,7.43,10.07,11.70,640103,471821377.93,7.91],
+          ["2025-12-19",7.70,3.6339,8.17,7.61,8.17,9.96,7.54,2507052,1986361029.47,30.98],
+          ["2025-12-22",8.99,10.0367,8.99,8.25,8.99,10.04,9.06,2550905,2224915796.85,31.53],
+          ["2025-12-23",9.88,9.8999,9.89,9.51,9.89,10.01,4.23,3365388,3318831446.80,41.59],
+          ["2025-12-24",9.57,-3.2356,10.88,9.57,10.88,10.01,13.25,2598626,2647395139.65,32.12],
+          ["2025-12-25",11.97,10.0184,11.97,11.70,11.97,10.02,2.48,782468,934260609.21,9.67],
+          ["2025-12-26",13.17,10.0251,13.17,13.17,13.17,10.03,0,126846,167056129.32,1.57],
+          ["2025-12-29",14.47,9.8709,14.49,14.06,14.49,10.02,3.26,1856864,2681343785.70,22.95]
+        ]
+      }
+    ];
+
+    const state = {
+      stockCode: sourceStocks[0].code,
+      selectedKey: "",
+      stage: "all",
+      onlyIssues: false
+    };
+
+    const statusMeta = {
+      pass: { label: "满足", color: "var(--pass)" },
+      borderline: { label: "临界", color: "var(--borderline)" },
+      fail: { label: "不满足", color: "var(--fail)" },
+      exception: { label: "解释性例外", color: "var(--exception)" },
+      prelead: { label: "定龙前例外", color: "var(--prelead)" },
+      unknown: { label: "未知", color: "var(--unknown)" }
+    };
+
+    const cssColor = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const pct = (value, digits = 2) => `${value >= 0 ? "+" : ""}${value.toFixed(digits)}%`;
+    const plainPct = (value, digits = 2) => `${value.toFixed(digits)}%`;
+    const cnMoney = (value) => value >= 1e8 ? `${(value / 1e8).toFixed(2)}亿` : `${(value / 1e4).toFixed(0)}万`;
+    const cnVolume = (lots) => lots >= 100000000 ? `${(lots / 100000000).toFixed(2)}亿手` : `${(lots / 10000).toFixed(2)}万手`;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    function interpolate(x, field) {
+      const rows = thresholdRows;
+      if (x <= rows[0].open) return rows[0][field];
+      if (x >= rows[rows.length - 1].open) return rows[rows.length - 1][field];
+      for (let i = 0; i < rows.length - 1; i += 1) {
+        const a = rows[i];
+        const b = rows[i + 1];
+        if (x >= a.open && x <= b.open) {
+          const t = (x - a.open) / (b.open - a.open);
+          return a[field] + (b[field] - a[field]) * t;
+        }
+      }
+      return rows[0][field];
+    }
+
+    function calculatorRule(openPct) {
+      const minOpen = thresholdRows[0].open;
+      const maxOpen = thresholdRows[thresholdRows.length - 1].open;
+      const boundedOpen = Math.max(minOpen, Math.min(maxOpen, openPct));
+      return {
+        openPct,
+        boundedOpen,
+        clamped: boundedOpen !== openPct,
+        ampLimit: interpolate(openPct, "amp"),
+        lowLimit: interpolate(openPct, "minLow"),
+        openToLowLimit: interpolate(openPct, "openToLow")
+      };
+    }
+
+    function renderCalculator() {
+      const openInput = document.getElementById("calcOpenPct");
+      const prevInput = document.getElementById("calcPrevClose");
+      const resultEl = document.getElementById("calculatorResults");
+      const noteEl = document.getElementById("calculatorNote");
+      if (!openInput || !prevInput || !resultEl || !noteEl) return;
+
+      const openPct = Number(openInput.value);
+      const prevClose = Number(prevInput.value);
+      if (!Number.isFinite(openPct)) {
+        resultEl.innerHTML = `<div class="calc-result"><span>等待输入</span><strong>--</strong><small>请输入开盘涨幅 x</small></div>`;
+        noteEl.textContent = "输入开盘涨幅后，会按 Excel 阈值表插值输出对应条件。";
+        return;
+      }
+
+      const rule = calculatorRule(openPct);
+      const openPrice = Number.isFinite(prevClose) && prevClose > 0 ? prevClose * (1 + openPct / 100) : null;
+      const protectPrice = Number.isFinite(prevClose) && prevClose > 0 ? prevClose * (1 + rule.lowLimit / 100) : null;
+      const cards = [
+        {
+          label: "振幅阈值 F0(x)",
+          value: plainPct(rule.ampLimit, 2),
+          help: "当日振幅不应超过此值"
+        },
+        {
+          label: "最低下杀线 G0(x)",
+          value: pct(rule.lowLimit, 2),
+          help: "日内最低点不应跌破此线"
+        },
+        {
+          label: "开盘到最低允许",
+          value: plainPct(rule.openToLowLimit, 2),
+          help: "从开盘价向下的容许空间"
+        },
+        {
+          label: "保护价参考",
+          value: protectPrice ? protectPrice.toFixed(2) : "--",
+          help: protectPrice ? `昨日收盘 ${prevClose.toFixed(2)}，开盘参考 ${openPrice.toFixed(2)}` : "填昨日收盘价后计算"
+        }
+      ];
+
+      resultEl.innerHTML = cards.map(card => `
+        <div class="calc-result">
+          <span>${card.label}</span>
+          <strong>${card.value}</strong>
+          <small>${card.help}</small>
+        </div>
+      `).join("");
+
+      const clampText = rule.clamped ? `输入 x=${pct(openPct, 2)} 超出表格区间，已按 ${pct(rule.boundedOpen, 2)} 边界计算。` : `输入 x=${pct(openPct, 2)}，按表格相邻档位线性插值。`;
+      noteEl.textContent = `${clampText} 这是条件单规划参考，不代表一定封板或一定安全；三板起仍需结合当日成交量、换手和分时承接复核。`;
+    }
+
+    function profitRule(openPct, highPct, pullbackPct) {
+      const impulse = highPct - openPct;
+      if (!Number.isFinite(openPct) || !Number.isFinite(highPct) || impulse <= 0) {
+        return { valid: false, message: "一次冲高点必须高于开盘涨幅。" };
+      }
+      const safeRatio = clamp(0.45 - 0.015 * Math.max(openPct, 0), 0.28, 0.45);
+      const hardRatio = clamp(0.62 - 0.012 * Math.max(openPct, 0), 0.45, 0.62);
+      const stopLossLine = interpolate(openPct, "minLow");
+      const openGuard = openPct - clamp(0.15 * impulse, 0.30, 1.20);
+      const safeDrawdown = Math.max(0.30, safeRatio * impulse);
+      const hardDrawdown = Math.max(0.60, hardRatio * impulse);
+      const safeLine = highPct - safeDrawdown;
+      const hardLine = Math.max(highPct - hardDrawdown, openGuard, stopLossLine);
+      const pullbackDrawdown = Number.isFinite(pullbackPct) ? highPct - pullbackPct : null;
+      const retraceRatio = pullbackDrawdown === null ? null : pullbackDrawdown / impulse;
+      let result = "等待回落点";
+      let tone = "unknown";
+      if (pullbackDrawdown !== null) {
+        if (pullbackPct >= safeLine) {
+          result = "强承接";
+          tone = "pass";
+        } else if (pullbackPct >= hardLine) {
+          result = "偏弱观察";
+          tone = "borderline";
+        } else {
+          result = "不能接受";
+          tone = "fail";
+        }
+      }
+      return {
+        valid: true,
+        impulse,
+        safeRatio,
+        hardRatio,
+        stopLossLine,
+        openGuard,
+        safeDrawdown,
+        hardDrawdown,
+        safeLine,
+        hardLine,
+        pullbackDrawdown,
+        retraceRatio,
+        result,
+        tone
+      };
+    }
+
+    function renderProfitCalculator() {
+      const openInput = document.getElementById("profitOpenPct");
+      const highInput = document.getElementById("profitHighPct");
+      const pullbackInput = document.getElementById("profitPullbackPct");
+      const prevInput = document.getElementById("profitPrevClose");
+      const resultEl = document.getElementById("profitResults");
+      const noteEl = document.getElementById("profitNote");
+      if (!openInput || !highInput || !pullbackInput || !prevInput || !resultEl || !noteEl) return;
+
+      const openPct = Number(openInput.value);
+      const highPct = Number(highInput.value);
+      const pullbackPct = pullbackInput.value === "" ? NaN : Number(pullbackInput.value);
+      const prevClose = Number(prevInput.value);
+      const rule = profitRule(openPct, highPct, pullbackPct);
+      if (!rule.valid) {
+        resultEl.innerHTML = `<div class="calc-result"><span>输入错误</span><strong>--</strong><small>${rule.message}</small></div>`;
+        noteEl.textContent = "请输入开盘涨幅和一次冲高点，且一次冲高点必须高于开盘。";
+        return;
+      }
+
+      const priceText = (linePct) => Number.isFinite(prevClose) && prevClose > 0 ? (prevClose * (1 + linePct / 100)).toFixed(2) : "--";
+      const retraceText = rule.retraceRatio === null ? "--" : `${(rule.retraceRatio * 100).toFixed(1)}%`;
+      const cards = [
+        {
+          label: "安全回落线",
+          value: pct(rule.safeLine, 2),
+          help: `冲高后回落 ${plainPct(rule.safeDrawdown, 2)} 以内较安全；价格 ${priceText(rule.safeLine)}`
+        },
+        {
+          label: "不能接受线",
+          value: pct(rule.hardLine, 2),
+          help: `跌破此线视为第一次回落失败；价格 ${priceText(rule.hardLine)}`
+        },
+        {
+          label: "当前回撤比例",
+          value: retraceText,
+          help: `回撤 / 开盘到冲高幅度；安全阈值 ${(rule.safeRatio * 100).toFixed(0)}%，硬阈值 ${(rule.hardRatio * 100).toFixed(0)}%`
+        },
+        {
+          label: "模型判断",
+          value: rule.result,
+          help: `开盘到冲高 ${plainPct(rule.impulse, 2)}；开盘守门线 ${pct(rule.openGuard, 2)}`
+        },
+        {
+          label: "止损下杀线",
+          value: pct(rule.stopLossLine, 2),
+          help: "若第一次回落连止损线都破，模型直接判弱"
+        },
+        {
+          label: "保护价参考",
+          value: priceText(rule.hardLine),
+          help: "填昨日收盘价后，可作为第一次回落保护线参考"
+        }
+      ];
+      resultEl.innerHTML = cards.map(card => `
+        <div class="calc-result">
+          <span>${card.label}</span>
+          <strong>${card.value}</strong>
+          <small>${card.help}</small>
+        </div>
+      `).join("");
+
+      const judgement = rule.tone === "pass" ? "第一次回落仍在安全线之上，属于较强承接。" :
+        rule.tone === "borderline" ? "第一次回落已经超过安全线，但尚未跌破不能接受线，适合降低仓位或观察二次上攻。" :
+        rule.tone === "fail" ? "第一次回落跌破不能接受线，按模型应触发止盈/保护。" :
+        "未输入第一次回落点时，只输出预设条件线。";
+      noteEl.textContent = `${judgement} 这是止盈/持仓保护模型，和前面的开盘止损模型配套使用；真实交易仍需结合分时量能、封单、盘口承接和市场情绪。`;
+    }
+
+    function normalizeData() {
+      return sourceStocks.map(stock => {
+        const rows = stock.daily.map((raw, idx) => {
+          const [date, open, openPct, high, low, close, pctChg, amplitude, volume, amount, turnover] = raw;
+          const previousClose = open / (1 + openPct / 100);
+          const lowPct = (low / previousClose - 1) * 100;
+          const highPct = (high / previousClose - 1) * 100;
+          const ampLimit = interpolate(openPct, "amp");
+          const lowLimit = interpolate(openPct, "minLow");
+          const openToLowLimit = interpolate(openPct, "openToLow");
+          const volumeWan = volume / 10000;
+          const ampOver = amplitude - ampLimit;
+          const lowUnder = lowLimit - lowPct;
+          const pass = ampOver <= 0.03 && lowUnder <= 0.03;
+          const near = pass && (ampLimit - amplitude <= 0.5 || lowPct - lowLimit <= 0.5);
+          const highAbsoluteVolume = volume >= 1000000;
+          const isPreLead = idx < 2;
+          const largeDivergence = !isPreLead && !pass && (highAbsoluteVolume || turnover >= 20 || amplitude >= 10);
+          const result = isPreLead ? "prelead" : (pass ? (near ? "borderline" : "pass") : (largeDivergence ? "exception" : "fail"));
+          const reasons = [];
+          if (isPreLead) {
+            reasons.push("首板/二板属于定龙前观察期，不纳入三板起验证与模型校准");
+          } else {
+            if (ampOver > 0.03) reasons.push(`振幅超阈值 ${ampOver.toFixed(2)}pct`);
+            if (lowUnder > 0.03) reasons.push(`最低下杀破线 ${lowUnder.toFixed(2)}pct`);
+            if (largeDivergence) reasons.push(`量能/换手分歧：当日成交量 ${cnVolume(volume)}，换手 ${turnover.toFixed(2)}%`);
+            if (!reasons.length && near) reasons.push("接近阈值，建议复核分时");
+            if (!reasons.length) reasons.push("满足三板起日K约束");
+          }
+          return {
+            stockCode: stock.code,
+            stockName: stock.name,
+            industry: stock.industry,
+            key: `${stock.code}-${date}`,
+            date,
+            stage: idx + 1,
+            open, openPct, high, highPct, low, lowPct, close, pctChg,
+            amplitude, volume, amount, turnover,
+            previousClose, volumeWan, highAbsoluteVolume, isPreLead, ampLimit, lowLimit, openToLowLimit,
+            ampOver, lowUnder, result, reasons
+          };
+        });
+        return { ...stock, rows };
+      });
+    }
+
+    const stocks = normalizeData();
+    const allRows = stocks.flatMap(s => s.rows);
+    const intradayStore = {};
+
+    function stageAllowed(row) {
+      if (state.stage === "leader") return row.stage >= 3;
+      if (state.stage === "early") return row.stage <= 3;
+      if (state.stage === "mid") return row.stage >= 4 && row.stage <= 6;
+      if (state.stage === "late") return row.stage >= 7;
+      return true;
+    }
+
+    function rowAllowed(row) {
+      if (!stageAllowed(row)) return false;
+      if (state.onlyIssues && !["fail", "exception", "borderline", "prelead"].includes(row.result)) return false;
+      return true;
+    }
+
+    function currentStock() {
+      return stocks.find(s => s.code === state.stockCode) || stocks[0];
+    }
+
+    function visibleRowsForStock() {
+      return currentStock().rows.filter(rowAllowed);
+    }
+
+    function selectedRow() {
+      const visible = visibleRowsForStock();
+      const row = visible.find(r => r.key === state.selectedKey);
+      return row || visible.find(r => !r.isPreLead) || visible[0] || currentStock().rows[0];
+    }
+
+    function setupControls() {
+      const stockSelect = document.getElementById("stockSelect");
+      stockSelect.innerHTML = stocks.map(s => `<option value="${s.code}">${s.code} ${s.name}</option>`).join("");
+      stockSelect.value = state.stockCode;
+      stockSelect.addEventListener("change", (event) => {
+        state.stockCode = event.target.value;
+        state.selectedKey = "";
+        render();
+      });
+
+      document.getElementById("stageSelect").addEventListener("change", (event) => {
+        state.stage = event.target.value;
+        state.selectedKey = "";
+        render();
+      });
+
+      document.getElementById("onlyIssues").addEventListener("change", (event) => {
+        state.onlyIssues = event.target.checked;
+        state.selectedKey = "";
+        render();
+      });
+
+      const calcOpenPct = document.getElementById("calcOpenPct");
+      const calcPrevClose = document.getElementById("calcPrevClose");
+      const calcUseSelected = document.getElementById("calcUseSelected");
+      calcOpenPct?.addEventListener("input", renderCalculator);
+      calcPrevClose?.addEventListener("input", renderCalculator);
+      calcUseSelected?.addEventListener("click", () => {
+        const row = selectedRow();
+        if (!row) return;
+        calcOpenPct.value = row.openPct.toFixed(2);
+        calcPrevClose.value = row.previousClose.toFixed(2);
+        renderCalculator();
+      });
+
+      const profitOpenPct = document.getElementById("profitOpenPct");
+      const profitHighPct = document.getElementById("profitHighPct");
+      const profitPullbackPct = document.getElementById("profitPullbackPct");
+      const profitPrevClose = document.getElementById("profitPrevClose");
+      const profitUseSelected = document.getElementById("profitUseSelected");
+      [profitOpenPct, profitHighPct, profitPullbackPct, profitPrevClose].forEach(input => {
+        input?.addEventListener("input", renderProfitCalculator);
+      });
+      profitUseSelected?.addEventListener("click", () => {
+        const row = selectedRow();
+        if (!row) return;
+        profitOpenPct.value = row.openPct.toFixed(2);
+        profitHighPct.value = row.highPct.toFixed(2);
+        profitPullbackPct.value = row.lowPct.toFixed(2);
+        profitPrevClose.value = row.previousClose.toFixed(2);
+        renderProfitCalculator();
+      });
+
+      document.getElementById("intradayLoad")?.addEventListener("click", () => {
+        const row = selectedRow();
+        const text = document.getElementById("intradayCsv")?.value || "";
+        const parsed = parseIntradayCsv(text);
+        if (parsed.length) {
+          intradayStore[row.key] = parsed;
+        }
+        renderIntraday();
+      });
+
+      document.getElementById("intradayClear")?.addEventListener("click", () => {
+        const row = selectedRow();
+        delete intradayStore[row.key];
+        const input = document.getElementById("intradayCsv");
+        if (input) input.value = "";
+        renderIntraday();
+      });
+    }
+
+    function stockStats(stock) {
+      const rows = stock.rows;
+      const validated = rows.filter(r => !r.isPreLead);
+      const pass = validated.filter(r => r.result === "pass" || r.result === "borderline").length;
+      const issue = rows.filter(r => r.result === "fail" || r.result === "exception" || r.result === "prelead").length;
+      const worstPool = validated.length ? validated : rows;
+      const worst = worstPool.slice().sort((a, b) => Math.max(b.ampOver, b.lowUnder) - Math.max(a.ampOver, a.lowUnder))[0];
+      return { pass, issue, total: validated.length, worst };
+    }
+
+    function renderSummary() {
+      const el = document.getElementById("summary");
+      el.innerHTML = stocks.map(stock => {
+        const stats = stockStats(stock);
+        const active = stock.code === state.stockCode ? " active" : "";
+        return `
+          <button class="stock-card${active}" data-stock="${stock.code}" type="button">
+            <div class="stock-title">
+              <span>${stock.code} ${stock.name}</span>
+              <span class="industry">${stock.industry}</span>
+            </div>
+            <div class="run">${stock.run.start} -> ${stock.run.end} / ${stock.run.days}板</div>
+            <div class="card-metrics">
+              <div class="mini-stat"><strong>${stats.pass}/${stats.total}</strong><span>三板起满足</span></div>
+              <div class="mini-stat"><strong>${stats.issue}</strong><span>例外天数</span></div>
+              <div class="mini-stat"><strong>${stats.worst.date.slice(5)}</strong><span>最大偏离</span></div>
+            </div>
+          </button>
+        `;
+      }).join("");
+      el.querySelectorAll(".stock-card").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.stockCode = btn.dataset.stock;
+          state.selectedKey = "";
+          document.getElementById("stockSelect").value = state.stockCode;
+          render();
+        });
+      });
+    }
+
+    function renderTimeline() {
+      const rows = visibleRowsForStock();
+      const el = document.getElementById("timeline");
+      const selected = selectedRow();
+      state.selectedKey = selected ? selected.key : "";
+      document.getElementById("dateCount").textContent = `${rows.length} 日`;
+      el.innerHTML = rows.map(row => `
+        <button class="date-row${row.key === state.selectedKey ? " active" : ""}" data-key="${row.key}" type="button">
+          <span class="dot ${row.result}"></span>
+          <span class="date-main">
+            <strong>${row.date}</strong>
+            <span>${row.stage}板 / 开 ${pct(row.openPct, 2)}</span>
+          </span>
+          <span class="pill ${row.result}">${statusMeta[row.result].label}</span>
+        </button>
+      `).join("");
+      el.querySelectorAll(".date-row").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.selectedKey = btn.dataset.key;
+          render();
+        });
+      });
+    }
+
+    function metric(label, value, delta, tone) {
+      return `
+        <div class="metric">
+          <div class="label"><span>${label}</span>${delta ? `<span class="delta ${tone}">${delta}</span>` : ""}</div>
+          <div class="value">${value}</div>
+        </div>
+      `;
+    }
+
+    function renderDetail() {
+      const stock = currentStock();
+      const row = selectedRow();
+      if (!row) return;
+      document.getElementById("selectedHeading").textContent = `${stock.code} ${stock.name} · ${row.date}`;
+      document.getElementById("selectedSub").textContent = `${row.stage}板 / 前收 ${row.previousClose.toFixed(2)} / 成交额 ${cnMoney(row.amount)}`;
+      const pill = document.getElementById("selectedPill");
+      pill.className = `pill ${row.result}`;
+      pill.textContent = statusMeta[row.result].label;
+      const ampTone = row.isPreLead ? "warn" : (row.ampOver <= 0 ? "ok" : row.result === "exception" ? "warn" : "bad");
+      const lowTone = row.isPreLead ? "warn" : (row.lowUnder <= 0 ? "ok" : row.result === "exception" ? "warn" : "bad");
+      document.getElementById("metrics").innerHTML = [
+        metric("开盘竞价幅度 x", pct(row.openPct, 2), `开 ${row.open.toFixed(2)}`, "ok"),
+        metric("对应振幅阈值", plainPct(row.ampLimit, 2), row.ampOver <= 0 ? `余 ${Math.abs(row.ampOver).toFixed(2)}pct` : `超 ${row.ampOver.toFixed(2)}pct`, ampTone),
+        metric("实际振幅", plainPct(row.amplitude, 2), `高 ${pct(row.highPct, 2)}`, ampTone),
+        metric("最低下杀", pct(row.lowPct, 2), row.lowUnder <= 0 ? `余 ${Math.abs(row.lowUnder).toFixed(2)}pct` : `破 ${row.lowUnder.toFixed(2)}pct`, lowTone),
+        metric("下杀线", pct(row.lowLimit, 2), `开-低线 ${plainPct(row.openToLowLimit, 2)}`, "ok"),
+        metric("量能分歧", cnVolume(row.volume), `换手 ${plainPct(row.turnover, 2)}`, row.highAbsoluteVolume || row.turnover >= 20 ? "warn" : "ok")
+      ].join("");
+    }
+
+    function svgEl(parent, viewBox = "0 0 560 270") {
+      parent.innerHTML = "";
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", viewBox);
+      svg.setAttribute("preserveAspectRatio", "none");
+      parent.appendChild(svg);
+      return svg;
+    }
+
+    function add(svg, tag, attrs, text) {
+      const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      Object.entries(attrs || {}).forEach(([key, value]) => node.setAttribute(key, value));
+      if (text !== undefined) node.textContent = text;
+      svg.appendChild(node);
+      return node;
+    }
+
+    function showTip(event, html) {
+      const tip = document.getElementById("tooltip");
+      tip.innerHTML = html;
+      tip.style.left = `${event.clientX}px`;
+      tip.style.top = `${event.clientY}px`;
+      tip.classList.add("visible");
+    }
+
+    function hideTip() {
+      document.getElementById("tooltip").classList.remove("visible");
+    }
+
+    function colorFor(result) {
+      const map = {
+        pass: cssColor("--pass"),
+        borderline: cssColor("--borderline"),
+        fail: cssColor("--fail"),
+        exception: cssColor("--exception"),
+        prelead: cssColor("--prelead"),
+        unknown: cssColor("--unknown")
+      };
+      return map[result] || map.unknown;
+    }
+
+    function scale(domainMin, domainMax, rangeMin, rangeMax) {
+      const span = domainMax - domainMin || 1;
+      return (value) => rangeMin + (value - domainMin) / span * (rangeMax - rangeMin);
+    }
+
+    function renderGrid(svg, x0, y0, w, h, yTicks, yScale, labelFormatter) {
+      const g = add(svg, "g", { class: "grid" });
+      yTicks.forEach(t => {
+        const y = yScale(t);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x0);
+        line.setAttribute("x2", x0 + w);
+        line.setAttribute("y1", y);
+        line.setAttribute("y2", y);
+        g.appendChild(line);
+        add(svg, "text", { x: x0 - 8, y: y + 4, "text-anchor": "end", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, labelFormatter(t));
+      });
+    }
+
+    function renderRuleChart() {
+      const rows = visibleRowsForStock();
+      const selected = selectedRow();
+      const svg = svgEl(document.getElementById("ruleChart"));
+      const x0 = 46, y0 = 20, w = 488, h = 202;
+      const xScale = scale(-2, 10, x0, x0 + w);
+      const yScale = scale(13, 0, y0, y0 + h);
+      renderGrid(svg, x0, y0, w, h, [0, 3, 6, 9, 12], yScale, v => `${v}%`);
+
+      let path = "";
+      thresholdRows.forEach((row, idx) => {
+        const x = xScale(row.open);
+        const y = yScale(row.amp);
+        path += `${idx === 0 ? "M" : "L"} ${x} ${y} `;
+      });
+      add(svg, "path", { d: path, fill: "none", stroke: cssColor("--blue"), "stroke-width": 2.4, "stroke-linejoin": "round" });
+
+      rows.forEach(row => {
+        const cx = xScale(Math.max(-2, Math.min(10, row.openPct)));
+        const cy = yScale(row.amplitude);
+        const r = row.key === selected.key ? 6 : 4.5;
+        const node = add(svg, "circle", {
+          cx, cy, r,
+          fill: colorFor(row.result),
+          stroke: row.key === selected.key ? "#17202a" : "#fff",
+          "stroke-width": row.key === selected.key ? 2 : 1.5,
+          "data-key": row.key,
+          tabindex: 0
+        });
+        node.addEventListener("mouseenter", (event) => showTip(event, `<b>${row.date} · ${row.stage}板</b><div class="mono">开盘x ${pct(row.openPct, 2)}<br>实际振幅 ${plainPct(row.amplitude, 2)} / 阈值 ${plainPct(row.ampLimit, 2)}</div>`));
+        node.addEventListener("mousemove", (event) => showTip(event, `<b>${row.date} · ${row.stage}板</b><div class="mono">开盘x ${pct(row.openPct, 2)}<br>实际振幅 ${plainPct(row.amplitude, 2)} / 阈值 ${plainPct(row.ampLimit, 2)}</div>`));
+        node.addEventListener("mouseleave", hideTip);
+        node.addEventListener("click", () => { state.selectedKey = row.key; render(); });
+      });
+
+      [-2, 0, 3, 6, 10].forEach(t => {
+        const x = xScale(t);
+        add(svg, "text", { x, y: 248, "text-anchor": "middle", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, `${t}%`);
+      });
+      add(svg, "text", { x: x0 + w / 2, y: 266, "text-anchor": "middle", fill: cssColor("--muted"), "font-size": 11 }, "开盘竞价幅度 x");
+    }
+
+    function renderAmplitudeChart() {
+      const rows = visibleRowsForStock();
+      const selected = selectedRow();
+      const svg = svgEl(document.getElementById("amplitudeChart"));
+      const x0 = 86, y0 = 22, w = 424, rowH = 26, gap = 6;
+      const max = Math.max(13, ...rows.map(r => Math.max(r.amplitude, r.ampLimit))) * 1.08;
+      const xScale = scale(0, max, x0, x0 + w);
+      rows.forEach((row, idx) => {
+        const y = y0 + idx * (rowH + gap);
+        const backW = xScale(row.ampLimit) - x0;
+        const actualW = xScale(Math.min(row.amplitude, row.ampLimit)) - x0;
+        add(svg, "text", { x: 12, y: y + 17, fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 11 }, `${row.date.slice(5)} ${row.stage}板`);
+        add(svg, "rect", { x: x0, y, width: backW, height: 18, rx: 4, fill: "#e8eef8" });
+        add(svg, "rect", { x: x0, y, width: actualW, height: 18, rx: 4, fill: row.result === "pass" || row.result === "borderline" ? cssColor("--cyan") : colorFor(row.result), opacity: 0.88 });
+        if (row.amplitude > row.ampLimit) {
+          add(svg, "rect", { x: xScale(row.ampLimit), y, width: xScale(row.amplitude) - xScale(row.ampLimit), height: 18, rx: 4, fill: cssColor("--fail"), opacity: 0.88 });
+        }
+        if (row.key === selected.key) {
+          add(svg, "rect", { x: x0 - 4, y: y - 4, width: w + 8, height: 26, rx: 6, fill: "none", stroke: cssColor("--blue"), "stroke-width": 1.5 });
+        }
+        add(svg, "text", { x: x0 + w + 8, y: y + 14, fill: cssColor("--ink"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 11 }, `${row.amplitude.toFixed(2)}%`);
+      });
+    }
+
+    function renderDrawdownChart() {
+      const rows = visibleRowsForStock();
+      const selected = selectedRow();
+      const svg = svgEl(document.getElementById("drawdownChart"));
+      const x0 = 42, y0 = 20, w = 488, h = 202;
+      const minY = Math.min(-5, ...rows.map(r => Math.min(r.lowPct, r.lowLimit))) - 0.5;
+      const maxY = Math.max(11, ...rows.map(r => Math.max(r.openPct, r.lowLimit))) + 0.5;
+      const yScale = scale(minY, maxY, y0 + h, y0);
+      const step = w / Math.max(rows.length, 1);
+      renderGrid(svg, x0, y0, w, h, [Math.ceil(minY), 0, 5, 10].filter((v, i, arr) => arr.indexOf(v) === i), yScale, v => `${v}%`);
+      add(svg, "line", { x1: x0, x2: x0 + w, y1: yScale(0), y2: yScale(0), stroke: "#aeb8c7", "stroke-width": 1.2 });
+      rows.forEach((row, idx) => {
+        const cx = x0 + idx * step + step / 2;
+        const bw = Math.min(36, step * 0.56);
+        const zero = yScale(0);
+        const yLow = yScale(row.lowPct);
+        const color = row.lowUnder > 0.03 ? colorFor(row.result) : cssColor("--pass");
+        add(svg, "line", { x1: cx - bw / 2, x2: cx + bw / 2, y1: yScale(row.lowLimit), y2: yScale(row.lowLimit), stroke: cssColor("--fail"), "stroke-width": 2, "stroke-dasharray": "4 3" });
+        add(svg, "rect", { x: cx - bw / 2, y: Math.min(zero, yLow), width: bw, height: Math.abs(zero - yLow), rx: 4, fill: color, opacity: 0.84 });
+        if (row.key === selected.key) {
+          add(svg, "circle", { cx, cy: yLow, r: 5.5, fill: "#fff", stroke: cssColor("--blue"), "stroke-width": 2 });
+        }
+        add(svg, "text", { x: cx, y: 248, "text-anchor": "middle", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, row.date.slice(5));
+      });
+    }
+
+    function renderVolumeChart() {
+      const rows = visibleRowsForStock();
+      const selected = selectedRow();
+      const svg = svgEl(document.getElementById("volumeChart"));
+      const x0 = 42, y0 = 20, w = 488, h = 202;
+      const maxY = Math.max(10, ...rows.map(r => r.volumeWan)) * 1.15;
+      const yScale = scale(0, maxY, y0 + h, y0);
+      const step = w / Math.max(rows.length, 1);
+      const ticks = [0, maxY * 0.25, maxY * 0.5, maxY * 0.75].map(v => Math.round(v));
+      renderGrid(svg, x0, y0, w, h, ticks, yScale, v => `${v}万`);
+      if (maxY >= 100) {
+        add(svg, "line", { x1: x0, x2: x0 + w, y1: yScale(100), y2: yScale(100), stroke: cssColor("--borderline"), "stroke-width": 1.8, "stroke-dasharray": "5 4" });
+      }
+      rows.forEach((row, idx) => {
+        const cx = x0 + idx * step + step / 2;
+        const bw = Math.min(38, step * 0.58);
+        const clipped = Math.min(row.volumeWan, maxY);
+        const barY = yScale(clipped);
+        const color = row.highAbsoluteVolume ? cssColor("--exception") : cssColor("--blue");
+        add(svg, "rect", { x: cx - bw / 2, y: barY, width: bw, height: y0 + h - barY, rx: 4, fill: color, opacity: 0.84 });
+        if (row.key === selected.key) {
+          add(svg, "rect", { x: cx - bw / 2 - 4, y: barY - 4, width: bw + 8, height: y0 + h - barY + 8, rx: 6, fill: "none", stroke: cssColor("--blue"), "stroke-width": 1.5 });
+        }
+        const label = row.volumeWan >= 100 ? `${row.volumeWan.toFixed(0)}万` : `${row.volumeWan.toFixed(1)}万`;
+        add(svg, "text", { x: cx, y: Math.max(14, barY - 5), "text-anchor": "middle", fill: cssColor("--ink"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, label);
+        add(svg, "text", { x: cx, y: 248, "text-anchor": "middle", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, row.date.slice(5));
+      });
+    }
+
+    function renderThresholdChart() {
+      const svg = svgEl(document.getElementById("thresholdChart"));
+      const x0 = 46, y0 = 18, w = 488, h = 202;
+      const xScale = scale(-2, 10, x0, x0 + w);
+      const yScale = scale(13, -3, y0, y0 + h);
+      renderGrid(svg, x0, y0, w, h, [-2, 0, 5, 10, 12], yScale, v => `${v}%`);
+      const pathAmp = thresholdRows.map((row, idx) => `${idx ? "L" : "M"} ${xScale(row.open)} ${yScale(row.amp)}`).join(" ");
+      const pathLow = thresholdRows.map((row, idx) => `${idx ? "L" : "M"} ${xScale(row.open)} ${yScale(row.minLow)}`).join(" ");
+      add(svg, "path", { d: pathAmp, fill: "none", stroke: cssColor("--blue"), "stroke-width": 2.3 });
+      add(svg, "path", { d: pathLow, fill: "none", stroke: cssColor("--fail"), "stroke-width": 2.3, "stroke-dasharray": "5 4" });
+      thresholdRows.forEach(row => {
+        add(svg, "circle", { cx: xScale(row.open), cy: yScale(row.amp), r: 3.5, fill: cssColor("--blue") });
+        add(svg, "circle", { cx: xScale(row.open), cy: yScale(row.minLow), r: 3.5, fill: cssColor("--fail") });
+      });
+      add(svg, "text", { x: x0 + w - 82, y: 30, fill: cssColor("--blue"), "font-size": 12, "font-weight": 700 }, "振幅阈值");
+      add(svg, "text", { x: x0 + w - 82, y: 48, fill: cssColor("--fail"), "font-size": 12, "font-weight": 700 }, "最低下杀线");
+      [-2, 0, 3, 6, 10].forEach(t => add(svg, "text", { x: xScale(t), y: 248, "text-anchor": "middle", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, `${t}%`));
+    }
+
+    function parseNumberCell(value) {
+      const cleaned = String(value ?? "").replace(/,/g, "").replace(/[^\d.+-]/g, "");
+      const number = Number(cleaned);
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function parseIntradayCsv(text) {
+      return String(text || "")
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => line.split(/[\t,，]+/).map(cell => cell.trim()))
+        .map(parts => {
+          if (parts.length < 3) return null;
+          const first = parts[0];
+          const isEastMoneyKline = parts.length >= 6 && /\d{4}[-/]?\d{2}[-/]?\d{2}/.test(first);
+          const time = isEastMoneyKline ? first.split(/\s+/).pop() : first;
+          const price = isEastMoneyKline ? parseNumberCell(parts[2]) : parseNumberCell(parts[1]);
+          const volume = isEastMoneyKline ? parseNumberCell(parts[5]) : parseNumberCell(parts[2]);
+          if (!/^\d{1,2}:?\d{2}$/.test(time) || price === null || volume === null) return null;
+          const normalizedTime = time.includes(":") ? time : `${time.slice(0, -2)}:${time.slice(-2)}`;
+          return { time: normalizedTime.padStart(5, "0"), price, volume };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.time.localeCompare(b.time));
+    }
+
+    function renderIntradayEmpty(message) {
+      document.getElementById("intradayStatus").textContent = "未加载该日分钟线";
+      document.getElementById("intradaySummary").innerHTML = `
+        <div class="model-stat"><strong>--</strong><span>分时最低</span></div>
+        <div class="model-stat"><strong>--</strong><span>下杀线</span></div>
+        <div class="model-stat"><strong>--</strong><span>逐分钟量能</span></div>
+        <div class="model-stat"><strong>--</strong><span>路径判断</span></div>
+      `;
+      document.getElementById("intradayPriceChart").innerHTML = `<div class="empty-state">${message}</div>`;
+      document.getElementById("intradayVolumeChart").innerHTML = `<div class="empty-state">粘贴真实分钟成交量后，这里会显示逐分钟量能柱。</div>`;
+    }
+
+    function renderIntradayLine(points, row) {
+      const svg = svgEl(document.getElementById("intradayPriceChart"));
+      const x0 = 48, y0 = 18, w = 482, h = 202;
+      const protectPrice = row.previousClose * (1 + row.lowLimit / 100);
+      const prices = points.map(p => p.price).concat([protectPrice, row.previousClose, row.open]);
+      const minY = Math.min(...prices) * 0.995;
+      const maxY = Math.max(...prices) * 1.005;
+      const xScale = scale(0, Math.max(points.length - 1, 1), x0, x0 + w);
+      const yScale = scale(minY, maxY, y0 + h, y0);
+      renderGrid(svg, x0, y0, w, h, [minY, row.previousClose, protectPrice, maxY], yScale, v => v.toFixed(2));
+      add(svg, "line", { x1: x0, x2: x0 + w, y1: yScale(protectPrice), y2: yScale(protectPrice), stroke: cssColor("--fail"), "stroke-width": 2, "stroke-dasharray": "5 4" });
+      add(svg, "line", { x1: x0, x2: x0 + w, y1: yScale(row.previousClose), y2: yScale(row.previousClose), stroke: "#aeb8c7", "stroke-width": 1.2 });
+      const path = points.map((p, idx) => `${idx ? "L" : "M"} ${xScale(idx)} ${yScale(p.price)}`).join(" ");
+      add(svg, "path", { d: path, fill: "none", stroke: cssColor("--blue"), "stroke-width": 2.3, "stroke-linejoin": "round" });
+      const minPoint = points.reduce((best, p, idx) => p.price < best.price ? { ...p, idx } : best, { ...points[0], idx: 0 });
+      add(svg, "circle", { cx: xScale(minPoint.idx), cy: yScale(minPoint.price), r: 5, fill: "#fff", stroke: cssColor("--fail"), "stroke-width": 2 });
+      [0, Math.floor((points.length - 1) / 2), points.length - 1].forEach(idx => {
+        const p = points[idx];
+        if (p) add(svg, "text", { x: xScale(idx), y: 248, "text-anchor": "middle", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, p.time);
+      });
+    }
+
+    function renderIntradayVolume(points) {
+      const svg = svgEl(document.getElementById("intradayVolumeChart"));
+      const x0 = 42, y0 = 18, w = 488, h = 202;
+      const maxV = Math.max(...points.map(p => p.volume), 1);
+      const yScale = scale(0, maxV, y0 + h, y0);
+      const step = w / Math.max(points.length, 1);
+      renderGrid(svg, x0, y0, w, h, [0, maxV * 0.5, maxV], yScale, v => v >= 10000 ? `${(v / 10000).toFixed(1)}万` : v.toFixed(0));
+      points.forEach((p, idx) => {
+        const x = x0 + idx * step;
+        const bw = Math.max(1, Math.min(5, step * 0.72));
+        const y = yScale(p.volume);
+        add(svg, "rect", { x, y, width: bw, height: y0 + h - y, fill: cssColor("--cyan"), opacity: 0.72 });
+      });
+      const peak = points.reduce((best, p, idx) => p.volume > best.volume ? { ...p, idx } : best, { ...points[0], idx: 0 });
+      add(svg, "text", { x: x0 + w - 6, y: 28, "text-anchor": "end", fill: cssColor("--muted"), "font-family": "ui-monospace, Consolas, monospace", "font-size": 10 }, `峰值 ${peak.time}`);
+    }
+
+    function renderIntraday() {
+      const row = selectedRow();
+      const points = row ? intradayStore[row.key] : null;
+      if (!row || !points || !points.length) {
+        renderIntradayEmpty("未加载当前选中日分钟线。免费公开接口无法稳定回溯历史连板日；请粘贴该日真实 1 分钟数据。");
+        return;
+      }
+      const protectPrice = row.previousClose * (1 + row.lowLimit / 100);
+      const minPoint = points.reduce((best, p) => p.price < best.price ? p : best, points[0]);
+      const totalVolume = points.reduce((sum, p) => sum + p.volume, 0);
+      const broken = minPoint.price < protectPrice;
+      document.getElementById("intradayStatus").textContent = `${row.date} 已加载 ${points.length} 条分钟线`;
+      document.getElementById("intradaySummary").innerHTML = `
+        <div class="model-stat"><strong>${minPoint.price.toFixed(2)}</strong><span>分时最低 ${minPoint.time}</span></div>
+        <div class="model-stat"><strong>${protectPrice.toFixed(2)}</strong><span>下杀线 ${pct(row.lowLimit, 2)}</span></div>
+        <div class="model-stat"><strong>${cnVolume(totalVolume)}</strong><span>分钟成交量合计</span></div>
+        <div class="model-stat"><strong>${broken ? "破线" : "未破"}</strong><span>相对下杀线判断</span></div>
+      `;
+      renderIntradayLine(points, row);
+      renderIntradayVolume(points);
+    }
+
+    function renderCharts() {
+      renderRuleChart();
+      renderAmplitudeChart();
+      renderDrawdownChart();
+      renderVolumeChart();
+      renderThresholdChart();
+    }
+
+    function mean(values) {
+      return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+    }
+
+    function wilsonInterval(success, total, z = 1.96) {
+      if (!total) return [0, 0];
+      const p = success / total;
+      const denom = 1 + z * z / total;
+      const center = (p + z * z / (2 * total)) / denom;
+      const margin = z * Math.sqrt((p * (1 - p) + z * z / (4 * total)) / total) / denom;
+      return [Math.max(0, center - margin), Math.min(1, center + margin)];
+    }
+
+    function solveLinearSystem(matrix, vector) {
+      const n = vector.length;
+      const a = matrix.map((row, i) => [...row, vector[i]]);
+      for (let col = 0; col < n; col += 1) {
+        let pivot = col;
+        for (let row = col + 1; row < n; row += 1) {
+          if (Math.abs(a[row][col]) > Math.abs(a[pivot][col])) pivot = row;
+        }
+        if (Math.abs(a[pivot][col]) < 1e-9) return Array(n).fill(0);
+        [a[col], a[pivot]] = [a[pivot], a[col]];
+        const div = a[col][col];
+        for (let j = col; j <= n; j += 1) a[col][j] /= div;
+        for (let row = 0; row < n; row += 1) {
+          if (row === col) continue;
+          const factor = a[row][col];
+          for (let j = col; j <= n; j += 1) a[row][j] -= factor * a[col][j];
+        }
+      }
+      return a.map(row => row[n]);
+    }
+
+    function fitOLS(rows, targetFn) {
+      const featureFn = row => [1, row.openPct, row.stage, Math.log1p(Math.max(0, row.volumeWan)), row.turnover];
+      const p = 5;
+      const xtx = Array.from({ length: p }, () => Array(p).fill(0));
+      const xty = Array(p).fill(0);
+      const y = rows.map(targetFn);
+      rows.forEach((row, idx) => {
+        const x = featureFn(row);
+        for (let i = 0; i < p; i += 1) {
+          xty[i] += x[i] * y[idx];
+          for (let j = 0; j < p; j += 1) xtx[i][j] += x[i] * x[j];
+        }
+      });
+      for (let i = 0; i < p; i += 1) xtx[i][i] += 1e-6;
+      const beta = solveLinearSystem(xtx, xty);
+      const yMean = mean(y);
+      const preds = rows.map(row => featureFn(row).reduce((sum, value, i) => sum + value * beta[i], 0));
+      const sse = preds.reduce((sum, pred, i) => sum + Math.pow(y[i] - pred, 2), 0);
+      const sst = y.reduce((sum, value) => sum + Math.pow(value - yMean, 2), 0);
+      return { beta, r2: sst ? 1 - sse / sst : 0 };
+    }
+
+    function exceptionPressure(row) {
+      const z =
+        -1.4 +
+        0.22 * Math.log1p(Math.max(0, row.volumeWan)) +
+        0.055 * Math.max(0, row.turnover - 10) +
+        0.18 * Math.max(0, row.ampOver) +
+        0.20 * Math.max(0, row.lowUnder);
+      return 1 / (1 + Math.exp(-z));
+    }
+
+    function renderModelSystem() {
+      const sample = allRows;
+      const stockRows = currentStock().rows;
+      const selected = selectedRow();
+      const strictPass = sample.filter(row => row.ampOver <= 0.03 && row.lowUnder <= 0.03).length;
+      const currentStrictPass = stockRows.filter(row => row.ampOver <= 0.03 && row.lowUnder <= 0.03).length;
+      const exceptions = sample.filter(row => row.result === "exception").length;
+      const [lo, hi] = wilsonInterval(strictPass, sample.length);
+      const avgBreak = mean(sample.map(row => Math.max(0, row.ampOver) + Math.max(0, row.lowUnder)));
+      const worst = sample.slice().sort((a, b) => (Math.max(0, b.ampOver) + Math.max(0, b.lowUnder)) - (Math.max(0, a.ampOver) + Math.max(0, a.lowUnder)))[0];
+      const pressure = exceptionPressure(selected);
+      document.getElementById("modelSampleText").textContent = `全样本 ${sample.length} 日 / 当前 ${stockRows.length} 日`;
+      document.getElementById("modelStats").innerHTML = [
+        `<div class="model-stat"><strong>${strictPass}/${sample.length}</strong><span>严格满足率 ${(strictPass / sample.length * 100).toFixed(1)}%，Wilson 95%区间 ${(lo * 100).toFixed(0)}%-${(hi * 100).toFixed(0)}%</span></div>`,
+        `<div class="model-stat"><strong>${currentStrictPass}/${stockRows.length}</strong><span>当前股票严格满足</span></div>`,
+        `<div class="model-stat"><strong>${exceptions}</strong><span>全样本解释性例外日</span></div>`,
+        `<div class="model-stat"><strong>${avgBreak.toFixed(2)}pct</strong><span>平均正向破坏度 B_t</span></div>`,
+        `<div class="model-stat"><strong>${worst.date}</strong><span>最大破坏：${worst.stockName}，B=${(Math.max(0, worst.ampOver) + Math.max(0, worst.lowUnder)).toFixed(2)}pct</span></div>`,
+        `<div class="model-stat"><strong>${(pressure * 100).toFixed(0)}%</strong><span>当前选中日例外门压力</span></div>`
+      ].join("");
+
+      const ampFit = fitOLS(sample, row => row.amplitude);
+      const lowFit = fitOLS(sample, row => row.lowPct);
+      const names = ["截距", "x", "连板阶段", "ln(1+成交量万手)", "换手"];
+      document.getElementById("modelFit").innerHTML = `
+        <div class="table-wrap" style="max-height:none;overflow:auto;">
+          <table class="coef-table">
+            <thead>
+              <tr><th>变量</th><th>振幅模型系数</th><th>最低点模型系数</th></tr>
+            </thead>
+            <tbody>
+              ${names.map((name, i) => `
+                <tr>
+                  <td>${name}</td>
+                  <td class="num">${ampFit.beta[i].toFixed(4)}</td>
+                  <td class="num">${lowFit.beta[i].toFixed(4)}</td>
+                </tr>
+              `).join("")}
+              <tr>
+                <td>R²</td>
+                <td class="num">${ampFit.r2.toFixed(3)}</td>
+                <td class="num">${lowFit.r2.toFixed(3)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="model-note">
+          公式：Y = β0 + β1·x + β2·stage + β3·ln(1+成交量万手) + β4·换手。当前 N=35，只用于发现方向和异常，不用于单独预测。
+        </div>
+      `;
+
+      document.getElementById("modelProtocol").innerHTML = `
+        <div class="formula-list">
+          <div class="formula-line">V_t = 当日成交量万手；E_t = sigmoid(-1.4 + 0.22·ln(1+V_t) + 0.055·max(0,T_t-10) + 0.18·max(0,rA_t) + 0.20·max(0,rL_t))</div>
+          <div class="formula-line">若 B_t = 0：常态满足；若 B_t &gt; 0 且 E_t 高：解释性例外；若 B_t &gt; 0 且 E_t 低：规则失效样本。</div>
+          <div class="formula-line">后续校准：按题材、市场情绪、连板高度分层，滚动训练 F(x|state)、G(x|state) 的 80%-90%分位包络。</div>
+        </div>
+        <div class="model-note">
+          当前选中：${selected.stockCode} ${selected.stockName} ${selected.date}，B=${(Math.max(0, selected.ampOver) + Math.max(0, selected.lowUnder)).toFixed(2)}pct，E=${(pressure * 100).toFixed(0)}%。严谨版本需要引入分钟线，把 M_t 从“日低相对前收”升级为真实分时路径下杀。
+        </div>
+      `;
+    }
+
+    function renderModelSystemV2() {
+      const sample = allRows.filter(row => !row.isPreLead);
+      const stockRows = currentStock().rows;
+      const stockLeaderRows = stockRows.filter(row => !row.isPreLead);
+      const preleadCount = allRows.filter(row => row.isPreLead).length;
+      const selected = selectedRow();
+      const strictPass = sample.filter(row => row.ampOver <= 0.03 && row.lowUnder <= 0.03).length;
+      const currentStrictPass = stockLeaderRows.filter(row => row.ampOver <= 0.03 && row.lowUnder <= 0.03).length;
+      const exceptions = sample.filter(row => row.result === "exception").length;
+      const [lo, hi] = wilsonInterval(strictPass, sample.length);
+      const avgBreak = mean(sample.map(row => Math.max(0, row.ampOver) + Math.max(0, row.lowUnder)));
+      const pressure = selected.isPreLead ? null : exceptionPressure(selected);
+
+      document.getElementById("modelSampleText").textContent = `验证样本 ${sample.length} 日（三板起）/ 定龙前 ${preleadCount} 日`;
+      document.getElementById("modelStats").innerHTML = [
+        `<div class="model-stat"><strong>${strictPass}/${sample.length}</strong><span>三板起严格满足率 ${(strictPass / sample.length * 100).toFixed(1)}%，Wilson 95%区间 ${(lo * 100).toFixed(0)}%-${(hi * 100).toFixed(0)}%</span></div>`,
+        `<div class="model-stat"><strong>${currentStrictPass}/${stockLeaderRows.length}</strong><span>当前股票三板起严格满足</span></div>`,
+        `<div class="model-stat"><strong>${preleadCount}</strong><span>首板/二板定龙前例外</span></div>`,
+        `<div class="model-stat"><strong>${exceptions}</strong><span>三板起解释性例外日</span></div>`,
+        `<div class="model-stat"><strong>${avgBreak.toFixed(2)}pct</strong><span>三板起平均正向破坏度 B_t</span></div>`,
+        `<div class="model-stat"><strong>${pressure === null ? "不计入" : `${(pressure * 100).toFixed(0)}%`}</strong><span>当前选中日例外门压力</span></div>`
+      ].join("");
+
+      const ampFit = fitOLS(sample, row => row.amplitude);
+      const lowFit = fitOLS(sample, row => row.lowPct);
+      const names = ["截距", "x", "连板阶段", "ln(1+成交量万手)", "换手"];
+      document.getElementById("modelFit").innerHTML = `
+        <div class="table-wrap" style="max-height:none;overflow:auto;">
+          <table class="coef-table">
+            <thead>
+              <tr><th>变量</th><th>振幅模型系数</th><th>最低点模型系数</th></tr>
+            </thead>
+            <tbody>
+              ${names.map((name, i) => `
+                <tr>
+                  <td>${name}</td>
+                  <td class="num">${ampFit.beta[i].toFixed(4)}</td>
+                  <td class="num">${lowFit.beta[i].toFixed(4)}</td>
+                </tr>
+              `).join("")}
+              <tr>
+                <td>R²</td>
+                <td class="num">${ampFit.r2.toFixed(3)}</td>
+                <td class="num">${lowFit.r2.toFixed(3)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="model-note">
+          公式：Y = β0 + β1·x + β2·stage + β3·ln(1+成交量万手) + β4·换手。当前 N=${sample.length}，只用三板及以后样本发现方向和异常，不用于单独预测。
+        </div>
+      `;
+
+      document.getElementById("modelProtocol").innerHTML = `
+        <div class="formula-list">
+          <div class="formula-line">V_t = 当日成交量万手；E_t = sigmoid(-1.4 + 0.22·ln(1+V_t) + 0.055·max(0,T_t-10) + 0.18·max(0,rA_t) + 0.20·max(0,rL_t))</div>
+          <div class="formula-line">首板、二板：定龙前例外，不进入 F/G 校准；三板起若 B_t = 0：常态满足；若 B_t &gt; 0 且 E_t 高：解释性例外；若 B_t &gt; 0 且 E_t 低：规则失效样本。</div>
+          <div class="formula-line">后续校准：按题材、市场情绪、连板高度分层，滚动训练 F(x|state)、G(x|state) 的 80%-90%分位包络。</div>
+        </div>
+        <div class="model-note">
+          当前选中：${selected.stockCode} ${selected.stockName} ${selected.date}，${selected.isPreLead ? "属于定龙前例外，不计入三板起验证。" : `B=${(Math.max(0, selected.ampOver) + Math.max(0, selected.lowUnder)).toFixed(2)}pct，E=${(pressure * 100).toFixed(0)}%。`}严谨版本需要引入分钟线，把 M_t 从“日低相对前收”升级为真实分时路径下杀。
+        </div>
+      `;
+    }
+
+    function renderModelWriteup() {
+      const sample = allRows.filter(row => !row.isPreLead);
+      const preleadCount = allRows.filter(row => row.isPreLead).length;
+      const strictPass = sample.filter(row => row.ampOver <= 0.03 && row.lowUnder <= 0.03).length;
+      const exceptions = sample.filter(row => row.result === "exception").length;
+      const fails = sample.filter(row => row.result === "fail").length;
+      const [lo, hi] = wilsonInterval(strictPass, sample.length);
+      const selected = selectedRow();
+      const selectedBreak = Math.max(0, selected.ampOver) + Math.max(0, selected.lowUnder);
+      const selectedPressure = selected.isPreLead ? null : exceptionPressure(selected);
+      const writeup = document.getElementById("modelWriteup");
+      if (!writeup) return;
+      writeup.innerHTML = `
+        <div class="writeup-grid">
+          <section class="writeup-section">
+            <h3>一、研究对象</h3>
+            <p>本体系研究的是“已经出现连板并进入定龙观察”的股票，在三板及以后是否符合一个由开盘竞价强弱决定的日内波动约束。首板和二板主要承担市场发现、题材确认、资金试错功能，默认记为定龙前例外，不参与核心包络校准。</p>
+            <ul>
+              <li>观察对象：连板序列中的交易日。</li>
+              <li>核心验证期：三板及以后。</li>
+              <li>当前数据：三板起验证样本 ${sample.length} 日，定龙前例外 ${preleadCount} 日。</li>
+            </ul>
+          </section>
+          <section class="writeup-section">
+            <h3>二、变量定义</h3>
+            <p>以昨日收盘价 C_{t-1} 为统一基准，把开盘、最高、最低、成交量和换手转成同一交易日的状态变量。</p>
+            <div class="formula-list">
+              <div class="formula-line">x_t = O_t / C_{t-1} - 1</div>
+              <div class="formula-line">A_t = (H_t - L_t) / C_{t-1}</div>
+              <div class="formula-line">M_t = L_t / C_{t-1} - 1</div>
+              <div class="formula-line">V_t = 当日成交量万手，T_t = 当日换手率</div>
+            </div>
+          </section>
+          <section class="writeup-section">
+            <h3>三、先验包络</h3>
+            <p>Excel 表不是最终结论，而是先验约束函数。把表中“开盘涨幅 x -> 振幅上限/最低下杀线”视为两条分段线性函数。</p>
+            <div class="formula-list">
+              <div class="formula-line">F0(x_t)：给定开盘强度 x_t 的当日振幅上限</div>
+              <div class="formula-line">G0(x_t)：给定开盘强度 x_t 的最低下杀允许线</div>
+              <div class="formula-line">H0：A_t <= F0(x_t) 且 M_t >= G0(x_t)</div>
+            </div>
+          </section>
+          <section class="writeup-section">
+            <h3>四、残差与破坏度</h3>
+            <p>不直接用“满足/不满足”二分，而是先计算破坏来自哪里。振幅破坏和下杀破坏可以同时出现，也可以单独出现。</p>
+            <div class="formula-list">
+              <div class="formula-line">rA_t = A_t - F0(x_t)</div>
+              <div class="formula-line">rL_t = G0(x_t) - M_t</div>
+              <div class="formula-line">B_t = max(0,rA_t) + max(0,rL_t)</div>
+            </div>
+          </section>
+          <section class="writeup-section">
+            <h3>五、判定规则</h3>
+            <p>三板起样本才进入正式判定。当前严格满足 ${strictPass}/${sample.length}，Wilson 95% 区间 ${(lo * 100).toFixed(0)}%-${(hi * 100).toFixed(0)}%。</p>
+            <ul>
+              <li>B_t = 0：常态满足。</li>
+              <li>B_t 接近 0：临界，需要复核分钟线。</li>
+              <li>B_t > 0 且例外压力高：解释性例外。</li>
+              <li>B_t > 0 且例外压力低：规则失效样本。</li>
+            </ul>
+          </section>
+          <section class="writeup-section">
+            <h3>六、量能分歧例外门</h3>
+            <p>量能分歧只看当日成交量，不使用与前一日的比例。成交量、换手、振幅破坏、下杀破坏共同形成例外压力。</p>
+            <div class="formula-list">
+              <div class="formula-line">E_t = sigmoid(-1.4 + 0.22 ln(1+V_t) + 0.055 max(0,T_t-10) + 0.18 max(0,rA_t) + 0.20 max(0,rL_t))</div>
+              <div class="formula-line">E_t 越高，越倾向解释为爆量分歧、弱转强或高位换手造成的例外。</div>
+            </div>
+          </section>
+          <section class="writeup-section">
+            <h3>七、参数校准</h3>
+            <p>当前 Excel 函数 F0/G0 是人工先验。随着样本增加，应按市场状态分层，用分位数包络替代固定经验线。</p>
+            <ul>
+              <li>按题材热度、指数环境、情绪周期、连板高度分层。</li>
+              <li>用 80%-90% 分位估计 F(x|state)、G(x|state)。</li>
+              <li>用滚动窗口更新参数，避免旧行情污染当前风格。</li>
+            </ul>
+          </section>
+          <section class="writeup-section">
+            <h3>八、验证协议</h3>
+            <p>严肃验证必须把“拟合”和“检验”分开，不能在同一批样本上既调规则又宣布有效。</p>
+            <ul>
+              <li>时间滚动留出：前段训练，后段验证。</li>
+              <li>跨题材验证：电力、医药、电池等分组复核。</li>
+              <li>跨阶段验证：三板、四到六板、七板以上分别评估。</li>
+              <li>分钟线复核：把 M_t 从日低代理升级为真实盘中路径。</li>
+            </ul>
+          </section>
+          <section class="writeup-section">
+            <h3>九、冲高回落止盈模型</h3>
+            <p>止损模型解决“开盘后向下不能破哪里”，止盈模型解决“开盘后先冲高、第一次回落不能吐回多少”。核心不看单纯涨跌，而看冲高幅度被回吐的比例。</p>
+            <div class="formula-list">
+              <div class="formula-line">h_t = H1_t / C_{t-1} - 1；p_t = P1_t / C_{t-1} - 1</div>
+              <div class="formula-line">I_t = h_t - x_t；D_t = h_t - p_t；R_t = D_t / I_t</div>
+              <div class="formula-line">S_t = h_t - α_safe(x_t)·I_t；K_t = max(h_t - α_hard(x_t)·I_t, x_t - b_t, G0(x_t))</div>
+            </div>
+          </section>
+          <section class="writeup-section">
+            <h3>十、止盈判定</h3>
+            <p>其中 S_t 是安全回落线，K_t 是不能接受线。开盘越强，允许回吐比例越小；冲高后第一次回落越深，越说明承接弱化。</p>
+            <ul>
+              <li>p_t >= S_t：强承接，可以继续观察二次上攻。</li>
+              <li>K_t <= p_t < S_t：偏弱观察，适合降低仓位或收紧保护。</li>
+              <li>p_t < K_t：第一次回落失败，应触发止盈/保护。</li>
+              <li>K_t 同时受开盘守门线和原止损下杀线约束，避免把深回落误判为健康洗盘。</li>
+            </ul>
+          </section>
+        </div>
+        <div class="model-note">
+          当前选中：${selected.stockCode} ${selected.stockName} ${selected.date}。${selected.isPreLead ? "该日属于首板/二板定龙前例外，不进入三板起模型。" : `B_t=${selectedBreak.toFixed(2)}pct，E_t=${(selectedPressure * 100).toFixed(0)}%。`}当前三板起样本中解释性例外 ${exceptions} 日，规则失效样本 ${fails} 日。
+        </div>
+      `;
+    }
+
+    function renderTable() {
+      const rows = allRows.filter(row => row.stockCode === state.stockCode).filter(rowAllowed);
+      const selected = selectedRow();
+      document.getElementById("tableCount").textContent = `${rows.length} 行`;
+      document.getElementById("detailTable").innerHTML = rows.map(row => `
+        <tr class="${row.key === selected.key ? "active-row" : ""}" data-key="${row.key}">
+          <td>${row.stockCode} ${row.stockName}</td>
+          <td class="num">${row.date}</td>
+          <td class="num">${row.stage}板</td>
+          <td class="num">${pct(row.openPct, 2)}</td>
+          <td class="num">${plainPct(row.ampLimit, 2)}</td>
+          <td class="num">${plainPct(row.amplitude, 2)}</td>
+          <td class="num">${pct(row.lowPct, 2)}</td>
+          <td class="num">${pct(row.lowLimit, 2)}</td>
+          <td class="num">${cnVolume(row.volume)}</td>
+          <td class="num">${plainPct(row.turnover, 2)}</td>
+          <td><span class="pill ${row.result}">${statusMeta[row.result].label}</span></td>
+          <td>${row.reasons.join("；")}</td>
+        </tr>
+      `).join("");
+      document.querySelectorAll("#detailTable tr").forEach(tr => {
+        tr.addEventListener("click", () => {
+          state.selectedKey = tr.dataset.key;
+          render();
+        });
+      });
+    }
+
+    function render() {
+      renderSummary();
+      renderTimeline();
+      renderDetail();
+      renderCharts();
+      renderCalculator();
+      renderProfitCalculator();
+      renderIntraday();
+      renderModelSystemV2();
+      renderModelWriteup();
+      renderTable();
+    }
+
+    setupControls();
+    render();
+  </script>
+</body>
+</html>
