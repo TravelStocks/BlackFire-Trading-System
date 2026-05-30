@@ -714,6 +714,114 @@ svg {
   height: 18px;
 }
 
+.theme-grid,
+.stage-flow,
+.switch-grid {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.theme-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-bottom: 0;
+}
+
+.theme-card,
+.stage-flow article,
+.switch-grid article {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.theme-card {
+  padding: 20px;
+  border-top: 3px solid var(--green);
+}
+
+.theme-card.trend {
+  border-top-color: var(--blue);
+}
+
+.theme-card span,
+.stage-flow span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 3px 9px;
+  color: var(--green);
+  background: rgba(7, 135, 93, 0.08);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.theme-card.trend span {
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.09);
+}
+
+.theme-card h3,
+.stage-flow h3 {
+  margin: 12px 0 8px;
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.theme-card p,
+.stage-flow p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.theme-card strong {
+  display: block;
+  margin-top: 14px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.stage-flow {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-bottom: 0;
+}
+
+.stage-flow article {
+  position: relative;
+  min-height: 172px;
+  padding: 18px;
+}
+
+.stage-flow article::after {
+  content: "";
+  position: absolute;
+  top: 52px;
+  right: -14px;
+  width: 14px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.stage-flow article:last-child::after {
+  display: none;
+}
+
+.switch-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.switch-grid article {
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(7, 135, 93, 0.05), transparent 46%),
+    var(--surface);
+}
+
+.switch-grid .check-list {
+  margin-top: 12px;
+}
+
 .section-head {
   padding: 26px 28px 18px;
   border-bottom: 1px solid var(--line);
@@ -1434,12 +1542,19 @@ svg {
 
   .hero-panel,
   .decision-grid,
+  .theme-grid,
   .environment-grid,
   .cycle,
   .risk-grid,
   .review-flow,
+  .stage-flow,
+  .switch-grid,
   .rhythm-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stage-flow article::after {
+    display: none;
   }
 }
 
@@ -1496,11 +1611,14 @@ svg {
   .hero-prereq,
   .hero-panel,
   .decision-grid,
+  .theme-grid,
   .environment-grid,
   .exit-strip,
   .cycle,
   .risk-grid,
   .review-flow,
+  .stage-flow,
+  .switch-grid,
   .details-grid,
   .mode-panel,
   .rhythm-grid {
@@ -1509,9 +1627,12 @@ svg {
 
   .decision-grid,
   .strategy-columns,
+  .theme-grid,
   .environment-grid,
   .risk-grid,
   .review-flow,
+  .stage-flow,
+  .switch-grid,
   .details-grid {
     padding: 12px;
   }
