@@ -17,7 +17,7 @@ const modeCopy = {
   },
   institution: {
     title: "趋势：做业绩披露窗口里的均线主升",
-    body: "大盘和板块环境良好时，优先选择机构活跃资金扎堆、硬逻辑清晰、成交额靠前的趋势容量票。核心持股周期是5到20天，主买点只做大阳线回踩一半和回踩5日线；破10日线或20日线就走。",
+    body: "大盘和板块环境良好时，优先选择机构活跃资金扎堆、硬逻辑清晰、成交额靠前的趋势容量票。核心持股周期是5到20天，主买点只做大阳线回踩一半、回踩5日线、强势突破近期前高后第二天爆量十字星或连续穿头破脚小阳/小阴确认；突破买点必须人气榜前50，破10日线或20日线就走。",
     bg: "#f5f8ff",
     border: "rgba(56, 103, 214, 0.24)"
   },
@@ -44,11 +44,16 @@ function updateProgress() {
 }
 
 function updateToc() {
-  const marker = window.scrollY + 120;
+  const marker = Math.min(window.innerHeight * 0.42, 320);
   let activeId = sections[0]?.id;
 
   for (const section of sections) {
-    if (section.offsetTop <= marker) {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= marker && rect.bottom > marker) {
+      activeId = section.id;
+      break;
+    }
+    if (rect.top <= marker) {
       activeId = section.id;
     }
   }
@@ -56,6 +61,13 @@ function updateToc() {
   tocLinks.forEach((link) => {
     link.classList.toggle("is-active", link.getAttribute("href") === `#${activeId}`);
   });
+}
+
+function queueTocUpdate() {
+  updateToc();
+  requestAnimationFrame(updateToc);
+  window.setTimeout(updateToc, 80);
+  window.setTimeout(updateToc, 220);
 }
 
 function setMode(mode) {
@@ -92,7 +104,11 @@ window.addEventListener("scroll", () => {
   updateToc();
 }, { passive: true });
 
-window.addEventListener("resize", updateProgress);
+window.addEventListener("resize", () => {
+  updateProgress();
+  queueTocUpdate();
+});
+window.addEventListener("hashchange", queueTocUpdate);
 
 updateProgress();
-updateToc();
+queueTocUpdate();
