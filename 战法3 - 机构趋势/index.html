@@ -671,6 +671,11 @@
       gap: 10px;
     }
 
+    .timeline.flow-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 14px;
+    }
+
     .timeline-step {
       position: relative;
       min-height: 160px;
@@ -1007,6 +1012,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .timeline.flow-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .timeline-step::after {
         display: none;
       }
@@ -1050,6 +1059,10 @@
       .right-rail,
       .highlight-bar,
       .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline.flow-4 {
         grid-template-columns: 1fr;
       }
 
@@ -1216,12 +1229,12 @@
             <p class="section-kicker">Positioning</p>
             <h2>第三套动作：做均线主升</h2>
           </div>
-          <p>战法3补的是体系里的 5-20 天短线波段：不追连板高度，不在无龙混沌里硬接力，只在主线产业、业绩披露窗口和机构资金共振时跟随均线主升。</p>
+          <p>战法3补的是体系里的 5-20 天短线波段：不追连板高度，不在无龙混沌里硬接力，执行顺序固定为先看大盘，再看板块，再看个股，最后等买点。</p>
         </div>
         <div class="section-body">
           <div class="highlight-bar">
             <strong>均线主升 + 业绩披露窗口 + 技术纪律</strong>
-            <p>机构趋势的本质是资金愿意在同一条产业逻辑里反复定价。买点只保留三个主模型：大阳线回踩一半、回踩 5 日线、强势突破近期前高后等第二天爆量十字星或连续穿头破脚小阳/小阴确认；突破类买点必须人气榜前 50。</p>
+            <p>机构趋势的本质是资金愿意在同一条产业逻辑里反复定价。买点只保留三个主模型：大阳线回踩一半、回踩 5 日线、强势突破近期前高后等第二天爆量十字星或连续穿头破脚小阳/小阴确认；突破类未进人气榜前 50 时先列为有待观察。</p>
           </div>
           <div class="grid-3">
             <article class="manual-card">
@@ -1307,7 +1320,7 @@
             <article class="timeline-step"><span>01</span><h3>建仓痕迹</h3><p>大成交额、板块共振、趋势票进入成交额前列。</p></article>
             <article class="timeline-step"><span>02</span><h3>趋势确认</h3><p>5日、10日、20日均线呈多头排列，CCI 位于上沿之上。</p></article>
             <article class="timeline-step"><span>03</span><h3>买点确认</h3><p>大阳线回踩一半、回踩 5 日线，或强势突破前高后等第二天爆量十字星/连续穿头破脚小阳小阴确认。</p></article>
-            <article class="timeline-step"><span>04</span><h3>5-20天持有</h3><p>强趋势里按均线推进，首次低吸 2 成，确认后加到 4 成。</p></article>
+            <article class="timeline-step"><span>04</span><h3>5-20天持有</h3><p>强趋势里按均线推进，首次试仓 2 成，确认后加到 4 成。</p></article>
             <article class="timeline-step"><span>05</span><h3>失效退出</h3><p>破 10 日或 20 日均线就走，大盘差时降到 0-2 成。</p></article>
           </div>
           <div class="table-wrap" style="margin-top:14px">
@@ -1332,7 +1345,7 @@
             <p class="section-kicker">Earnings Window</p>
             <h2>业绩披露窗口，是机构趋势的重要催化</h2>
           </div>
-          <p>4 月、7-8 月、10 月，是业绩预期更容易被交易的时间段。机构趋势里，业绩拐点是重中之重。</p>
+          <p>4 月、7-8 月、10 月，是机构趋势的重点观察期。它不是硬性前提，但会让业绩预期、产业逻辑和机构资金更容易形成共振。</p>
         </div>
         <div class="section-body">
           <div class="grid-3">
@@ -1347,21 +1360,27 @@
         <div class="section-head">
           <div>
             <p class="section-kicker">Stock Selection</p>
-            <h2>择股：优先机构活跃资金扎堆的板块</h2>
+            <h2>择股：先大盘，再板块，再个股，再买点</h2>
           </div>
-          <p>机构就是研究硬逻辑。选题材、选板块、选个股，都要回到产业链复盘、逻辑研究和市场化筛选。</p>
+          <p>机构趋势不是先看到 K 线就买，而是先确认环境允许，再确认方向有资金，最后才用买点执行。</p>
         </div>
         <div class="section-body">
+          <div class="timeline flow-4" aria-label="机构趋势筛选流程">
+            <article class="timeline-step"><span>01</span><h3>先大盘</h3><p>大盘环境允许做趋势；环境差时主动降到 0-2 成或空仓。</p></article>
+            <article class="timeline-step"><span>02</span><h3>再板块</h3><p>板块有机构活跃资金、产业逻辑和业绩披露窗口的重点观察价值。</p></article>
+            <article class="timeline-step"><span>03</span><h3>再个股</h3><p>成交额靠前、逻辑清晰，5日、10日、20日均线多头排列。</p></article>
+            <article class="timeline-step"><span>04</span><h3>等买点</h3><p>只等三类主买点出现；突破类买点未进人气榜前 50 时先观察。</p></article>
+          </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr><th>筛选层级</th><th>重点动作</th><th>原文线索</th></tr>
               </thead>
               <tbody>
-                <tr><td>选题材 / 板块</td><td>优先机构活跃交易资金扎堆的方向。</td><td>多复盘、多看产业链、多做逻辑研究。</td></tr>
-                <tr><td>逻辑研究</td><td>自己研究为主，朋友推荐只能作为线索。</td><td>机构就是研究硬逻辑。</td></tr>
-                <tr><td>成交额</td><td>偏向机构票，成交额前 20 大概率是机构票。</td><td>成交额每日必看。</td></tr>
-                <tr><td>市场化选股</td><td>看 10 日区间涨幅、市场赚钱效应、热度排行榜、成交额。</td><td>红星发展、东山精密、剑桥科技、德福科技、协创数据、风华高科先放入观察池。</td></tr>
+                <tr><td>大盘</td><td>先判断大盘是否支持趋势交易。</td><td>大盘行情好才能做趋势，大盘差降到 0-2 成。</td></tr>
+                <tr><td>板块</td><td>优先机构活跃交易资金扎堆的方向。</td><td>多复盘、多看产业链、多做逻辑研究。</td></tr>
+                <tr><td>个股</td><td>成交额靠前、硬逻辑清晰、均线主升结构成立。</td><td>偏向机构票，成交额前 20 大概率是机构票。</td></tr>
+                <tr><td>买点</td><td>只等三类主买点，不在非买点位置提前动手。</td><td>看 10 日区间涨幅、市场赚钱效应、热度排行榜、成交额。</td></tr>
               </tbody>
             </table>
           </div>
@@ -1382,7 +1401,7 @@
             <p class="section-kicker">Entry Model</p>
             <h2>买入：只做三个主买点</h2>
           </div>
-          <p>买入前提一定是均线多头排列，CCI 在上方线之上。主买点只保留三类：大阳线回踩一半；回踩 5 日线；强势突破近期前高后，不追突破当天，等第二天爆量十字星或连续穿头破脚小阳/小阴确认，且人气榜前 50。</p>
+          <p>买入前提一定是均线多头排列，CCI 在上方线之上。主买点只保留三类：大阳线回踩一半；回踩 5 日线；强势突破近期前高后，不追突破当天，等第二天爆量十字星或连续穿头破脚小阳/小阴确认。突破类买点未进人气榜前 50 时，先列为有待观察。</p>
         </div>
         <div class="section-body">
           <div class="model-tabs" role="tablist" aria-label="买入模型">
@@ -1438,7 +1457,7 @@
               <tbody>
                 <tr><td>大阳线回踩</td><td>跌破大阳线底部，或收盘破 10 日线就走。</td><td>阳线一半是买点观察位，底部和 10 日线是纪律位。</td></tr>
                 <tr><td>回踩 5 日线</td><td>收盘破 10 日线，先离场或大幅降仓。</td><td>10 日线是短线趋势生命线。</td></tr>
-                <tr><td>突破前高确认</td><td>跌回突破平台，或收盘破 10 日线就走。</td><td>第三买点必须同时满足人气榜前 50。</td></tr>
+                <tr><td>突破前高确认</td><td>跌回突破平台，或收盘破 10 日线就走。</td><td>未进人气榜前 50 时先观察，不按第三买点执行。</td></tr>
                 <tr><td>机构趋势</td><td>收盘破 20 日线，趋势假设失效。</td><td>20 日线是机构趋势生命线。</td></tr>
                 <tr><td>辅助信号</td><td>明显放量长上影、阴包阳、CCI 收盘跌回上沿下方。</td><td>这些只做辅助，不替代 10 日/20 日线纪律。</td></tr>
               </tbody>
@@ -1456,13 +1475,19 @@
           <p>机构趋势靠稳定结构和纪律吃波段，不靠一次梭哈。仓位随确认度提升，随大盘环境下降。</p>
         </div>
         <div class="section-body">
+          <div class="timeline flow-4" aria-label="机构趋势仓位推进流程">
+            <article class="timeline-step"><span>2成</span><h3>首次试仓</h3><p>三类主买点出现都先按 2 成试，不因为突破确认就直接重仓。</p></article>
+            <article class="timeline-step"><span>4成</span><h3>确认加仓</h3><p>均线主升继续成立，板块和个股承接同步确认，再加到 4 成。</p></article>
+            <article class="timeline-step"><span>6成</span><h3>强趋势封顶</h3><p>大盘、板块、个股都配合时最多 6 成，仍然服从 10 日/20 日线纪律。</p></article>
+            <article class="timeline-step"><span>0-2</span><h3>大盘差</h3><p>大盘环境不支持趋势，主动降到 0-2 成，不硬做机构趋势。</p></article>
+          </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr><th>阶段</th><th>仓位</th><th>执行条件</th></tr>
               </thead>
               <tbody>
-                <tr><td>首次试仓</td><td>2 成</td><td>大阳线回踩一半、回踩 5 日线仍有承接；若做突破类买点，必须等第二天爆量十字星或连续穿头破脚小阳/小阴确认，且人气榜前 50。</td></tr>
+                <tr><td>首次试仓</td><td>2 成</td><td>大阳线回踩一半、回踩 5 日线仍有承接；突破类买点等第二天爆量十字星或连续穿头破脚小阳/小阴确认，未进人气榜前 50 时先观察。</td></tr>
                 <tr><td>确认加仓</td><td>4 成</td><td>均线主升继续成立，板块和个股承接同步确认。</td></tr>
                 <tr><td>强趋势封顶</td><td>最多 6 成</td><td>大盘、板块、个股都配合，且 10 日/20 日线纪律清晰。</td></tr>
                 <tr><td>大盘差</td><td>0-2 成</td><td>大盘环境不支持趋势时，主动降仓或空仓等待。</td></tr>
@@ -1491,7 +1516,7 @@
             <section class="check-card">
               <h3>盘中</h3>
               <label class="check-item"><input type="checkbox" />均线多头排列没有被破坏。</label>
-              <label class="check-item"><input type="checkbox" />买点有承接，只做三个主买点；突破前高必须人气榜前 50。</label>
+              <label class="check-item"><input type="checkbox" />买点有承接，只做三个主买点；突破前高未进人气榜前 50 时先观察。</label>
               <label class="check-item"><input type="checkbox" />没有出现明显批量离场。</label>
             </section>
             <section class="check-card">
@@ -1511,8 +1536,8 @@
         <ul class="status-list">
           <li>所有止盈止损尽量以收盘价为准。</li>
           <li>破 10 日 / 20 日线就走。</li>
-          <li>突破前高买点必须搭配人气榜前 50。</li>
-          <li>首次低吸 2 成，确认加到 4 成，强趋势最多 6 成。</li>
+          <li>突破前高未进人气榜前 50 时先观察。</li>
+          <li>首次试仓 2 成，确认加到 4 成，强趋势最多 6 成。</li>
           <li>大盘行情好才能做趋势。</li>
           <li>趋势主升期之外，不硬套本战法。</li>
         </ul>
@@ -1566,7 +1591,7 @@
         rules: [
           "形态：强势突破近期前高，通常由一根大阳线打开空间；突破当天不追。",
           "确认：第二天爆量十字星，或连续穿头破脚小阳线、小阴线承接。",
-          "过滤：必须人气榜前 50；不在人气前排，就不算第三买点。"
+          "过滤：优先人气榜前 50；未进前 50 时先列为有待观察。"
         ]
       }
     };
@@ -1580,15 +1605,15 @@
     }
 
     function updateToc() {
-      const marker = Math.min(window.innerHeight * 0.42, 320);
       let activeId = sections[0]?.id;
+      let maxVisible = 0;
       for (const section of sections) {
         const rect = section.getBoundingClientRect();
-        if (rect.top <= marker && rect.bottom > marker) {
+        const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+        if (visible > maxVisible) {
+          maxVisible = visible;
           activeId = section.id;
-          break;
         }
-        if (rect.top <= marker) activeId = section.id;
       }
       tocLinks.forEach((link) => {
         link.classList.toggle("is-active", link.getAttribute("href") === `#${activeId}`);
@@ -1600,6 +1625,15 @@
       requestAnimationFrame(updateToc);
       window.setTimeout(updateToc, 80);
       window.setTimeout(updateToc, 220);
+    }
+
+    function alignHashTarget() {
+      if (!window.location.hash) return;
+      const target = document.querySelector(window.location.hash);
+      if (!target) return;
+      const top = target.getBoundingClientRect().top + window.scrollY - 92;
+      window.scrollTo({ top, behavior: "auto" });
+      queueTocUpdate();
     }
 
     function setModel(model) {
@@ -1637,9 +1671,10 @@
       updateProgress();
       queueTocUpdate();
     });
-    window.addEventListener("hashchange", queueTocUpdate);
+    window.addEventListener("hashchange", alignHashTarget);
     updateProgress();
     queueTocUpdate();
+    window.setTimeout(alignHashTarget, 120);
   </script>
 </body>
 </html>
