@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>机构趋势｜战法3</title>
+  <meta name="description" content="机构趋势战法手册：围绕机构定价权板块、均线多头排列、业绩拐点、择股择时、止盈止损与波段执行纪律，整理波段短中线趋势交易框架。" />
+  <style>
+    :root {
+      --bg: #07080d;
+      --bg-soft: #0d1017;
+      --panel: rgba(16, 18, 25, 0.9);
+      --panel-strong: rgba(22, 25, 34, 0.96);
+      --panel-soft: rgba(255, 255, 255, 0.045);
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f5f6fa;
+      --muted: #a8acb8;
+      --muted-soft: #7f8797;
+      --teal: #14b8a6;
+      --cyan: #0891b2;
+      --gold: #d5b157;
+      --green: #4dbc7d;
+      --red: #e52836;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
+      --radius: 24px;
+      --radius-sm: 12px;
+      --max: 1320px;
+      --sans: "Microsoft YaHei UI", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      --mono: "Cascadia Mono", "JetBrains Mono", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      min-width: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(180deg, #090a10 0%, var(--bg) 42%, #0a0d13 100%);
+      background-size: 42px 42px, 42px 42px, auto;
+      font-family: var(--sans);
+      line-height: 1.72;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(120deg, rgba(20, 184, 166, 0.09), transparent 28%),
+        linear-gradient(300deg, rgba(213, 177, 87, 0.08), transparent 32%);
+      opacity: 0.72;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    li,
+    td,
+    th,
+    span,
+    strong,
+    em {
+      overflow-wrap: anywhere;
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(20, 184, 166, 0.52);
+      outline-offset: 3px;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 80;
+      width: 100%;
+      height: 4px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--teal), var(--cyan), var(--gold));
+      box-shadow: 0 0 18px rgba(20, 184, 166, 0.45);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 64px;
+      padding: 12px 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 8, 13, 0.86);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand,
+    .toplinks {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand {
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: #06100f;
+      background: linear-gradient(135deg, var(--teal), var(--gold));
+      border-radius: 50%;
+    }
+
+    .toplinks {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .toplinks a {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 10px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .toplinks a:hover {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .hero {
+      position: relative;
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+      padding: 42px 0 26px;
+    }
+
+    .hero-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.82fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .toc-card,
+    .article-section,
+    .right-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--panel-strong), rgba(11, 13, 20, 0.94));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      position: relative;
+      min-height: 500px;
+      padding: 42px 38px;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--teal), var(--cyan), var(--gold));
+    }
+
+    .kicker,
+    .section-kicker,
+    .meta-label {
+      margin: 0;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    .hero-main h1 {
+      max-width: 10ch;
+      margin: 12px 0 14px;
+      font-size: clamp(48px, 7vw, 96px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .hero-lead {
+      max-width: 58ch;
+      margin: 0;
+      color: #e8fbf8;
+      font-size: clamp(18px, 2vw, 23px);
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    .hero-sub {
+      max-width: 66ch;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .hero-tags span,
+    .mini-pill,
+    .sector-tags span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 11px;
+      color: #dffaf7;
+      background: rgba(20, 184, 166, 0.11);
+      border: 1px solid rgba(20, 184, 166, 0.22);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .hero-rule {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .hero-rule article {
+      min-height: 112px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .hero-rule strong {
+      display: block;
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .hero-rule span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 16px;
+      padding: 22px;
+    }
+
+    .trend-board {
+      min-height: 270px;
+      padding: 18px;
+      border: 1px solid rgba(20, 184, 166, 0.22);
+      border-radius: 18px;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        rgba(0, 0, 0, 0.18);
+      background-size: 28px 28px;
+    }
+
+    .board-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .board-head h2 {
+      margin: 4px 0 0;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .board-head code,
+    .mono {
+      color: var(--gold);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .trend-svg {
+      width: 100%;
+      min-height: 172px;
+      margin-top: 8px;
+      color: var(--teal);
+    }
+
+    .trend-svg .axis {
+      stroke: rgba(255, 255, 255, 0.18);
+      stroke-width: 1;
+    }
+
+    .trend-svg .ma5 {
+      stroke: var(--teal);
+    }
+
+    .trend-svg .ma10 {
+      stroke: var(--cyan);
+    }
+
+    .trend-svg .ma20 {
+      stroke: var(--gold);
+    }
+
+    .trend-svg .candle-up {
+      fill: rgba(77, 188, 125, 0.78);
+      stroke: rgba(77, 188, 125, 0.95);
+    }
+
+    .trend-svg .candle-down {
+      fill: rgba(229, 40, 54, 0.58);
+      stroke: rgba(229, 40, 54, 0.9);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 90px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--text);
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .page-shell {
+      position: relative;
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr) 230px;
+      gap: 24px;
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+      padding: 0 0 76px;
+    }
+
+    .left-rail,
+    .right-rail {
+      position: sticky;
+      top: 88px;
+      align-self: start;
+    }
+
+    .toc-card,
+    .right-card {
+      padding: 16px;
+    }
+
+    .toc-title,
+    .right-title {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc-list a {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 10px;
+      color: var(--muted);
+      border-left: 3px solid transparent;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toc-list a span {
+      color: var(--teal);
+      font-family: var(--mono);
+    }
+
+    .toc-list a:hover,
+    .toc-list a.is-active {
+      color: var(--text);
+      background: rgba(20, 184, 166, 0.1);
+      border-left-color: var(--teal);
+    }
+
+    .article {
+      display: grid;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .article-section {
+      scroll-margin-top: 88px;
+      overflow: hidden;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      padding: 26px 28px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head h2 {
+      margin: 5px 0 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .section-head p:last-child {
+      max-width: 56ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section-body {
+      padding: 22px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .manual-card,
+    .timeline-step,
+    .check-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .manual-card {
+      padding: 18px;
+    }
+
+    .manual-card h3 {
+      margin: 10px 0 8px;
+      font-size: 19px;
+      line-height: 1.3;
+    }
+
+    .manual-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .manual-card.gold {
+      border-color: rgba(213, 177, 87, 0.22);
+      background: rgba(213, 177, 87, 0.07);
+    }
+
+    .manual-card.red {
+      border-color: rgba(229, 40, 54, 0.2);
+      background: rgba(229, 40, 54, 0.07);
+    }
+
+    .icon-chip {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--teal);
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      background: rgba(20, 184, 166, 0.08);
+    }
+
+    .gold .icon-chip {
+      color: var(--gold);
+      background: rgba(213, 177, 87, 0.08);
+    }
+
+    .red .icon-chip {
+      color: var(--red);
+      background: rgba(229, 40, 54, 0.08);
+    }
+
+    .highlight-bar {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 18px;
+      border: 1px solid rgba(20, 184, 166, 0.22);
+      border-left: 4px solid var(--teal);
+      border-radius: 18px;
+      background: linear-gradient(90deg, rgba(20, 184, 166, 0.13), rgba(255, 255, 255, 0.035));
+    }
+
+    .highlight-bar strong {
+      font-size: 26px;
+      line-height: 1.18;
+    }
+
+    .highlight-bar p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    table {
+      width: 100%;
+      min-width: 780px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #e8fbf8;
+      background: rgba(8, 145, 178, 0.28);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    td {
+      color: var(--muted);
+    }
+
+    td:first-child {
+      color: var(--text);
+      font-weight: 900;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .timeline-step {
+      position: relative;
+      min-height: 160px;
+      padding: 16px;
+    }
+
+    .timeline-step::after {
+      content: "";
+      position: absolute;
+      top: 33px;
+      right: -10px;
+      width: 10px;
+      border-top: 1px solid rgba(20, 184, 166, 0.32);
+    }
+
+    .timeline-step:last-child::after {
+      display: none;
+    }
+
+    .timeline-step span {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: #05100f;
+      background: var(--teal);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-weight: 900;
+    }
+
+    .timeline-step h3 {
+      margin: 12px 0 6px;
+      font-size: 17px;
+    }
+
+    .timeline-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .sector-card {
+      display: grid;
+      gap: 12px;
+      min-height: 176px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--teal);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .sector-card:nth-child(2),
+    .sector-card:nth-child(5) {
+      border-top-color: var(--cyan);
+    }
+
+    .sector-card:nth-child(3) {
+      border-top-color: var(--green);
+    }
+
+    .sector-card:nth-child(4) {
+      border-top-color: var(--gold);
+    }
+
+    .sector-card h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .sector-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .sector-tags span {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--line);
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .model-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .model-tab {
+      min-height: 54px;
+      padding: 11px 12px;
+      color: var(--muted);
+      text-align: left;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .model-tab:hover,
+    .model-tab.is-active {
+      color: var(--text);
+      border-color: rgba(20, 184, 166, 0.42);
+      background: rgba(20, 184, 166, 0.1);
+    }
+
+    .model-panel {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      padding: 18px;
+      border: 1px solid rgba(20, 184, 166, 0.24);
+      border-radius: 18px;
+      background: rgba(20, 184, 166, 0.06);
+    }
+
+    .model-panel h3,
+    .model-panel p {
+      margin: 0;
+    }
+
+    .model-panel h3 {
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .model-panel p {
+      color: var(--muted);
+    }
+
+    .rules {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rules li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .rules li::before {
+      content: "";
+      position: absolute;
+      top: 0.74em;
+      left: 0;
+      width: 7px;
+      height: 7px;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .check-card {
+      padding: 18px;
+    }
+
+    .check-card h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .check-item {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      min-height: 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .check-item input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--teal);
+    }
+
+    .right-card {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .right-card a,
+    .right-card button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 44px;
+      padding: 10px 12px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-weight: 800;
+    }
+
+    .right-card a:hover,
+    .right-card button:hover {
+      border-color: rgba(20, 184, 166, 0.36);
+      background: rgba(20, 184, 166, 0.09);
+    }
+
+    .right-card button {
+      width: 100%;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .status-list li {
+      display: grid;
+      grid-template-columns: 10px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-list li::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      margin-top: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .footer {
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+      padding: 0 0 28px;
+      color: var(--muted-soft);
+      font-size: 13px;
+    }
+
+    .backtop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      color: var(--text);
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease;
+    }
+
+    .backtop.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .backtop:hover {
+      border-color: rgba(20, 184, 166, 0.38);
+    }
+
+    @media (max-width: 1180px) {
+      .hero-shell,
+      .page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .left-rail,
+      .right-rail {
+        position: static;
+      }
+
+      .toc-list {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .toc-list li {
+        flex: 0 0 auto;
+      }
+
+      .toc-list a {
+        grid-template-columns: auto minmax(0, 1fr);
+        min-width: 150px;
+      }
+
+      .right-rail {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .right-card {
+        margin-bottom: 0;
+      }
+
+      .grid-4,
+      .timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .timeline-step::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 16px;
+      }
+
+      .toplinks {
+        justify-content: flex-start;
+      }
+
+      .hero,
+      .page-shell,
+      .footer {
+        width: min(100%, calc(100% - 24px));
+      }
+
+      .hero-main {
+        min-height: auto;
+        padding: 30px 22px;
+      }
+
+      .hero-main h1 {
+        max-width: none;
+        font-size: 48px;
+      }
+
+      .hero-rule,
+      .metrics,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .model-tabs,
+      .model-panel,
+      .check-grid,
+      .right-rail,
+      .highlight-bar,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: grid;
+        padding: 22px 18px 16px;
+      }
+
+      .section-body {
+        padding: 16px;
+      }
+
+      .model-tab {
+        min-height: 48px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="返回交易系统首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 18h16M6 15l4-4 3 3 5-8" /><path d="M17 6h3v3" /></svg>
+      </span>
+      <span>BlackFire Trading System</span>
+    </a>
+    <nav class="toplinks" aria-label="战法导航">
+      <a href="../战法1 - 龙头信仰/龙头信仰-阅读版.html">战法1 龙头信仰</a>
+      <a href="../战法2 - 低位接力/A股一进二战法手册网页版/index.html">战法2 低位接力</a>
+      <a href="../战法3 - 龙头周期复盘/index.html">周期复盘资料库</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-shell">
+      <div class="hero-main">
+        <p class="kicker">Strategy 03 / Swing Trend</p>
+        <h1>机构趋势</h1>
+        <p class="hero-lead">只做机构资金愿意反复承接的主升趋势：硬逻辑、容量票、均线多头、业绩拐点。</p>
+        <p class="hero-sub">这套战法不是连板情绪小票，也不是频繁隔日套利。它服务于波段短中线，在大盘与板块环境允许时，用收盘价纪律跟随趋势，用失效条件保护本金。</p>
+        <div class="hero-tags" aria-label="机构趋势关键词">
+          <span>机构定价权</span>
+          <span>5日 &gt; 10日 &gt; 20日</span>
+          <span>20日生命线</span>
+          <span>CCI趋势确认</span>
+          <span>业绩拐点</span>
+        </div>
+        <div class="hero-rule" aria-label="三条核心规则">
+          <article>
+            <strong>先板块</strong>
+            <span>优先机构活跃交易资金扎堆的方向。</span>
+          </article>
+          <article>
+            <strong>再个股</strong>
+            <span>成交额靠前、逻辑清晰、趋势结构健康。</span>
+          </article>
+          <article>
+            <strong>看收盘</strong>
+            <span>止盈止损尽量以收盘价为准。</span>
+          </article>
+        </div>
+      </div>
+
+      <aside class="hero-side" aria-label="机构趋势监控台">
+        <section class="trend-board">
+          <div class="board-head">
+            <div>
+              <p class="meta-label">Trend Desk</p>
+              <h2>均线多头排列</h2>
+            </div>
+            <code>MA5 &gt; MA10 &gt; MA20</code>
+          </div>
+          <svg class="trend-svg" viewBox="0 0 420 190" role="img" aria-label="机构趋势示意图">
+            <path class="axis" d="M24 152H396M24 116H396M24 80H396M24 44H396" />
+            <g>
+              <line class="candle-down" x1="54" y1="122" x2="54" y2="154" />
+              <rect class="candle-down" x="48" y="130" width="12" height="16" rx="2" />
+              <line class="candle-up" x1="88" y1="112" x2="88" y2="146" />
+              <rect class="candle-up" x="82" y="116" width="12" height="22" rx="2" />
+              <line class="candle-up" x1="122" y1="96" x2="122" y2="132" />
+              <rect class="candle-up" x="116" y="102" width="12" height="21" rx="2" />
+              <line class="candle-down" x1="156" y1="91" x2="156" y2="128" />
+              <rect class="candle-down" x="150" y="99" width="12" height="18" rx="2" />
+              <line class="candle-up" x1="190" y1="80" x2="190" y2="116" />
+              <rect class="candle-up" x="184" y="85" width="12" height="24" rx="2" />
+              <line class="candle-up" x1="224" y1="62" x2="224" y2="103" />
+              <rect class="candle-up" x="218" y="68" width="12" height="27" rx="2" />
+              <line class="candle-down" x1="258" y1="68" x2="258" y2="108" />
+              <rect class="candle-down" x="252" y="76" width="12" height="20" rx="2" />
+              <line class="candle-up" x1="292" y1="54" x2="292" y2="94" />
+              <rect class="candle-up" x="286" y="60" width="12" height="25" rx="2" />
+              <line class="candle-up" x1="326" y1="42" x2="326" y2="82" />
+              <rect class="candle-up" x="320" y="48" width="12" height="24" rx="2" />
+              <line class="candle-up" x1="360" y1="31" x2="360" y2="70" />
+              <rect class="candle-up" x="354" y="37" width="12" height="23" rx="2" />
+            </g>
+            <path class="ma20" d="M44 137C86 130 112 127 146 119C181 111 204 105 238 97C279 88 318 78 380 60" />
+            <path class="ma10" d="M44 126C83 119 112 111 146 104C178 96 207 89 238 78C281 65 317 56 380 42" />
+            <path class="ma5" d="M44 118C76 111 110 98 145 94C171 91 197 76 230 61C270 73 306 47 380 32" />
+          </svg>
+        </section>
+        <div class="metrics" aria-label="关键参数">
+          <article class="metric">
+            <span>机构生命线</span>
+            <strong>20日均线</strong>
+          </article>
+          <article class="metric">
+            <span>短线生命线</span>
+            <strong>10日均线</strong>
+          </article>
+          <article class="metric">
+            <span>披露窗口</span>
+            <strong>4月 / 7-8月 / 10月</strong>
+          </article>
+          <article class="metric">
+            <span>趋势确认</span>
+            <strong>CCI 在上沿之上</strong>
+          </article>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main class="page-shell">
+    <aside class="left-rail" aria-label="页面目录">
+      <nav class="toc-card">
+        <p class="toc-title">目录</p>
+        <ol class="toc-list">
+          <li><a class="toc-link is-active" href="#positioning"><span>01</span>战法定位</a></li>
+          <li><a class="toc-link" href="#capital"><span>02</span>机构资金</a></li>
+          <li><a class="toc-link" href="#trend"><span>03</span>趋势识别</a></li>
+          <li><a class="toc-link" href="#earnings"><span>04</span>业绩窗口</a></li>
+          <li><a class="toc-link" href="#selection"><span>05</span>择股</a></li>
+          <li><a class="toc-link" href="#entry"><span>06</span>买入</a></li>
+          <li><a class="toc-link" href="#exit"><span>07</span>卖出</a></li>
+          <li><a class="toc-link" href="#playbook"><span>08</span>执行清单</a></li>
+        </ol>
+      </nav>
+    </aside>
+
+    <article class="article">
+      <section class="article-section" id="positioning">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Positioning</p>
+            <h2>第三套动作：有趋势，做机构主升</h2>
+          </div>
+          <p>战法3补的是体系里的波段短中线：不追连板高度，不在无龙混沌里硬接力，只在主线产业和机构资金共振时跟随趋势。</p>
+        </div>
+        <div class="section-body">
+          <div class="highlight-bar">
+            <strong>硬逻辑 + 大容量 + 趋势结构</strong>
+            <p>机构趋势的本质是资金愿意在同一条产业逻辑里反复定价。买点不是情绪冲动，而是趋势确认后的承接与回踩。</p>
+          </div>
+          <div class="grid-3">
+            <article class="manual-card">
+              <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 18 6-6 4 4 6-8" /><path d="M14 8h6v6" /></svg></span>
+              <h3>战法1：龙头信仰</h3>
+              <p>情绪主升，有高位总龙，动作集中在最核心的情绪龙头。</p>
+            </article>
+            <article class="manual-card">
+              <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7h8a4 4 0 0 1 0 8H6" /><path d="m9 12-3 3 3 3" /></svg></span>
+              <h3>战法2：低位接力</h3>
+              <p>无龙混沌，轻仓试错低位 1 进 2，失败要快，不能格局。</p>
+            </article>
+            <article class="manual-card gold">
+              <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 15c5-1 8-8 16-7" /><path d="M4 19c6-1 10-5 16-4" /></svg></span>
+              <h3>战法3：机构趋势</h3>
+              <p>大盘和板块环境好，机构容量票走出均线多头，做波段主升。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="capital">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Institutional Flow</p>
+            <h2>先识别谁在定价，再决定看哪个板块</h2>
+          </div>
+          <p>北向、公募、主动型私募、量化是更活跃的交易资金；QFII 和社保通常持股周期更长，适合观察长期定价权。</p>
+        </div>
+        <div class="section-body">
+          <div class="grid-2">
+            <article class="manual-card">
+              <span class="mini-pill">活跃交易资金</span>
+              <h3>北向 / 公募 / 主动私募 / 量化</h3>
+              <p>更容易在主线产业和高流动性品种里形成反复交易，后续可结合龙虎榜和成交额观察。</p>
+            </article>
+            <article class="manual-card">
+              <span class="mini-pill">长周期资金</span>
+              <h3>QFII / 社保</h3>
+              <p>QFII 是合格境外机构投资者，和社保一样，持股周期往往更长，适合作为长期定价权线索。</p>
+            </article>
+          </div>
+          <div class="grid-3" style="margin-top:14px">
+            <article class="sector-card">
+              <h3>AI 算力</h3>
+              <p class="meta-label">公募 + 北向</p>
+              <div class="sector-tags"><span>CPO</span><span>PCB</span><span>液冷</span><span>算力租赁</span></div>
+            </article>
+            <article class="sector-card">
+              <h3>半导体</h3>
+              <p class="meta-label">公募 + 外资 + 社保</p>
+              <div class="sector-tags"><span>先进封装</span><span>存储芯片</span><span>CPU</span><span>GPU</span><span>HBM</span></div>
+            </article>
+            <article class="sector-card">
+              <h3>新能源</h3>
+              <p class="meta-label">公募偏好</p>
+              <div class="sector-tags"><span>电池</span><span>储能</span><span>光伏</span><span>能源金属</span></div>
+            </article>
+            <article class="sector-card">
+              <h3>权重</h3>
+              <p class="meta-label">社保线索</p>
+              <div class="sector-tags"><span>银行</span><span>电力</span><span>能源</span></div>
+            </article>
+            <article class="sector-card">
+              <h3>创新药</h3>
+              <p class="meta-label">北向 + QFII</p>
+              <div class="sector-tags"><span>创新药</span><span>CXO</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="trend">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Trend Structure</p>
+            <h2>趋势最简单的理解：均线多头排列</h2>
+          </div>
+          <p>原文把均线放在核心位置：5 日在 10 日上方，10 日在 20 日上方；20 日是机构趋势生命线，10 日是短线趋势生命线。</p>
+        </div>
+        <div class="section-body">
+          <div class="timeline">
+            <article class="timeline-step"><span>01</span><h3>建仓痕迹</h3><p>大成交额、板块共振、趋势票进入成交额前列。</p></article>
+            <article class="timeline-step"><span>02</span><h3>趋势确认</h3><p>5日、10日、20日均线呈多头排列，CCI 位于上沿之上。</p></article>
+            <article class="timeline-step"><span>03</span><h3>回踩承接</h3><p>突破后回踩 5 日线，或大阳线后一半位置仍有承接。</p></article>
+            <article class="timeline-step"><span>04</span><h3>主升持有</h3><p>强趋势里用三日移动持股法，吃主升浪，不参与普通调整。</p></article>
+            <article class="timeline-step"><span>05</span><h3>失效退出</h3><p>破位、放量长上影、阴包阳、资金批量离场时切换防守。</p></article>
+          </div>
+          <div class="table-wrap" style="margin-top:14px">
+            <table>
+              <thead>
+                <tr><th>识别项</th><th>有效信号</th><th>风险信号</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>均线</td><td>5日 &gt; 10日 &gt; 20日，回踩不破。</td><td>收盘跌破关键均线，反抽无量。</td></tr>
+                <tr><td>CCI</td><td>持续在趋势上沿之上，可作为持有辅助。</td><td>收盘跌回上沿下方，考虑止盈。</td></tr>
+                <tr><td>成交额</td><td>成交额靠前，容量足够，适合机构资金进出。</td><td>缩量修复无力，或爆量滞涨。</td></tr>
+                <tr><td>逻辑</td><td>产业链逻辑与业绩预期持续强化。</td><td>个股逻辑明显变化，无脑止盈。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="earnings">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Earnings Window</p>
+            <h2>业绩披露窗口，是机构趋势的重要催化</h2>
+          </div>
+          <p>4 月、7-8 月、10 月，是业绩预期更容易被交易的时间段。机构趋势里，业绩拐点是重中之重。</p>
+        </div>
+        <div class="section-body">
+          <div class="grid-3">
+            <article class="manual-card gold"><span class="mini-pill">4月</span><h3>年报与一季报</h3><p>观察业绩拐点、订单变化、产业趋势是否兑现。</p></article>
+            <article class="manual-card gold"><span class="mini-pill">7-8月</span><h3>中报窗口</h3><p>适合筛选中期业绩预期强化的机构方向。</p></article>
+            <article class="manual-card gold"><span class="mini-pill">10月</span><h3>三季报窗口</h3><p>验证全年逻辑是否延续，排除预期证伪品种。</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="selection">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Stock Selection</p>
+            <h2>择股：优先机构活跃资金扎堆的板块</h2>
+          </div>
+          <p>机构就是研究硬逻辑。选题材、选板块、选个股，都要回到产业链复盘、逻辑研究和市场化筛选。</p>
+        </div>
+        <div class="section-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>筛选层级</th><th>重点动作</th><th>原文线索</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>选题材 / 板块</td><td>优先机构活跃交易资金扎堆的方向。</td><td>多复盘、多看产业链、多做逻辑研究。</td></tr>
+                <tr><td>逻辑研究</td><td>自己研究为主，朋友推荐只能作为线索。</td><td>机构就是研究硬逻辑。</td></tr>
+                <tr><td>成交额</td><td>偏向机构票，成交额前 20 大概率是机构票。</td><td>成交额每日必看。</td></tr>
+                <tr><td>市场化选股</td><td>看 10 日区间涨幅、市场赚钱效应、热度排行榜、成交额。</td><td>红星发展、东山精密、风华高科等作为复盘样本。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="entry">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Entry Model</p>
+            <h2>买入：低吸优先，突破谨慎</h2>
+          </div>
+          <p>买入前提一定是均线多头排列，CCI 在上方线之上。趋势票可以慢，但不允许买在没有结构的位置。</p>
+        </div>
+        <div class="section-body">
+          <div class="model-tabs" role="tablist" aria-label="买入模型">
+            <button class="model-tab is-active" type="button" role="tab" aria-selected="true" data-model="pullback">大阳线回踩</button>
+            <button class="model-tab" type="button" role="tab" aria-selected="false" data-model="ma">均线低吸</button>
+            <button class="model-tab" type="button" role="tab" aria-selected="false" data-model="breakout">突破介入</button>
+          </div>
+          <div class="model-panel" id="model-panel" aria-live="polite">
+            <div>
+              <p class="section-kicker">当前模型</p>
+              <h3>大阳线之后的回踩介入</h3>
+            </div>
+            <ul class="rules">
+              <li>回踩大阳线的一半位置可以观察介入。</li>
+              <li>阳线被跌穿就离场，跌穿大阳线底部就走。</li>
+              <li>更适合趋势已启动后的第一次健康回踩。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="exit">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Exit Discipline</p>
+            <h2>卖出：买入前就设置止损，收盘价执行纪律</h2>
+          </div>
+          <p>趋势行情是熬出来的，不是频繁交易出来的。但“熬”必须建立在止损位清晰、失效条件明确之上。</p>
+        </div>
+        <div class="section-body">
+          <div class="grid-3">
+            <article class="manual-card red">
+              <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z" /><path d="m9 9 6 6m0-6-6 6" /></svg></span>
+              <h3>纪律止损</h3>
+              <p>买入前设置止损点位，严格遵守，防止连续阴跌。除非盘中明显出货，否则尽量看收盘价。</p>
+            </article>
+            <article class="manual-card">
+              <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18h16" /><path d="M7 14l3-3 3 2 4-6" /></svg></span>
+              <h3>三日移动持股</h3>
+              <p>近三天只要当天收盘价没有破近三日最低点，就一直拿着，更适合单边向上的强趋势。</p>
+            </article>
+            <article class="manual-card gold">
+              <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16h16" /><path d="M6 11h12" /><path d="M8 6h8" /></svg></span>
+              <h3>平台底部止盈</h3>
+              <p>高位筹码密集底部没有破，可以继续持有，更适合有洗盘的趋势。</p>
+            </article>
+          </div>
+          <div class="table-wrap" style="margin-top:14px">
+            <table>
+              <thead>
+                <tr><th>场景</th><th>卖出或止盈规则</th><th>备注</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>回踩低吸</td><td>大阳线底部破位就走。</td><td>阳线一半是观察位，底部是失效位。</td></tr>
+                <tr><td>均线低吸</td><td>均线破位就卖出。</td><td>10 日与 20 日分别对应短线与机构趋势生命线。</td></tr>
+                <tr><td>追高买入</td><td>均线破位，阳线一半止盈，阴包阳也准备走。</td><td>追高体验差，不能梭哈。</td></tr>
+                <tr><td>技术派止盈</td><td>明显放量长上影，或 CCI 收盘跌回上沿下方。</td><td>趋势指标失效时先兑现。</td></tr>
+                <tr><td>逻辑变化</td><td>个股逻辑明显变化，无脑止盈。</td><td>做波段，不是价值投资。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="playbook">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Trading Playbook</p>
+            <h2>执行清单：大盘不好，不硬做趋势</h2>
+          </div>
+          <p>机构趋势只适合趋势个股，只适合趋势主升期。出现资金批量离场要离场，做波段，不要一直拿着。</p>
+        </div>
+        <div class="section-body">
+          <div class="check-grid">
+            <section class="check-card">
+              <h3>盘前</h3>
+              <label class="check-item"><input type="checkbox" />大盘环境允许做趋势。</label>
+              <label class="check-item"><input type="checkbox" />板块有机构定价权和业绩预期。</label>
+              <label class="check-item"><input type="checkbox" />个股成交额、逻辑、趋势结构合格。</label>
+            </section>
+            <section class="check-card">
+              <h3>盘中</h3>
+              <label class="check-item"><input type="checkbox" />均线多头排列没有被破坏。</label>
+              <label class="check-item"><input type="checkbox" />回踩有承接，不追无结构突破。</label>
+              <label class="check-item"><input type="checkbox" />没有出现明显批量离场。</label>
+            </section>
+            <section class="check-card">
+              <h3>盘后</h3>
+              <label class="check-item"><input type="checkbox" />收盘价没有跌破止损或生命线。</label>
+              <label class="check-item"><input type="checkbox" />CCI 与成交额没有发出失效信号。</label>
+              <label class="check-item"><input type="checkbox" />更新案例库：买点、卖点、失效条件。</label>
+            </section>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <aside class="right-rail" aria-label="执行侧栏">
+      <section class="right-card">
+        <p class="right-title">核心纪律</p>
+        <ul class="status-list">
+          <li>所有止盈止损尽量以收盘价为准。</li>
+          <li>趋势票一定要设置好止损位。</li>
+          <li>大盘行情好才能做趋势。</li>
+          <li>趋势主升期之外，不硬套本战法。</li>
+        </ul>
+      </section>
+      <section class="right-card">
+        <p class="right-title">关联资料</p>
+        <a href="../index.html">返回总纲 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
+        <a href="../战法3 - 龙头周期复盘/index.html">龙头周期复盘 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
+        <button id="clear-checks" type="button">清空清单 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M6 6l1 14h10l1-14" /></svg></button>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>本页面为个人交易体系整理与复盘工具，不构成任何投资建议。后续可继续补充真实案例、图形模板与评分模型。</p>
+  </footer>
+
+  <button class="backtop" id="backtop" type="button" aria-label="回到顶部">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6" /></svg>
+  </button>
+
+  <script>
+    const progress = document.querySelector("#progress");
+    const backtop = document.querySelector("#backtop");
+    const tocLinks = [...document.querySelectorAll(".toc-link")];
+    const sections = tocLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+    const modelTabs = [...document.querySelectorAll(".model-tab")];
+    const modelPanel = document.querySelector("#model-panel");
+    const checks = [...document.querySelectorAll('input[type="checkbox"]')];
+    const clearChecks = document.querySelector("#clear-checks");
+
+    const modelCopy = {
+      pullback: {
+        title: "大阳线之后的回踩介入",
+        rules: [
+          "回踩大阳线的一半位置可以观察介入。",
+          "阳线被跌穿就离场，跌穿大阳线底部就走。",
+          "更适合趋势已启动后的第一次健康回踩。"
+        ]
+      },
+      ma: {
+        title: "突破之后回踩 5 日均线低吸",
+        rules: [
+          "前提仍然是 5 日、10 日、20 日均线多头排列。",
+          "回踩 5 日线仍有承接，短线趋势生命线没有破。",
+          "均线破位就卖出，不把趋势票做成补仓票。"
+        ]
+      },
+      breakout: {
+        title: "突破介入要克制仓位",
+        rules: [
+          "追高切勿梭哈，刚追突破就回调会很难拿住。",
+          "除非大盘、情绪、板块都非常好，否则突破点只做小仓确认。",
+          "突破失败后容易吃大面，必须提前设好失效位。"
+        ]
+      }
+    };
+
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? scrollTop / scrollable : 0;
+      progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
+      backtop.classList.toggle("is-visible", scrollTop > 520);
+    }
+
+    function updateToc() {
+      const marker = window.scrollY + 130;
+      let activeId = sections[0]?.id;
+      for (const section of sections) {
+        if (section.offsetTop <= marker) activeId = section.id;
+      }
+      tocLinks.forEach((link) => {
+        link.classList.toggle("is-active", link.getAttribute("href") === `#${activeId}`);
+      });
+    }
+
+    function setModel(model) {
+      const copy = modelCopy[model];
+      if (!copy) return;
+      modelTabs.forEach((tab) => {
+        const active = tab.dataset.model === model;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+      });
+      modelPanel.querySelector("h3").textContent = copy.title;
+      modelPanel.querySelector(".rules").innerHTML = copy.rules.map((rule) => `<li>${rule}</li>`).join("");
+    }
+
+    checks.forEach((check, index) => {
+      const key = `institution-trend-check-${index}`;
+      check.checked = localStorage.getItem(key) === "true";
+      check.addEventListener("change", () => localStorage.setItem(key, String(check.checked)));
+    });
+
+    clearChecks.addEventListener("click", () => {
+      checks.forEach((check, index) => {
+        check.checked = false;
+        localStorage.removeItem(`institution-trend-check-${index}`);
+      });
+    });
+
+    modelTabs.forEach((tab) => tab.addEventListener("click", () => setModel(tab.dataset.model)));
+    backtop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    window.addEventListener("scroll", () => {
+      updateProgress();
+      updateToc();
+    }, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+    updateToc();
+  </script>
+</body>
+</html>

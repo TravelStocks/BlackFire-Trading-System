@@ -15,6 +15,12 @@ const modeCopy = {
     bg: "#f5faf7",
     border: "rgba(7, 135, 93, 0.24)"
   },
+  institution: {
+    title: "趋势：做机构资金反复定价的主升",
+    body: "大盘和板块环境良好时，优先选择机构活跃资金扎堆、硬逻辑清晰、成交额靠前的趋势容量票。均线多头排列和CCI趋势确认是前提，低吸优先，突破谨慎，止盈止损尽量看收盘价。",
+    bg: "#f5f8ff",
+    border: "rgba(56, 103, 214, 0.24)"
+  },
   relay: {
     title: "无龙：轻仓试错，做低位1进2",
     body: "没有高位总龙时，只做三种允许场景：冰点后新题材共振、分歧活口反包、硬逻辑趋势股回踩。只盯板块前排，晋级2板无龙头属性减半。",
@@ -34,7 +40,7 @@ function updateProgress() {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   const ratio = scrollable > 0 ? scrollTop / scrollable : 0;
   progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
-  backtop.classList.toggle("is-visible", scrollTop > 520);
+  backtop?.classList.toggle("is-visible", scrollTop > 520);
 }
 
 function updateToc() {
@@ -63,7 +69,7 @@ function setMode(mode) {
   });
 
   if (compareTable) {
-    compareTable.classList.remove("mode-dragon", "mode-relay", "mode-defense");
+    compareTable.classList.remove("mode-dragon", "mode-institution", "mode-relay", "mode-defense");
     compareTable.classList.add(`mode-${mode}`);
   }
 
@@ -77,7 +83,7 @@ stateCards.forEach((card) => {
   card.addEventListener("click", () => setMode(card.dataset.mode));
 });
 
-backtop.addEventListener("click", () => {
+backtop?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
