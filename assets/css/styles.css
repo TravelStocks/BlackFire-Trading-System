@@ -504,7 +504,7 @@ svg {
 
 .hero-panel {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -565,6 +565,11 @@ svg {
 .state-teal {
   color: var(--teal);
   background: rgba(0, 140, 140, 0.1);
+}
+
+.state-blue {
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.1);
 }
 
 .state-red {
@@ -843,11 +848,17 @@ svg {
   color: var(--red);
 }
 
-.decision-grid,
 .risk-grid,
 .details-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   padding: 18px;
 }
@@ -927,6 +938,10 @@ svg {
   --tone: var(--green);
 }
 
+.tone-blue {
+  --tone: var(--blue);
+}
+
 .tone-teal {
   --tone: var(--teal);
 }
@@ -936,12 +951,14 @@ svg {
 }
 
 .tone-green .card-title span,
+.tone-blue .card-title span,
 .tone-teal .card-title span,
 .tone-red .card-title span {
   background: var(--tone);
 }
 
 .tone-green,
+.tone-blue,
 .tone-teal,
 .tone-red {
   border-top: 3px solid var(--tone);
@@ -1139,7 +1156,7 @@ svg {
 
 .strategy-columns {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   padding: 18px;
 }
@@ -1204,7 +1221,7 @@ svg {
 
 .compare-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 980px;
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -1247,8 +1264,14 @@ svg {
   box-shadow: inset 3px 0 0 rgba(7, 135, 93, 0.45);
 }
 
-.compare-table.mode-relay th:nth-child(3),
-.compare-table.mode-relay td:nth-child(3) {
+.compare-table.mode-institution th:nth-child(3),
+.compare-table.mode-institution td:nth-child(3) {
+  background: rgba(56, 103, 214, 0.045);
+  box-shadow: inset 3px 0 0 rgba(56, 103, 214, 0.42);
+}
+
+.compare-table.mode-relay th:nth-child(4),
+.compare-table.mode-relay td:nth-child(4) {
   background: rgba(0, 140, 140, 0.045);
   box-shadow: inset 3px 0 0 rgba(0, 140, 140, 0.42);
 }
@@ -1280,6 +1303,11 @@ svg {
 .strategy-head.teal {
   color: var(--teal);
   background: rgba(0, 140, 140, 0.07);
+}
+
+.strategy-head.blue {
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.07);
 }
 
 .strategy-head h3 {
@@ -1385,6 +1413,12 @@ svg {
   border-radius: var(--radius);
   font-size: 13px;
   font-weight: 800;
+}
+
+.blue-strip span {
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.07);
+  border-color: rgba(56, 103, 214, 0.18);
 }
 
 .risk-grid {
