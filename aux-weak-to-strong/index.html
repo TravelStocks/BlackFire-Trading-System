@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>弱转强｜辅助战法</title>
+  <meta name="description" content="辅助战法：弱转强。围绕大盘情绪、板块周期、个股辨识度、竞价量能、开盘五分钟和转强买卖点，整理成可执行网页手册。" />
+  <style>
+    :root {
+      --bg: #f7f8f6;
+      --surface: #ffffff;
+      --soft: #f2f7f3;
+      --ink: #101714;
+      --muted: #5f6b65;
+      --muted-2: #8b9690;
+      --line: #dbe5dd;
+      --green: #0f8f5f;
+      --green-deep: #075a3c;
+      --teal: #008c8c;
+      --amber: #b7791f;
+      --red: #b42318;
+      --blue: #3867d6;
+      --shadow: 0 18px 44px rgba(16, 23, 20, 0.08);
+      --radius: 8px;
+      --sans: "Microsoft YaHei UI", "PingFang SC", "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      min-width: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(16, 23, 20, 0.045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(16, 23, 20, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 44px 44px;
+      font-family: var(--sans);
+      line-height: 1.68;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    li,
+    span,
+    strong,
+    em {
+      overflow-wrap: anywhere;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 40;
+      width: 100%;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--green), var(--teal), var(--amber));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 58px;
+      padding: 0 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand,
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand {
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: var(--green);
+      background: rgba(15, 143, 95, 0.08);
+      border: 1px solid rgba(15, 143, 95, 0.18);
+      border-radius: var(--radius);
+    }
+
+    .top-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 6px 10px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .top-actions a:hover {
+      color: var(--green);
+      background: rgba(15, 143, 95, 0.06);
+      border-color: rgba(15, 143, 95, 0.28);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 226px minmax(0, 1fr);
+      min-height: calc(100vh - 58px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 58px;
+      align-self: start;
+      height: calc(100vh - 58px);
+      padding: 24px 20px;
+      background: rgba(255, 255, 255, 0.72);
+      border-right: 1px solid var(--line);
+      overflow-y: auto;
+    }
+
+    .toc-title {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-title strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .toc-title span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toc {
+      display: grid;
+      gap: 6px;
+      margin-top: 18px;
+    }
+
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 40px;
+      padding: 8px 10px;
+      color: var(--muted);
+      border-left: 3px solid transparent;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .toc a:hover {
+      color: var(--ink);
+      background: rgba(15, 143, 95, 0.07);
+      border-left-color: var(--green);
+    }
+
+    .toc a span {
+      color: var(--muted-2);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .content {
+      width: min(1160px, calc(100vw - 226px - 48px));
+      margin: 0 auto;
+      padding: 26px 24px 58px;
+    }
+
+    .section {
+      margin-bottom: 14px;
+      scroll-margin-top: 80px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+      gap: 28px;
+      align-items: stretch;
+      padding: 34px;
+      background:
+        linear-gradient(135deg, rgba(15, 143, 95, 0.09), transparent 40%),
+        linear-gradient(180deg, #fff, #fbfcfa);
+    }
+
+    .label,
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 10px 0 14px;
+      font-size: clamp(44px, 7vw, 80px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-lead {
+      max-width: 48ch;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .hero-sub {
+      max-width: 62ch;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 9px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      font-weight: 900;
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .button.secondary {
+      color: var(--green);
+      background: var(--surface);
+      border-color: rgba(15, 143, 95, 0.25);
+    }
+
+    .precheck {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid rgba(15, 143, 95, 0.2);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .precheck h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .precheck ol {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: check;
+    }
+
+    .precheck li {
+      counter-increment: check;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 10px;
+      background: var(--soft);
+      border: 1px solid rgba(15, 143, 95, 0.16);
+      border-radius: var(--radius);
+      font-weight: 800;
+    }
+
+    .precheck li::before {
+      content: counter(check);
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      background: var(--green);
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .summary-grid,
+    .weak-grid,
+    .condition-grid,
+    .buy-grid,
+    .note-grid {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .summary-card,
+    .weak-card,
+    .condition-card,
+    .buy-card,
+    .note-card,
+    .sell-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .summary-card {
+      padding: 18px;
+      border-top: 3px solid var(--green);
+    }
+
+    .summary-card:nth-child(2) {
+      border-top-color: var(--teal);
+    }
+
+    .summary-card:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .summary-card h3,
+    .weak-card h3,
+    .condition-card h3,
+    .buy-card h3,
+    .note-card h3,
+    .sell-card h3 {
+      margin: 8px 0 8px;
+      font-size: 21px;
+      line-height: 1.28;
+    }
+
+    .summary-card p,
+    .weak-card p,
+    .condition-card p,
+    .buy-card p,
+    .note-card p,
+    .sell-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section-head {
+      padding: 26px 28px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head h2 {
+      margin: 6px 0 8px;
+      font-size: clamp(26px, 3.4vw, 38px);
+      line-height: 1.2;
+    }
+
+    .section-head p:last-child {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .callout {
+      margin: 0 18px 18px;
+      padding: 18px;
+      background:
+        linear-gradient(135deg, rgba(180, 123, 18, 0.08), transparent 42%),
+        var(--surface);
+      border: 1px solid rgba(180, 123, 18, 0.22);
+      border-left: 4px solid var(--amber);
+      border-radius: var(--radius);
+    }
+
+    .callout strong {
+      display: block;
+      color: var(--amber);
+      font-size: 15px;
+    }
+
+    .callout p {
+      margin: 8px 0 0;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .weak-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .weak-card,
+    .condition-card,
+    .buy-card,
+    .note-card,
+    .sell-card {
+      padding: 18px;
+    }
+
+    .weak-card span,
+    .condition-card span,
+    .buy-card span,
+    .note-card span,
+    .sell-card span {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .weak-card em {
+      display: block;
+      margin-top: 10px;
+      color: var(--amber);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .condition-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .signal-table {
+      margin: 18px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .signal-row:last-child {
+      border-bottom: 0;
+    }
+
+    .signal-row span {
+      padding: 13px 14px;
+      border-right: 1px solid var(--line);
+    }
+
+    .signal-row span:last-child {
+      border-right: 0;
+    }
+
+    .signal-head {
+      color: var(--muted);
+      background: var(--soft);
+      font-weight: 900;
+    }
+
+    .buy-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .buy-card {
+      border-top: 3px solid var(--green);
+    }
+
+    .buy-card:nth-child(2) {
+      border-top-color: var(--teal);
+    }
+
+    .buy-card:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .sell-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .sell-card.good {
+      border-top: 3px solid var(--green);
+    }
+
+    .sell-card.bad {
+      border-top: 3px solid var(--red);
+    }
+
+    .note-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .note-card {
+      border-left: 4px solid var(--green);
+    }
+
+    .note-card.warn {
+      border-left-color: var(--red);
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 20px 4px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        padding: 12px 18px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .toc-title {
+        display: none;
+      }
+
+      .toc {
+        display: flex;
+        gap: 8px;
+        margin: 0;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .toc a {
+        flex: 0 0 auto;
+        border-left: 0;
+        border-bottom: 3px solid transparent;
+        border-radius: var(--radius);
+      }
+
+      .content {
+        width: min(1160px, 100%);
+      }
+
+      .hero,
+      .summary-grid,
+      .condition-grid,
+      .buy-grid,
+      .note-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .weak-grid,
+      .sell-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        min-height: auto;
+        padding: 12px 16px;
+      }
+
+      .content {
+        padding: 14px 12px 42px;
+      }
+
+      .hero,
+      .section-head {
+        padding: 22px 18px;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .weak-grid,
+      .sell-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .signal-row {
+        grid-template-columns: 1fr;
+      }
+
+      .signal-row span {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .signal-row span:last-child {
+        border-bottom: 0;
+      }
+
+      .footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 17v-5m4 5V8m4 9v-8m4 8v-3" /></svg>
+      </span>
+      <span>A股短线交易系统</span>
+    </a>
+    <div class="top-actions">
+      <a href="../index.html">
+        返回总纲
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18 9 12l6-6" /></svg>
+      </a>
+      <a href="../aux-reopen-weak-to-strong/index.html">
+        回封弱转强
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="页面目录">
+      <div class="toc-title">
+        <strong>辅助战法：弱转强</strong>
+        <span>带量、超预期、确认转强</span>
+      </div>
+      <nav class="toc">
+        <a href="#overview"><span>01</span>总览</a>
+        <a href="#weak"><span>02</span>弱的类型</a>
+        <a href="#conditions"><span>03</span>前置条件</a>
+        <a href="#signals"><span>04</span>转强信号</a>
+        <a href="#buy"><span>05</span>买卖点</a>
+        <a href="#notes"><span>06</span>注意事项</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero section" id="overview">
+        <div>
+          <p class="label">辅助战法</p>
+          <h1>弱转强</h1>
+          <p class="hero-lead">昨日弱而不散，今日带量确认转强。</p>
+          <p class="hero-sub">弱转强不是看见高开就追，而是确认昨日的弱势里隐藏着承接，次日通过带量高开、快速拉升或放量上板，让场内资金锁住筹码，形成超预期。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#buy">看买点</a>
+            <a class="button secondary" href="#notes">先看禁忌</a>
+          </div>
+        </div>
+
+        <aside class="precheck" aria-label="弱转强前置问题">
+          <p class="label">下单前 3 问</p>
+          <h2>先确认环境，再确认个股</h2>
+          <ol>
+            <li>大盘指数和市场情绪如何？前一个周期结束了吗？</li>
+            <li>目标板块节奏如何？处在主升、分歧、回流还是退潮？</li>
+            <li>目标个股辨识度、量能、平台突破和身位够不够？</li>
+          </ol>
+        </aside>
+      </section>
+
+      <section class="section">
+        <div class="summary-grid">
+          <article class="summary-card">
+            <p class="kicker">定义</p>
+            <h3>昨日弱势，今日带量高开</h3>
+            <p>弱转强是昨日表现偏弱的股票，今日能够带量高开或低开后快速放量拉红。</p>
+          </article>
+          <article class="summary-card">
+            <p class="kicker">本质</p>
+            <h3>超预期 + 锁筹</h3>
+            <p>通过高开快速拉升，让昨日亏损资金直接盈利，减少场内抛压，进一步锁住筹码。</p>
+          </article>
+          <article class="summary-card">
+            <p class="kicker">核心</p>
+            <h3>必须带量</h3>
+            <p>带量说明是真实资金进攻。不带量的高开，骗炮概率大。</p>
+          </article>
+        </div>
+        <div class="callout">
+          <strong>重点观察</strong>
+          <p>竞价量能和开盘 5 分钟量能最关键，最好是近 5 日最大量，尤其关注前 2 分钟。</p>
+        </div>
+      </section>
+
+      <section class="section" id="weak">
+        <div class="section-head">
+          <p class="label">弱的类型</p>
+          <h2>弱可以分歧，但不能走弱</h2>
+          <p>弱转强要找的是“表面弱、里面有承接”的标的。昨日弱势如果已经没有承接，就不属于弱转强候选。</p>
+        </div>
+
+        <div class="weak-grid">
+          <article class="weak-card">
+            <span>类型 1</span>
+            <h3>大烂板</h3>
+            <p>烂板是弱，上板是强。次日正常预期低开，超预期是带量高开。</p>
+            <em>重点：弱中有强</em>
+          </article>
+          <article class="weak-card">
+            <span>类型 2</span>
+            <h3>炸板大幅下杀</h3>
+            <p>下杀是弱，依旧上板是强。次日若带量高开，说明资金重新认可。</p>
+            <em>重点：承接不散</em>
+          </article>
+          <article class="weak-card">
+            <span>类型 3</span>
+            <h3>跌停放量板</h3>
+            <p>跌停是弱，但跌停板依旧放量，说明仍有资金承接和博弈。</p>
+            <em>重点：有资金交换</em>
+          </article>
+          <article class="weak-card">
+            <span>类型 4</span>
+            <h3>全天深水</h3>
+            <p>深水是弱，深水有承接是强。没有承接的深水，不要硬解释。</p>
+            <em>重点：不能 A 杀</em>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="conditions">
+        <div class="section-head">
+          <p class="label">前置条件</p>
+          <h2>市场、板块、个股同时过关</h2>
+          <p>弱转强必须建立在大局观上。高潮次日和退潮期的弱转强胜率低，不能只看单票高开。</p>
+        </div>
+
+        <div class="condition-grid">
+          <article class="condition-card">
+            <span>市场情绪</span>
+            <h3>情绪尚可</h3>
+            <p>最优场景是冰点次日有修复预期，昨日活口次日带量高开转强。</p>
+          </article>
+          <article class="condition-card">
+            <span>板块周期</span>
+            <h3>处在主升周期</h3>
+            <p>板块连续上涨中，偶尔出现一个阴线回调可以接受；退潮期谨慎。</p>
+          </article>
+          <article class="condition-card">
+            <span>个股地位</span>
+            <h3>足够辨识度</h3>
+            <p>必须是核心人气票的弱转强，不是杂毛、后排或无资金关注的票。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="signals">
+        <div class="section-head">
+          <p class="label">转强信号</p>
+          <h2>“转”字最关键</h2>
+          <p>转折点必须清晰、明确。弱转强和低吸同根同源，零轴附近永远是最好的买点之一。</p>
+        </div>
+
+        <div class="signal-table" aria-label="弱转强信号表">
+          <div class="signal-row signal-head"><span>维度</span><span>弱</span><span>强</span></div>
+          <div class="signal-row"><span>走势</span><span>可以分歧，但不能走弱，必须仍有承接。</span><span>竞价放量，出现抢筹高开，或低开后迅速拉红。</span></div>
+          <div class="signal-row"><span>竞价弱转强</span><span>昨日大烂板、炸板、深水承接等弱势形态。</span><span>今日带量高开，常见为 4 个点以上开盘。</span></div>
+          <div class="signal-row"><span>分时弱转强</span><span>竞价低开或不强，开盘后不能继续下杀。</span><span>低开后快速拉红上板，且必须放量。</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="buy">
+        <div class="section-head">
+          <p class="label">买卖点</p>
+          <h2>确认转强再动手</h2>
+          <p>陈小群买点：昨日弱转强，今日转强确认，这是右侧买点。</p>
+        </div>
+
+        <div class="buy-grid">
+          <article class="buy-card">
+            <span>买点 1</span>
+            <h3>竞价放量高开</h3>
+            <p>竞价就是第一买点，上板是第二买点。前提是量能真实，不是无量骗炮。</p>
+          </article>
+          <article class="buy-card">
+            <span>买点 2</span>
+            <h3>竞价不带量</h3>
+            <p>不要急。等前 5 分钟放量上板，打板才是确认买点。</p>
+          </article>
+          <article class="buy-card">
+            <span>买点 3</span>
+            <h3>竞价水下</h3>
+            <p>快速带量拉红，翻红是第一买点，半路是第二买点，上板是第三买点。</p>
+          </article>
+        </div>
+
+        <div class="sell-grid">
+          <article class="sell-card good">
+            <span>成功后</span>
+            <h3>次日不能继续连板，考虑减仓</h3>
+            <p>弱转强成功后要继续观察强度。如果次日无法延续连板，先保护利润。</p>
+          </article>
+          <article class="sell-card bad">
+            <span>失败后</span>
+            <h3>严格割肉，不要格局</h3>
+            <p>当天大幅回落，次日缩量低开，先纪律性减半；没有快速翻红再卖完。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="notes">
+        <div class="section-head">
+          <p class="label">注意事项</p>
+          <h2>弱转强不是所有阶段都能做</h2>
+          <p>越往后转强，成功概率越低。第一次转强最好，高潮次日要特别谨慎。</p>
+        </div>
+
+        <div class="note-grid">
+          <article class="note-card">
+            <span>最优场景</span>
+            <h3>冰点次日，修复预期</h3>
+            <p>冰点日活口通常是大烂板，第二天回暖日带量高开弱转强，胜率最高。</p>
+          </article>
+          <article class="note-card warn">
+            <span>谨慎场景</span>
+            <h3>高潮次日弱转强</h3>
+            <p>高潮日最好的票应该直接强，而不是弱转强。高潮次日操作核心是分歧切核心。</p>
+          </article>
+          <article class="note-card">
+            <span>选股方式</span>
+            <h3>策略筛选 + 人气热度榜</h3>
+            <p>尽量做核心人气票，尽量在个股第一次转强时去，越到后面概率越低。</p>
+          </article>
+          <article class="note-card warn">
+            <span>高开限制</span>
+            <h3>别追 8 个点的弱转强</h3>
+            <p>最好做 3-5 个点以内的弱转强，盈亏比更好；8 个点高开很容易吃大面。</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>最后底线</strong>
+          <p>昨日缩量涨停，第二天转强要多观察；前一日爆量后次日高开直接过套牢盘，才更值得上车。</p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>免责声明：本页面仅用于个人交易体系整理与复盘记录，不构成任何投资建议。</p>
+        <p>来源：Notion 页面「辅助战法：弱转强」本地缓存整理。</p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const progress = document.querySelector("#progress");
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
+    }
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+  </script>
+</body>
+</html>

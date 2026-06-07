@@ -10,6 +10,7 @@
 - `战法3 - 龙头周期复盘/index.html`：从 Notion 汇总的龙头周期复盘，包含龙特点、周期规律、时间轴与原文整理。
 - `工具 - 龙头连扳开盘分时及下杀模型验证/index.html`：整合连扳期间开盘分时、振幅阈值、最低下杀线与冲高回落模型验证。
 - `aux-reopen-weak-to-strong/index.html`：把 Notion 辅助战法整理成网页手册，用于确认龙头炸板回封后的弱转强买点。
+- `aux-weak-to-strong/index.html`：把 Notion 辅助战法整理成网页手册，用于确认带量高开、分时拉红与右侧弱转强买点。
 
 ## 使用
 
