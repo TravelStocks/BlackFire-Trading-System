@@ -760,7 +760,7 @@
 
     .model-tabs {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 10px;
       margin-bottom: 14px;
     }
@@ -1094,7 +1094,7 @@
     <nav class="toplinks" aria-label="战法导航">
       <a href="../战法1 - 龙头信仰/龙头信仰-阅读版.html">战法1 龙头信仰</a>
       <a href="../战法2 - 低位接力/A股一进二战法手册网页版/index.html">战法2 低位接力</a>
-      <a href="../战法3 - 龙头周期复盘/index.html">周期复盘资料库</a>
+      <a href="../资料库 - 龙头周期复盘/index.html">资料库 龙头周期复盘</a>
     </nav>
   </header>
 
@@ -1103,14 +1103,15 @@
       <div class="hero-main">
         <p class="kicker">Strategy 03 / Swing Trend</p>
         <h1>机构趋势</h1>
-        <p class="hero-lead">只做机构资金愿意反复承接的主升趋势：硬逻辑、容量票、均线多头、业绩拐点。</p>
-        <p class="hero-sub">这套战法不是连板情绪小票，也不是频繁隔日套利。它服务于波段短中线，在大盘与板块环境允许时，用收盘价纪律跟随趋势，用失效条件保护本金。</p>
+        <p class="hero-lead">只做均线主升：硬逻辑、容量票、业绩披露窗口、5-20 天短线波段。</p>
+        <p class="hero-sub">这套战法不是连板情绪小票，也不是频繁隔日套利。它服务于 5-20 天短线波段，在大盘与板块环境允许时，用均线结构跟随趋势，用技术纪律保护本金。</p>
         <div class="hero-tags" aria-label="机构趋势关键词">
           <span>机构定价权</span>
           <span>5日 &gt; 10日 &gt; 20日</span>
           <span>20日生命线</span>
           <span>CCI趋势确认</span>
-          <span>业绩拐点</span>
+          <span>5-20天短线波段</span>
+          <span>业绩披露窗口</span>
         </div>
         <div class="hero-rule" aria-label="三条核心规则">
           <article>
@@ -1176,7 +1177,7 @@
             <strong>10日均线</strong>
           </article>
           <article class="metric">
-            <span>披露窗口</span>
+            <span>业绩披露窗口</span>
             <strong>4月 / 7-8月 / 10月</strong>
           </article>
           <article class="metric">
@@ -1196,11 +1197,12 @@
           <li><a class="toc-link is-active" href="#positioning"><span>01</span>战法定位</a></li>
           <li><a class="toc-link" href="#capital"><span>02</span>机构资金</a></li>
           <li><a class="toc-link" href="#trend"><span>03</span>趋势识别</a></li>
-          <li><a class="toc-link" href="#earnings"><span>04</span>业绩窗口</a></li>
+          <li><a class="toc-link" href="#earnings"><span>04</span>业绩披露</a></li>
           <li><a class="toc-link" href="#selection"><span>05</span>择股</a></li>
           <li><a class="toc-link" href="#entry"><span>06</span>买入</a></li>
           <li><a class="toc-link" href="#exit"><span>07</span>卖出</a></li>
-          <li><a class="toc-link" href="#playbook"><span>08</span>执行清单</a></li>
+          <li><a class="toc-link" href="#position"><span>08</span>仓位</a></li>
+          <li><a class="toc-link" href="#playbook"><span>09</span>执行清单</a></li>
         </ol>
       </nav>
     </aside>
@@ -1210,14 +1212,14 @@
         <div class="section-head">
           <div>
             <p class="section-kicker">Positioning</p>
-            <h2>第三套动作：有趋势，做机构主升</h2>
+            <h2>第三套动作：做均线主升</h2>
           </div>
-          <p>战法3补的是体系里的波段短中线：不追连板高度，不在无龙混沌里硬接力，只在主线产业和机构资金共振时跟随趋势。</p>
+          <p>战法3补的是体系里的 5-20 天短线波段：不追连板高度，不在无龙混沌里硬接力，只在主线产业、业绩披露窗口和机构资金共振时跟随均线主升。</p>
         </div>
         <div class="section-body">
           <div class="highlight-bar">
-            <strong>硬逻辑 + 大容量 + 趋势结构</strong>
-            <p>机构趋势的本质是资金愿意在同一条产业逻辑里反复定价。买点不是情绪冲动，而是趋势确认后的承接与回踩。</p>
+            <strong>均线主升 + 业绩披露窗口 + 技术纪律</strong>
+            <p>机构趋势的本质是资金愿意在同一条产业逻辑里反复定价。买点只保留两个主模型：大阳线回踩一半、回踩 5 日线。</p>
           </div>
           <div class="grid-3">
             <article class="manual-card">
@@ -1233,7 +1235,7 @@
             <article class="manual-card gold">
               <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 15c5-1 8-8 16-7" /><path d="M4 19c6-1 10-5 16-4" /></svg></span>
               <h3>战法3：机构趋势</h3>
-              <p>大盘和板块环境好，机构容量票走出均线多头，做波段主升。</p>
+              <p>大盘和板块环境好，机构容量票走出均线多头，做 5-20 天短线波段。</p>
             </article>
           </div>
         </div>
@@ -1302,9 +1304,9 @@
           <div class="timeline">
             <article class="timeline-step"><span>01</span><h3>建仓痕迹</h3><p>大成交额、板块共振、趋势票进入成交额前列。</p></article>
             <article class="timeline-step"><span>02</span><h3>趋势确认</h3><p>5日、10日、20日均线呈多头排列，CCI 位于上沿之上。</p></article>
-            <article class="timeline-step"><span>03</span><h3>回踩承接</h3><p>突破后回踩 5 日线，或大阳线后一半位置仍有承接。</p></article>
-            <article class="timeline-step"><span>04</span><h3>主升持有</h3><p>强趋势里用三日移动持股法，吃主升浪，不参与普通调整。</p></article>
-            <article class="timeline-step"><span>05</span><h3>失效退出</h3><p>破位、放量长上影、阴包阳、资金批量离场时切换防守。</p></article>
+            <article class="timeline-step"><span>03</span><h3>回踩承接</h3><p>大阳线回踩一半，或回踩 5 日线仍有承接。</p></article>
+            <article class="timeline-step"><span>04</span><h3>5-20天持有</h3><p>强趋势里按均线推进，首次低吸 2 成，确认后加到 4 成。</p></article>
+            <article class="timeline-step"><span>05</span><h3>失效退出</h3><p>破 10 日或 20 日均线就走，大盘差时降到 0-2 成。</p></article>
           </div>
           <div class="table-wrap" style="margin-top:14px">
             <table>
@@ -1312,7 +1314,7 @@
                 <tr><th>识别项</th><th>有效信号</th><th>风险信号</th></tr>
               </thead>
               <tbody>
-                <tr><td>均线</td><td>5日 &gt; 10日 &gt; 20日，回踩不破。</td><td>收盘跌破关键均线，反抽无量。</td></tr>
+                <tr><td>均线</td><td>5日 &gt; 10日 &gt; 20日，回踩不破。</td><td>收盘跌破 10 日或 20 日均线，按技术纪律离场。</td></tr>
                 <tr><td>CCI</td><td>持续在趋势上沿之上，可作为持有辅助。</td><td>收盘跌回上沿下方，考虑止盈。</td></tr>
                 <tr><td>成交额</td><td>成交额靠前，容量足够，适合机构资金进出。</td><td>缩量修复无力，或爆量滞涨。</td></tr>
                 <tr><td>逻辑</td><td>产业链逻辑与业绩预期持续强化。</td><td>个股逻辑明显变化，无脑止盈。</td></tr>
@@ -1357,9 +1359,17 @@
                 <tr><td>选题材 / 板块</td><td>优先机构活跃交易资金扎堆的方向。</td><td>多复盘、多看产业链、多做逻辑研究。</td></tr>
                 <tr><td>逻辑研究</td><td>自己研究为主，朋友推荐只能作为线索。</td><td>机构就是研究硬逻辑。</td></tr>
                 <tr><td>成交额</td><td>偏向机构票，成交额前 20 大概率是机构票。</td><td>成交额每日必看。</td></tr>
-                <tr><td>市场化选股</td><td>看 10 日区间涨幅、市场赚钱效应、热度排行榜、成交额。</td><td>红星发展、东山精密、风华高科等作为复盘样本。</td></tr>
+                <tr><td>市场化选股</td><td>看 10 日区间涨幅、市场赚钱效应、热度排行榜、成交额。</td><td>红星发展、东山精密、剑桥科技、德福科技、协创数据、风华高科先放入观察池。</td></tr>
               </tbody>
             </table>
+          </div>
+          <div class="grid-3" style="margin-top:14px" aria-label="案例观察池占位">
+            <article class="manual-card"><span class="mini-pill">观察池占位</span><h3>红星发展</h3><p>后续补充均线主升、买点、卖点与业绩披露窗口复盘。</p></article>
+            <article class="manual-card"><span class="mini-pill">观察池占位</span><h3>东山精密</h3><p>后续补充均线主升、买点、卖点与业绩披露窗口复盘。</p></article>
+            <article class="manual-card"><span class="mini-pill">观察池占位</span><h3>剑桥科技</h3><p>后续补充均线主升、买点、卖点与业绩披露窗口复盘。</p></article>
+            <article class="manual-card"><span class="mini-pill">观察池占位</span><h3>德福科技</h3><p>后续补充均线主升、买点、卖点与业绩披露窗口复盘。</p></article>
+            <article class="manual-card"><span class="mini-pill">观察池占位</span><h3>协创数据</h3><p>后续补充均线主升、买点、卖点与业绩披露窗口复盘。</p></article>
+            <article class="manual-card"><span class="mini-pill">观察池占位</span><h3>风华高科</h3><p>后续补充均线主升、买点、卖点与业绩披露窗口复盘。</p></article>
           </div>
         </div>
       </section>
@@ -1368,15 +1378,14 @@
         <div class="section-head">
           <div>
             <p class="section-kicker">Entry Model</p>
-            <h2>买入：低吸优先，突破谨慎</h2>
+            <h2>买入：只做两个主买点</h2>
           </div>
-          <p>买入前提一定是均线多头排列，CCI 在上方线之上。趋势票可以慢，但不允许买在没有结构的位置。</p>
+          <p>买入前提一定是均线多头排列，CCI 在上方线之上。主买点只保留大阳线回踩一半、回踩 5 日线。</p>
         </div>
         <div class="section-body">
           <div class="model-tabs" role="tablist" aria-label="买入模型">
             <button class="model-tab is-active" type="button" role="tab" aria-selected="true" data-model="pullback">大阳线回踩</button>
             <button class="model-tab" type="button" role="tab" aria-selected="false" data-model="ma">均线低吸</button>
-            <button class="model-tab" type="button" role="tab" aria-selected="false" data-model="breakout">突破介入</button>
           </div>
           <div class="model-panel" id="model-panel" aria-live="polite">
             <div>
@@ -1396,26 +1405,26 @@
         <div class="section-head">
           <div>
             <p class="section-kicker">Exit Discipline</p>
-            <h2>卖出：买入前就设置止损，收盘价执行纪律</h2>
+            <h2>卖出：破 10 日 / 20 日线就走</h2>
           </div>
-          <p>趋势行情是熬出来的，不是频繁交易出来的。但“熬”必须建立在止损位清晰、失效条件明确之上。</p>
+          <p>趋势行情是熬出来的，不是频繁交易出来的。但“熬”必须服从技术纪律：破 10 日或 20 日均线就走。</p>
         </div>
         <div class="section-body">
           <div class="grid-3">
             <article class="manual-card red">
               <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z" /><path d="m9 9 6 6m0-6-6 6" /></svg></span>
               <h3>纪律止损</h3>
-              <p>买入前设置止损点位，严格遵守，防止连续阴跌。除非盘中明显出货，否则尽量看收盘价。</p>
+              <p>买入前设置 10 日/20 日均线止损位，严格遵守，防止连续阴跌。</p>
             </article>
             <article class="manual-card">
               <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18h16" /><path d="M7 14l3-3 3 2 4-6" /></svg></span>
-              <h3>三日移动持股</h3>
-              <p>近三天只要当天收盘价没有破近三日最低点，就一直拿着，更适合单边向上的强趋势。</p>
+              <h3>破 10 日线</h3>
+              <p>短线趋势生命线被破，先按技术纪律减仓或离场，不把趋势票做成补仓票。</p>
             </article>
             <article class="manual-card gold">
               <span class="icon-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16h16" /><path d="M6 11h12" /><path d="M8 6h8" /></svg></span>
-              <h3>平台底部止盈</h3>
-              <p>高位筹码密集底部没有破，可以继续持有，更适合有洗盘的趋势。</p>
+              <h3>破 20 日线</h3>
+              <p>机构趋势生命线被破，趋势假设失效，不能再按机构主升持有。</p>
             </article>
           </div>
           <div class="table-wrap" style="margin-top:14px">
@@ -1424,11 +1433,35 @@
                 <tr><th>场景</th><th>卖出或止盈规则</th><th>备注</th></tr>
               </thead>
               <tbody>
-                <tr><td>回踩低吸</td><td>大阳线底部破位就走。</td><td>阳线一半是观察位，底部是失效位。</td></tr>
-                <tr><td>均线低吸</td><td>均线破位就卖出。</td><td>10 日与 20 日分别对应短线与机构趋势生命线。</td></tr>
-                <tr><td>追高买入</td><td>均线破位，阳线一半止盈，阴包阳也准备走。</td><td>追高体验差，不能梭哈。</td></tr>
-                <tr><td>技术派止盈</td><td>明显放量长上影，或 CCI 收盘跌回上沿下方。</td><td>趋势指标失效时先兑现。</td></tr>
-                <tr><td>逻辑变化</td><td>个股逻辑明显变化，无脑止盈。</td><td>做波段，不是价值投资。</td></tr>
+                <tr><td>大阳线回踩</td><td>跌破大阳线底部，或收盘破 10 日线就走。</td><td>阳线一半是买点观察位，底部和 10 日线是纪律位。</td></tr>
+                <tr><td>回踩 5 日线</td><td>收盘破 10 日线，先离场或大幅降仓。</td><td>10 日线是短线趋势生命线。</td></tr>
+                <tr><td>机构趋势</td><td>收盘破 20 日线，趋势假设失效。</td><td>20 日线是机构趋势生命线。</td></tr>
+                <tr><td>辅助信号</td><td>明显放量长上影、阴包阳、CCI 收盘跌回上沿下方。</td><td>这些只做辅助，不替代 10 日/20 日线纪律。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="position">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Position Size</p>
+            <h2>仓位：2 成试，4 成确认，6 成封顶</h2>
+          </div>
+          <p>机构趋势靠稳定结构和纪律吃波段，不靠一次梭哈。仓位随确认度提升，随大盘环境下降。</p>
+        </div>
+        <div class="section-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>阶段</th><th>仓位</th><th>执行条件</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>首次低吸</td><td>2 成</td><td>大阳线回踩一半，或回踩 5 日线仍有承接。</td></tr>
+                <tr><td>确认加仓</td><td>4 成</td><td>均线主升继续成立，板块和个股承接同步确认。</td></tr>
+                <tr><td>强趋势封顶</td><td>最多 6 成</td><td>大盘、板块、个股都配合，且 10 日/20 日线纪律清晰。</td></tr>
+                <tr><td>大盘差</td><td>0-2 成</td><td>大盘环境不支持趋势时，主动降仓或空仓等待。</td></tr>
               </tbody>
             </table>
           </div>
@@ -1454,14 +1487,14 @@
             <section class="check-card">
               <h3>盘中</h3>
               <label class="check-item"><input type="checkbox" />均线多头排列没有被破坏。</label>
-              <label class="check-item"><input type="checkbox" />回踩有承接，不追无结构突破。</label>
+              <label class="check-item"><input type="checkbox" />回踩有承接，只做两个主买点。</label>
               <label class="check-item"><input type="checkbox" />没有出现明显批量离场。</label>
             </section>
             <section class="check-card">
               <h3>盘后</h3>
               <label class="check-item"><input type="checkbox" />收盘价没有跌破止损或生命线。</label>
               <label class="check-item"><input type="checkbox" />CCI 与成交额没有发出失效信号。</label>
-              <label class="check-item"><input type="checkbox" />更新案例库：买点、卖点、失效条件。</label>
+              <label class="check-item"><input type="checkbox" />更新观察池：买点、卖点、失效条件。</label>
             </section>
           </div>
         </div>
@@ -1473,7 +1506,8 @@
         <p class="right-title">核心纪律</p>
         <ul class="status-list">
           <li>所有止盈止损尽量以收盘价为准。</li>
-          <li>趋势票一定要设置好止损位。</li>
+          <li>破 10 日 / 20 日线就走。</li>
+          <li>首次低吸 2 成，确认加到 4 成，强趋势最多 6 成。</li>
           <li>大盘行情好才能做趋势。</li>
           <li>趋势主升期之外，不硬套本战法。</li>
         </ul>
@@ -1481,7 +1515,7 @@
       <section class="right-card">
         <p class="right-title">关联资料</p>
         <a href="../index.html">返回总纲 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
-        <a href="../战法3 - 龙头周期复盘/index.html">龙头周期复盘 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
+        <a href="../资料库 - 龙头周期复盘/index.html">资料库 - 龙头周期复盘 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
         <button id="clear-checks" type="button">清空清单 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M6 6l1 14h10l1-14" /></svg></button>
       </section>
     </aside>
@@ -1515,19 +1549,11 @@
         ]
       },
       ma: {
-        title: "突破之后回踩 5 日均线低吸",
+        title: "回踩 5 日均线低吸",
         rules: [
           "前提仍然是 5 日、10 日、20 日均线多头排列。",
           "回踩 5 日线仍有承接，短线趋势生命线没有破。",
-          "均线破位就卖出，不把趋势票做成补仓票。"
-        ]
-      },
-      breakout: {
-        title: "突破介入要克制仓位",
-        rules: [
-          "追高切勿梭哈，刚追突破就回调会很难拿住。",
-          "除非大盘、情绪、板块都非常好，否则突破点只做小仓确认。",
-          "突破失败后容易吃大面，必须提前设好失效位。"
+          "收盘破 10 日线先走，破 20 日线视为机构趋势失效。"
         ]
       }
     };

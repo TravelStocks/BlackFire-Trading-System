@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 NOTION_DB = Path.home() / "AppData" / "Roaming" / "Notion" / "notion.db"
-PAGE_TITLE = "龙头周期复盘"
+PAGE_TITLE = "资料库 - 龙头周期复盘"
 OUTPUT_JS = Path(__file__).with_name("cycles-data.js")
 OUTPUT_JSON = Path(__file__).with_name("cycles-data.json")
 
