@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>高人气炸板回封弱转强｜辅助战法</title>
+  <meta name="description" content="辅助战法：高人气炸板回封弱转强。识别高人气龙头炸板后的筹码交换、盘口承接、量能节奏、黄金回封时机与扫板 SOP。" />
+  <style>
+    :root {
+      --bg: #f7f8f6;
+      --surface: #ffffff;
+      --surface-soft: #f2f7f3;
+      --ink: #101714;
+      --muted: #5e6b64;
+      --muted-soft: #8a9690;
+      --line: #dbe5dd;
+      --green: #0f8f5f;
+      --green-deep: #075a3c;
+      --teal: #008c8c;
+      --amber: #b7791f;
+      --red: #b42318;
+      --blue: #3867d6;
+      --shadow: 0 18px 44px rgba(16, 23, 20, 0.08);
+      --radius: 8px;
+      --sans: "Microsoft YaHei UI", "PingFang SC", "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      min-width: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(16, 23, 20, 0.045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(16, 23, 20, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 44px 44px;
+      font-family: var(--sans);
+      line-height: 1.68;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    li,
+    td,
+    th,
+    span,
+    strong {
+      overflow-wrap: anywhere;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 40;
+      width: 100%;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--green), var(--amber), var(--red));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 58px;
+      padding: 0 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand,
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand {
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: var(--green);
+      background: rgba(15, 143, 95, 0.08);
+      border: 1px solid rgba(15, 143, 95, 0.18);
+      border-radius: var(--radius);
+    }
+
+    .top-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 6px 10px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .top-actions a:hover {
+      color: var(--green);
+      border-color: rgba(15, 143, 95, 0.28);
+      background: rgba(15, 143, 95, 0.06);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 226px minmax(0, 1fr);
+      min-height: calc(100vh - 58px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 58px;
+      align-self: start;
+      height: calc(100vh - 58px);
+      padding: 24px 20px;
+      background: rgba(255, 255, 255, 0.72);
+      border-right: 1px solid var(--line);
+      overflow-y: auto;
+    }
+
+    .toc-title {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-title strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .toc-title span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toc {
+      display: grid;
+      gap: 6px;
+      margin-top: 18px;
+    }
+
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 40px;
+      padding: 8px 10px;
+      color: var(--muted);
+      border-left: 3px solid transparent;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .toc a:hover {
+      color: var(--ink);
+      background: rgba(15, 143, 95, 0.07);
+      border-left-color: var(--green);
+    }
+
+    .toc a span {
+      color: var(--muted-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .content {
+      width: min(1160px, calc(100vw - 226px - 48px));
+      margin: 0 auto;
+      padding: 26px 24px 58px;
+    }
+
+    .section {
+      margin-bottom: 14px;
+      scroll-margin-top: 80px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+      gap: 28px;
+      align-items: stretch;
+      padding: 34px;
+      background:
+        linear-gradient(135deg, rgba(15, 143, 95, 0.09), transparent 40%),
+        linear-gradient(180deg, #fff, #fbfcfa);
+    }
+
+    .label,
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 10px 0 14px;
+      max-width: 13ch;
+      font-size: clamp(38px, 5.5vw, 68px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .hero-lead {
+      max-width: 48ch;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .hero-sub {
+      max-width: 62ch;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 9px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      font-weight: 900;
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .button.secondary {
+      color: var(--green);
+      background: var(--surface);
+      border-color: rgba(15, 143, 95, 0.25);
+    }
+
+    .question-panel {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid rgba(15, 143, 95, 0.2);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .question-panel h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: question;
+    }
+
+    .question-list li {
+      counter-increment: question;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 10px;
+      background: var(--surface-soft);
+      border: 1px solid rgba(15, 143, 95, 0.16);
+      border-radius: var(--radius);
+      font-weight: 800;
+    }
+
+    .question-list li::before {
+      content: counter(question);
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      background: var(--green);
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .summary-card,
+    .logic-card,
+    .signal-card,
+    .sop-card,
+    .discipline-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .summary-card {
+      padding: 18px;
+      border-top: 3px solid var(--green);
+    }
+
+    .summary-card:nth-child(2) {
+      border-top-color: var(--teal);
+    }
+
+    .summary-card:nth-child(3) {
+      border-top-color: var(--red);
+    }
+
+    .summary-card h3,
+    .logic-card h3,
+    .signal-card h3,
+    .sop-card h3,
+    .discipline-card h3 {
+      margin: 8px 0 8px;
+      font-size: 21px;
+      line-height: 1.28;
+    }
+
+    .summary-card p,
+    .logic-card p,
+    .signal-card p,
+    .sop-card p,
+    .discipline-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section-head {
+      padding: 26px 28px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head h2 {
+      margin: 6px 0 8px;
+      font-size: clamp(26px, 3.4vw, 38px);
+      line-height: 1.2;
+    }
+
+    .section-head p:last-child {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .compare-card {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .compare-card.bad {
+      border-top: 3px solid var(--red);
+    }
+
+    .compare-card.good {
+      border-top: 3px solid var(--green);
+    }
+
+    .compare-card span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .compare-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 24px;
+      line-height: 1.28;
+    }
+
+    .quote-box {
+      margin: 0 18px 18px;
+      padding: 18px;
+      color: var(--green-deep);
+      background: rgba(15, 143, 95, 0.08);
+      border: 1px solid rgba(15, 143, 95, 0.18);
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .logic-grid,
+    .signal-grid,
+    .sop-grid,
+    .discipline-grid {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .logic-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .logic-card,
+    .signal-card,
+    .sop-card,
+    .discipline-card {
+      padding: 18px;
+    }
+
+    .logic-card span,
+    .signal-card span,
+    .sop-card span,
+    .discipline-card span {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .callout {
+      margin: 0 18px 18px;
+      padding: 18px;
+      background:
+        linear-gradient(135deg, rgba(180, 123, 18, 0.08), transparent 42%),
+        var(--surface);
+      border: 1px solid rgba(180, 123, 18, 0.22);
+      border-left: 4px solid var(--amber);
+      border-radius: var(--radius);
+    }
+
+    .callout strong {
+      display: block;
+      color: var(--amber);
+      font-size: 15px;
+    }
+
+    .callout p {
+      margin: 8px 0 0;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .signal-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .mini-table {
+      margin-top: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 13px;
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: 0.9fr 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mini-row:last-child {
+      border-bottom: 0;
+    }
+
+    .mini-row span {
+      padding: 9px 10px;
+      color: var(--ink);
+      border-right: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .mini-row span:last-child {
+      border-right: 0;
+    }
+
+    .mini-head {
+      background: var(--surface-soft);
+    }
+
+    .mini-head span {
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .volume-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .volume-strip div {
+      min-height: 94px;
+      padding: 12px;
+      background: var(--surface-soft);
+      border: 1px solid rgba(15, 143, 95, 0.16);
+      border-radius: var(--radius);
+    }
+
+    .volume-strip strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .volume-strip em {
+      display: block;
+      margin-top: 3px;
+      color: var(--green);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .timing-table,
+    .sop-table {
+      margin: 18px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .table-row,
+    .sop-row {
+      display: grid;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .table-row {
+      grid-template-columns: 160px 150px 1fr 170px;
+    }
+
+    .sop-row {
+      grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+    .table-row:last-child,
+    .sop-row:last-child {
+      border-bottom: 0;
+    }
+
+    .table-row span,
+    .sop-row span {
+      padding: 13px 14px;
+      border-right: 1px solid var(--line);
+    }
+
+    .table-row span:last-child,
+    .sop-row span:last-child {
+      border-right: 0;
+    }
+
+    .table-head,
+    .sop-head {
+      color: var(--muted);
+      background: var(--surface-soft);
+      font-weight: 900;
+    }
+
+    .zone-danger {
+      color: var(--red);
+      font-weight: 900;
+    }
+
+    .zone-watch {
+      color: var(--amber);
+      font-weight: 900;
+    }
+
+    .zone-gold {
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .discipline-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .discipline-card.good {
+      border-top: 3px solid var(--green);
+    }
+
+    .discipline-card.bad {
+      border-top: 3px solid var(--red);
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 20px 4px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        padding: 12px 18px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .toc-title {
+        display: none;
+      }
+
+      .toc {
+        display: flex;
+        gap: 8px;
+        margin: 0;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .toc a {
+        flex: 0 0 auto;
+        border-left: 0;
+        border-bottom: 3px solid transparent;
+        border-radius: var(--radius);
+      }
+
+      .content {
+        width: min(1160px, 100%);
+      }
+
+      .hero,
+      .logic-grid,
+      .signal-grid,
+      .discipline-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid,
+      .volume-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        min-height: auto;
+        padding: 12px 16px;
+      }
+
+      .content {
+        padding: 14px 12px 42px;
+      }
+
+      .hero,
+      .section-head {
+        padding: 22px 18px;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .summary-grid,
+      .compare,
+      .volume-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .table-row,
+      .sop-row,
+      .mini-row {
+        grid-template-columns: 1fr;
+      }
+
+      .table-row span,
+      .sop-row span,
+      .mini-row span {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .table-row span:last-child,
+      .sop-row span:last-child,
+      .mini-row span:last-child {
+        border-bottom: 0;
+      }
+
+      .footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 17v-5m4 5V8m4 9v-8m4 8v-3" /></svg>
+      </span>
+      <span>A股短线交易系统</span>
+    </a>
+    <div class="top-actions">
+      <a href="../index.html">
+        返回总纲
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18 9 12l6-6" /></svg>
+      </a>
+      <a href="../战法1 - 龙头信仰/龙头信仰-阅读版.html">
+        龙头信仰
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="页面目录">
+      <div class="toc-title">
+        <strong>高人气回封弱转强</strong>
+        <span>先判断真假，再等确认</span>
+      </div>
+      <nav class="toc">
+        <a href="#overview"><span>01</span>总览</a>
+        <a href="#logic"><span>02</span>底层逻辑</a>
+        <a href="#signals"><span>03</span>真假识别</a>
+        <a href="#timing"><span>04</span>黄金择时</a>
+        <a href="#sop"><span>05</span>实战 SOP</a>
+        <a href="#discipline"><span>06</span>纪律</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero section" id="overview">
+        <div>
+          <p class="label">辅助战法</p>
+          <h1>高人气炸板回封弱转强</h1>
+          <p class="hero-lead">利用最贪婪的资金，承接最恐慌的筹码。</p>
+          <p class="hero-sub">炸板回封不是去赌开板瞬间，而是等待高人气核心标的完成分歧换手，确认承接、量能和盘口都转强后，再跟随最强且有定价权的资金。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#sop">看执行 SOP</a>
+            <a class="button secondary" href="#signals">先看真假识别</a>
+          </div>
+        </div>
+
+        <aside class="question-panel" aria-label="灵魂四问">
+          <p class="label">灵魂 4 问</p>
+          <h2>回封前必须回答</h2>
+          <ol class="question-list">
+            <li>这是主力故意制造分歧吗？</li>
+            <li>均线与盘口承接足够强吗？</li>
+            <li>现在是否处在高确定性时间段？</li>
+            <li>这是不是龙头分歧上车的最后节点？</li>
+          </ol>
+        </aside>
+      </section>
+
+      <section class="section">
+        <div class="summary-grid">
+          <article class="summary-card">
+            <p class="kicker">理解逻辑</p>
+            <h3>炸板是筹码交换</h3>
+            <p>主力主动制造分歧，洗出不坚定筹码，抬高平均成本，为第二波健康拉升减轻抛压。</p>
+          </article>
+          <article class="summary-card">
+            <p class="kicker">识别信号</p>
+            <h3>看均线、量能、盘口</h3>
+            <p>均线不破、回调缩量、回封放量、大单扫板，是从分歧转一致的确认信号。</p>
+          </article>
+          <article class="summary-card">
+            <p class="kicker">遵守纪律</p>
+            <h3>只买确认，不买幻想</h3>
+            <p>做回封买的是确定性。没有点火大单，没有封板动作，就不要提前冲进去替别人接风险。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="logic">
+        <div class="section-head">
+          <p class="label">底层逻辑</p>
+          <h2>主力为什么要炸板？</h2>
+          <p>炸板不一定是封不住，有时是主力不想马上封住。连续上涨后，真正阻挡继续上涨的往往是获利盘。</p>
+        </div>
+
+        <div class="compare">
+          <article class="compare-card bad">
+            <span>传统认知</span>
+            <strong>涨停炸板 = 主力出货 = 恐惧 = 抛售</strong>
+          </article>
+          <article class="compare-card good">
+            <span>核心认知</span>
+            <strong>炸板回封 = 分歧换手 = 生机 = 买点</strong>
+          </article>
+        </div>
+
+        <div class="logic-grid">
+          <article class="logic-card">
+            <span>目的 1</span>
+            <h3>吓出不坚定筹码</h3>
+            <p>利用市场对炸板的恐惧，洗出意志不坚定的浮筹，为后续拉升减轻压力。</p>
+          </article>
+          <article class="logic-card">
+            <span>目的 2</span>
+            <h3>抬高平均持仓成本</h3>
+            <p>让新资金在高位接盘，使市场平均成本上移，减少未来上涨过程中的抛压。</p>
+          </article>
+          <article class="logic-card">
+            <span>目的 3</span>
+            <h3>测试市场承接力度</h3>
+            <p>砸开涨停后观察是否有足够买盘承接。若承接强，主力才更放心发动第二波攻势。</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>核心结论</strong>
+          <p>炸板回封是主力设计的筹码大换血。我们要抓的是换血完成、资金确认转强的临界点。</p>
+        </div>
+      </section>
+
+      <section class="section" id="signals">
+        <div class="section-head">
+          <p class="label">真假识别</p>
+          <h2>分时与盘口的欺诈甄别</h2>
+          <p>这套辅助战法最怕把真出货误判成假洗盘。先看均线，再看量能，最后看盘口动作。</p>
+        </div>
+
+        <div class="signal-grid">
+          <article class="signal-card">
+            <span>识别 1</span>
+            <h3>均线防守</h3>
+            <p>黄色均线本质是当天全天资金的平均持仓成本，也是主力生命线。</p>
+            <div class="mini-table">
+              <div class="mini-row mini-head"><span>特征</span><span>真出货</span><span>假洗盘</span></div>
+              <div class="mini-row"><span>股价表现</span><span>击破均线，反抽站不回均价上</span><span>均线附近有支撑，震荡但重心不下移</span></div>
+              <div class="mini-row"><span>结论</span><span>均线拐头向下，坚决不碰</span><span>主力在护盘，承接力强，可重点关注</span></div>
+            </div>
+          </article>
+
+          <article class="signal-card">
+            <span>识别 2</span>
+            <h3>量能节奏</h3>
+            <p>口诀：炸板要爆量，回调要缩量，回封要放量。</p>
+            <div class="volume-strip">
+              <div><strong>炸板</strong><em>爆量</em><p>分歧巨大，旧资金砸，新资金接。</p></div>
+              <div><strong>回调</strong><em>缩量</em><p>卖盘枯竭，抛压减轻，市场趋于稳定。</p></div>
+              <div><strong>回封</strong><em>放量</em><p>大单点火确认，多头重新回归。</p></div>
+            </div>
+          </article>
+
+          <article class="signal-card">
+            <span>识别 3</span>
+            <h3>盘口语言</h3>
+            <p>虚假护盘和真实扫板最大的区别，是挂单表演还是主动吃单。</p>
+            <div class="mini-table">
+              <div class="mini-row mini-head"><span>类型</span><span>特征</span><span>结论</span></div>
+              <div class="mini-row"><span>虚假护盘</span><span>小单慢吃，买一买二挂单但不成交</span><span>诱多陷阱</span></div>
+              <div class="mini-row"><span>真实扫板</span><span>大单连续横扫卖一至卖五压单</span><span>强力信号，可跟随</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="timing">
+        <div class="section-head">
+          <p class="label">黄金择时</p>
+          <h2>什么时候的回封最有价值？</h2>
+          <p>尾盘回封的价值在于换手充分、抛压衰竭、意图明确。市场经过一整天博弈后，分歧转一致的确定性更高。</p>
+        </div>
+
+        <div class="timing-table" aria-label="回封时间段判断表">
+          <div class="table-row table-head"><span>时间段</span><span>区域</span><span>特点</span><span>策略</span></div>
+          <div class="table-row"><span>9:30 - 11:30</span><span class="zone-danger">高危区</span><span>情绪亢奋，抛压大，易出货，回封质量低。</span><span>尽量不做</span></div>
+          <div class="table-row"><span>13:00 - 14:00</span><span class="zone-watch">观察区</span><span>经过中午发酵，市场情绪相对稳定。</span><span>可关注但不急于动手</span></div>
+          <div class="table-row"><span>14:00 - 15:00</span><span class="zone-gold">黄金区</span><span>换手充分，抛压衰竭，尾盘抢筹，博弈次日溢价。</span><span>成功率高，重点出击</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="sop">
+        <div class="section-head">
+          <p class="label">实战 SOP</p>
+          <h2>从筛选到离场的完整流程</h2>
+          <p>做回封，买的是确定性，哪怕多付出 2% 的成本。只有点火大单扫进来，才出手。</p>
+        </div>
+
+        <div class="sop-table" aria-label="炸板回封弱转强 SOP">
+          <div class="sop-row sop-head"><span>步骤</span><span>操作要点</span></div>
+          <div class="sop-row"><span>第一步：盘前筛选与预警</span><span>精选最高标、核心龙头、人气中军加入自选；打开短线精灵等实时预警，第一时间捕捉异动信号。</span></div>
+          <div class="sop-row"><span>第二步：盘中监控与去弱留强</span><span>预警触发后立即看分时与均价线关系。跌破均价线且无法收回就删除；均线附近强势承接才重点关注。</span></div>
+          <div class="sop-row"><span>第三步：捕捉转折点</span><span>关注股价在 7%-9% 区间横盘且成交量开始缩减的时刻。提前打开买入界面，填好涨停价，等待确认信号。</span></div>
+          <div class="sop-row"><span>第四步：跟随扫板</span><span>看到卖盘被大单瞬间吃掉，立即点击买入。买在确认瞬间，买在封死涨停的那一刻。</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="discipline">
+        <div class="section-head">
+          <p class="label">纪律</p>
+          <h2>能做与不能做</h2>
+          <p>这套战法是龙头分歧确认工具，不是开板抄底工具。没有确认，就没有交易。</p>
+        </div>
+
+        <div class="discipline-grid">
+          <article class="discipline-card good">
+            <span>可以做</span>
+            <h3>高人气核心，炸板后强承接，尾盘放量回封</h3>
+            <p>均线不破、回调缩量、盘口大单主动扫板，说明分歧换手完成，多头重新确认。</p>
+          </article>
+          <article class="discipline-card bad">
+            <span>不可以做</span>
+            <h3>跌破均线、震荡放量、无点火大单</h3>
+            <p>均线变压力、卖盘仍然很重、买单只是挂单表演时，不要用“洗盘”解释出货。</p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>免责声明：本页面仅用于个人交易体系整理与复盘记录，不构成任何投资建议。</p>
+        <p>来源：Notion 页面「辅助战法：高人气的炸板回封弱转强」本地缓存整理。</p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const progress = document.querySelector("#progress");
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
+    }
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+  </script>
+</body>
+</html>
