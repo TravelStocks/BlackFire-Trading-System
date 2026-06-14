@@ -467,6 +467,22 @@
       background: rgba(10, 11, 16, 0.72);
     }
 
+    .expectation-table {
+      min-width: 1180px;
+    }
+
+    .expectation-table th,
+    .expectation-table td {
+      vertical-align: top;
+    }
+
+    .expectation-table th:nth-child(5),
+    .expectation-table th:nth-child(6),
+    .expectation-table td:nth-child(5),
+    .expectation-table td:nth-child(6) {
+      min-width: 200px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -663,6 +679,10 @@
 
       .hero-main h1 {
         max-width: none;
+      }
+
+      .expectation-table {
+        min-width: 980px;
       }
     }
   </style>
@@ -931,7 +951,7 @@
             </article>
             </div>
         <div class="highlight-bar">核心竞价铁律：预期一致，竞价爆量就是卖点；预期分歧，竞价爆量就是买点。</div>
-        <div class="table-wrap"><table><thead><tr><th>首板涨停时间</th><th>次日超预期高开</th><th>符合预期高开</th><th>不及预期</th></tr></thead><tbody><tr><td>10:00前</td><td>＞6%</td><td>4%-6%</td><td>＜4%</td></tr><tr><td>10:00-11:30</td><td>＞4%</td><td>2%-4%</td><td>＜2%</td></tr><tr><td>13:00-14:00</td><td>＞2%</td><td>0%-2%（平开）</td><td>＜0%（低开）</td></tr><tr><td>14:00-15:00</td><td>＞0%（高开）</td><td>0%（平开）</td><td>＜0%（低开）</td></tr><tr><td>分歧烂板</td><td>＞2%</td><td>0%（平开）</td><td>＜0%（低开）</td></tr><tr><td>一字板（首板）</td><td>继续一字板</td><td>＞6%</td><td>＜6%</td></tr></tbody></table></div>
+        <div class="table-wrap"><table class="expectation-table"><thead><tr><th>首板涨停时间</th><th>次日超预期</th><th>符合预期</th><th>不及预期</th><th>开盘1分钟</th><th>开盘5分钟</th></tr></thead><tbody><tr><td>一字板</td><td>&gt; 5%</td><td>5%-3%</td><td>&lt;3%</td><td>迅速拉高到符合预期区间</td><td>大单涨停</td></tr><tr><td>10:00前</td><td>&gt;4%</td><td>3%-1%</td><td>&lt;1%</td><td>迅速拉高到符合预期区间</td><td>大单涨停</td></tr><tr><td>10:00-11:30</td><td>&gt;3%</td><td>2%-0%</td><td>&lt;0%</td><td>迅速拉高到符合预期区间</td><td>大单涨停</td></tr><tr><td>13:00-14:00</td><td>&gt;2%</td><td>2%- -0.5%</td><td>&lt;-1%</td><td>迅速拉高到符合预期区间</td><td>大单涨停</td></tr><tr><td>14:00-15:00</td><td>&gt;2%</td><td>2%- -1%</td><td>&lt;-2%</td><td>迅速拉高到符合预期区间</td><td>大单涨停</td></tr><tr><td>分歧烂板</td><td>&gt;1%</td><td>0%- -2%</td><td>&lt;-2%</td><td>迅速拉高到符合预期区间</td><td>大单涨停</td></tr></tbody></table></div>
         
         <details>
           <summary>展开看扫板补充纪律</summary>
