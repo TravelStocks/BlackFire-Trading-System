@@ -547,6 +547,28 @@ svg {
   color: var(--amber);
 }
 
+.entry-cycle {
+  background:
+    linear-gradient(90deg, rgba(223, 44, 44, 0.14), rgba(7, 135, 93, 0.09) 58%, rgba(255, 255, 255, 0.92)),
+    var(--surface);
+  border-color: rgba(223, 44, 44, 0.28);
+  border-left-color: var(--red);
+}
+
+.entry-cycle:hover {
+  border-color: rgba(223, 44, 44, 0.46);
+  box-shadow: 0 12px 26px rgba(223, 44, 44, 0.12);
+}
+
+.entry-cycle span {
+  color: var(--red);
+  background: rgba(223, 44, 44, 0.09);
+}
+
+.entry-cycle svg {
+  color: var(--red);
+}
+
 .hero-panel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
