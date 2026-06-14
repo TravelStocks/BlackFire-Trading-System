@@ -389,17 +389,17 @@ svg {
 
 .hero-entry-actions {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
 .entry-link {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 14px;
-  min-height: 72px;
-  padding: 15px 16px;
+  gap: 10px;
+  min-height: 106px;
+  padding: 14px;
   color: var(--ink);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -420,13 +420,14 @@ svg {
 }
 
 .entry-link strong {
-  font-size: 19px;
+  font-size: 17px;
   overflow-wrap: anywhere;
 }
 
 .entry-link em {
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.45;
   font-style: normal;
   font-weight: 600;
 }
@@ -435,6 +436,11 @@ svg {
   flex: 0 0 auto;
   width: 20px;
   height: 20px;
+}
+
+.entry-wide {
+  grid-column: 1 / -1;
+  min-height: 72px;
 }
 
 .entry-green {
