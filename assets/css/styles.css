@@ -1404,12 +1404,20 @@ svg {
   box-shadow: 0 16px 34px rgba(20, 31, 28, 0.08);
 }
 
+.dragon-visual-card + .dragon-visual-card {
+  margin-top: 0;
+}
+
 .dragon-visual-card img {
   display: block;
   width: 100%;
   max-height: 620px;
   object-fit: contain;
   background: #fff;
+}
+
+.dragon-visual-card.cycle-map img {
+  max-height: 420px;
 }
 
 .dragon-visual-card figcaption {
