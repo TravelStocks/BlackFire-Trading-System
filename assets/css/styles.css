@@ -646,6 +646,46 @@ svg {
     rgba(255, 255, 255, 0.86);
 }
 
+.classification-hero-visual {
+  margin: 18px 18px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background:
+    linear-gradient(180deg, rgba(223, 44, 44, 0.08), rgba(255, 255, 255, 0.96) 26%),
+    var(--surface);
+  border: 2px solid rgba(223, 44, 44, 0.26);
+  border-radius: var(--radius);
+  box-shadow: 0 22px 48px rgba(20, 31, 28, 0.12);
+}
+
+.classification-hero-visual img {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.classification-hero-visual figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.94);
+  border-top: 1px solid rgba(223, 44, 44, 0.16);
+}
+
+.classification-hero-visual figcaption strong {
+  color: var(--red);
+  font-size: 15px;
+}
+
+.classification-hero-visual figcaption span {
+  max-width: 76ch;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .classification-card {
   position: relative;
   display: grid;
@@ -1414,10 +1454,6 @@ svg {
   max-height: 620px;
   object-fit: contain;
   background: #fff;
-}
-
-.dragon-visual-card.cycle-map img {
-  max-height: 420px;
 }
 
 .dragon-visual-card figcaption {
