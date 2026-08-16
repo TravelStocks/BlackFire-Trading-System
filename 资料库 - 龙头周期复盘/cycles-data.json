@@ -458,6 +458,18 @@
     "sections": [
       {
         "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "电力大周期龙头战法复盘",
+        "src": "./leader-tactics-review/index.html?cycle=cycle-01",
+        "children": []
+      },
+      {
+        "type": "heading",
         "level": 3,
         "text": "电力一周期 - 豫能控股 跟风龙：赣能股份 补涨龙：华盛昌",
         "children": []
@@ -2534,6 +2546,18 @@
     ],
     "sections": [
       {
+        "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "创新药周期龙头战法复盘",
+        "src": "./leader-tactics-review/index.html?cycle=cycle-02",
+        "children": []
+      },
+      {
         "type": "callout",
         "text": "",
         "children": [
@@ -4350,6 +4374,18 @@
       "4 月 10 日：情绪触底回暖、分歧转一致，算力 / 电池成为新周期核心，人气榜前列被中嘉博创、圣阳股份、新朋股份包揽。"
     ],
     "sections": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "算力/电池周期龙头战法复盘",
+        "src": "./leader-tactics-review/index.html?cycle=cycle-03",
+        "children": []
+      },
       {
         "type": "callout",
         "text": "",
@@ -6669,6 +6705,18 @@
     ],
     "sections": [
       {
+        "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "电力三周期 - 大唐发电 带着 旧辨识度龙 华电辽能龙头战法复盘",
+        "src": "./leader-tactics-review/index.html?cycle=cycle-04",
+        "children": []
+      },
+      {
         "type": "toggle",
         "text": "2026/5/6 - 首板 -一字启动的时候身位相当靠前，其他趋势主升题材也还存在，因为量能很大的原因，得以可以让情绪主升题材和趋势题材并存！",
         "children": [
@@ -8236,6 +8284,18 @@
     "sections": [
       {
         "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "哈药股份周期龙头战法复盘",
+        "src": "./leader-tactics-review/index.html?cycle=cycle-05",
+        "children": []
+      },
+      {
+        "type": "heading",
         "text": "核心结论",
         "children": [],
         "level": 2
@@ -8497,6 +8557,18 @@
       "龙头诞生于题材，带不动题材后题材容易死，题材走弱又会反过来把龙头带炸。"
     ],
     "sections": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "立新能源周期龙头战法复盘",
+        "src": "./leader-tactics-review/index.html?cycle=cycle-06",
+        "children": []
+      },
       {
         "type": "heading",
         "text": "核心结论",

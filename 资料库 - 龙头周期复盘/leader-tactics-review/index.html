@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4f1ea" />
+  <title>龙头战法复盘 | 5分K节点标注</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #171713;
+      --muted: #68645d;
+      --paper: #f4f1ea;
+      --panel: #fffdf7;
+      --line: rgba(23, 23, 19, 0.14);
+      --line-strong: rgba(23, 23, 19, 0.28);
+      --red: #d43f2f;
+      --red-soft: rgba(212, 63, 47, 0.12);
+      --green: #0e8b68;
+      --green-soft: rgba(14, 139, 104, 0.12);
+      --amber: #d6a928;
+      --amber-soft: rgba(214, 169, 40, 0.14);
+      --blue: #2f5d9b;
+      --blue-soft: rgba(47, 93, 155, 0.12);
+      --black: #11110f;
+      --white: #ffffff;
+      --shadow: 0 18px 48px rgba(24, 21, 16, 0.12);
+      --mono: "Cascadia Mono", "Consolas", monospace;
+      --song: "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
+      --sans: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(17, 17, 15, 0.055) 1px, transparent 1px) 0 0 / 28px 28px,
+        linear-gradient(0deg, rgba(17, 17, 15, 0.045) 1px, transparent 1px) 0 0 / 28px 28px,
+        var(--paper);
+      font-family: var(--sans);
+      letter-spacing: 0;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: rgba(212, 63, 47, 0.18);
+    }
+
+    a { color: inherit; text-underline-offset: 4px; }
+    :focus-visible { outline: 3px solid rgba(47, 93, 155, 0.72); outline-offset: 3px; }
+    .skip-link {
+      position: fixed;
+      left: 18px;
+      top: 12px;
+      z-index: 50;
+      transform: translateY(-140%);
+      padding: 10px 14px;
+      color: var(--white);
+      background: var(--black);
+      border-radius: 6px;
+      transition: transform 160ms ease;
+    }
+    .skip-link:focus-visible { transform: translateY(0); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 22px;
+      align-items: center;
+      min-height: 64px;
+      padding: 0 max(18px, 4vw);
+      color: var(--white);
+      background: rgba(17, 17, 15, 0.94);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      color: var(--black);
+      background: var(--amber);
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .nav a {
+      flex: 0 0 auto;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 13px;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+    }
+    .nav a:hover { color: var(--white); border-bottom-color: var(--amber); }
+
+    .workbench, .section-wrap { padding: 24px max(16px, 4vw); }
+    .section-inner { max-width: 1180px; margin: 0 auto; }
+    .board {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, .75fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .thesis, .panel, .chart-shell, .mini-card {
+      background: rgba(255, 253, 247, 0.96);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .thesis { padding: clamp(22px, 4vw, 42px); }
+    .panel { padding: 22px; }
+    .eyebrow, .label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      border: 1px solid rgba(47, 93, 155, 0.18);
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 900px;
+      margin-bottom: 18px;
+      font-family: var(--song);
+      font-size: clamp(28px, 4.2vw, 44px);
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 10px 0 10px;
+      font-size: clamp(20px, 3vw, 28px);
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    h3 { margin: 0 0 8px; font-size: 17px; line-height: 1.35; }
+    p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+    .thesis > p:not(.eyebrow) { max-width: 780px; font-size: 16px; }
+
+    .hero-metrics, .node-grid, .decision, .logic-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .hero-metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 28px;
+    }
+    .metric, .node, .decision article, .logic-card {
+      min-width: 0;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.64);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .metric span, .node span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .metric strong, .node b {
+      display: block;
+      font-size: 16px;
+      line-height: 1.38;
+    }
+    .node p, .decision p, .logic-card p { margin: 8px 0 0; font-size: 13px; line-height: 1.55; }
+    .node.build { border-color: rgba(47, 93, 155, 0.36); background: var(--blue-soft); }
+    .node.add { border-color: rgba(212, 63, 47, 0.32); background: var(--red-soft); }
+    .node.reduce { border-color: rgba(214, 169, 40, 0.38); background: var(--amber-soft); }
+    .node.clear { border-color: rgba(14, 139, 104, 0.34); background: var(--green-soft); }
+
+    .chart-shell, .mini-card { overflow: hidden; }
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 20px 22px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .chart-head p { margin-bottom: 0; }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      min-width: 210px;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 32px;
+      padding: 0 10px;
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--black);
+    }
+    .legend-dot.build { background: var(--blue); }
+    .legend-dot.add { background: var(--red); }
+    .legend-dot.reduce { background: var(--amber); }
+    .legend-dot.clear { background: var(--green); }
+    .chart-body { padding: 14px; overflow-x: auto; }
+    .k-chart {
+      display: block;
+      width: 100%;
+      min-width: 720px;
+      height: auto;
+      background:
+        linear-gradient(90deg, rgba(17, 17, 15, 0.045) 1px, transparent 1px) 0 0 / 38px 38px,
+        linear-gradient(0deg, rgba(17, 17, 15, 0.04) 1px, transparent 1px) 0 0 / 38px 38px,
+        #fffaf0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .m5-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .mini-card .k-chart { min-width: 560px; }
+    .decision {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding: 0 14px 16px;
+    }
+    .logic-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .chart-note {
+      margin: 0;
+      padding: 0 22px 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    th {
+      color: var(--ink);
+      background: rgba(17, 17, 15, 0.06);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+
+    .grid { stroke: rgba(23, 23, 19, 0.12); stroke-width: 1; }
+    .axis { stroke: rgba(23, 23, 19, 0.28); stroke-width: 1.2; }
+    .axis-text { fill: rgba(23, 23, 19, 0.62); font: 12px var(--mono); }
+    .wick.up, .candle.up { stroke: var(--red); fill: var(--red-soft); }
+    .wick.down, .candle.down { stroke: var(--green); fill: var(--green-soft); }
+    .wick { stroke-width: 2; }
+    .candle { stroke-width: 2; rx: 2; }
+    .volume { fill: rgba(47, 93, 155, 0.18); }
+    .price-line { fill: none; stroke: rgba(17, 17, 15, 0.82); stroke-width: 2.2; }
+    .action-label text { fill: var(--white); font: 700 13px var(--sans); }
+    .action-line { stroke-width: 2; stroke-dasharray: 4 4; }
+
+    .empty {
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      text-align: center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .skip-link { transition: none; }
+    }
+
+    @media (max-width: 980px) {
+      .topbar { grid-template-columns: 1fr; gap: 0; padding-top: 8px; }
+      .nav { justify-content: flex-start; }
+      .board, .m5-grid, .logic-grid { grid-template-columns: 1fr; }
+      .hero-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .chart-head { flex-direction: column; }
+      .chart-legend { justify-content: flex-start; min-width: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .workbench, .section-wrap { padding: 16px 12px; }
+      .thesis, .panel { padding: 18px; }
+      .hero-metrics, .decision { grid-template-columns: 1fr; }
+      .brand { white-space: normal; }
+      .nav a { padding: 0 10px; }
+      .k-chart { min-width: 660px; }
+      .mini-card .k-chart { min-width: 540px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">K</span><span id="brand-title">龙头战法复盘</span></div>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#overview">概览</a>
+      <a href="#daily">周期日K</a>
+      <a href="#m5-buy">5分K买点区</a>
+      <a href="#m5-sell">退潮卖点区</a>
+      <a href="#logic">原文逻辑</a>
+      <a href="#discipline">纪律</a>
+    </nav>
+  </header>
+
+  <main id="main"></main>
+
+  <script>
+    const colors = { build: "#2f5d9b", add: "#d43f2f", reduce: "#d6a928", clear: "#0e8b68" };
+    const actionNames = { build: "建仓", add: "加仓", reduce: "减仓", clear: "清仓" };
+    const reviews = {
+      "cycle-01": {
+        brand: "龙头战法复盘 · 华电辽能",
+        eyebrow: "电力大周期 · 2026/3/16 - 3/26",
+        h1: "华电辽能这一轮，5板爆量弱转强建仓，6板缩量转强加仓，9板抢跑断板清仓。",
+        summary: "这一波的重点不是首板就幻想它成龙，而是等三房巷断板、华电辽能变成市场最高标以后，再用爆量弱转强和缩量转强确认。3/20 是左侧博弈，3/23 是右侧最佳买点，3/26 尾盘抢跑爆量断板就是周期结束。",
+        metrics: ["华电辽能", "电力 / 政策催化", "5板爆量弱转强", "9板尾盘抢跑"],
+        nodes: {
+          build: ["3/20 五板建仓", "最高标身份叠加爆量弱转强，左侧博弈。"],
+          add: ["3/23 六板加仓", "大盘、情绪、板块分歧中缩量转强，右侧确认。"],
+          reduce: ["3/25 八板减仓", "高潮延续但监管线临近，只兑现不追。"],
+          clear: ["3/26 九板清仓", "尾盘竞价抢跑、爆量断板，电力周期落幕。"]
+        },
+        daily: [
+          ["3/16", "首板启动", 4.92, 5.15, 4.90, 5.15, 0.62, "", "情绪冰点低位试错"],
+          ["3/17", "二板放量", 5.18, 5.67, 5.08, 5.67, 1.15, "", "一进二可做但未定龙"],
+          ["3/18", "三板加速", 6.24, 6.24, 6.24, 6.24, 0.72, "", "领涨性初显"],
+          ["3/19", "四板长腿", 6.20, 6.86, 5.76, 6.86, 1.92, "", "等待大分歧检验"],
+          ["3/20", "五板爆量", 6.72, 7.55, 6.42, 7.55, 3.40, "build", "爆量弱转强"],
+          ["3/23", "六板确认", 7.85, 8.31, 7.66, 8.31, 1.78, "add", "缩量转强定龙"],
+          ["3/24", "七板反推", 9.14, 9.14, 8.92, 9.14, 1.52, "", "板块高潮持有"],
+          ["3/25", "八板高位", 9.92, 10.05, 9.58, 10.05, 2.12, "reduce", "高位降仓"],
+          ["3/26", "九板断板", 10.18, 10.42, 9.12, 9.36, 4.68, "clear", "尾盘抢跑清仓"]
+        ],
+        phases: [
+          ["3/20 五板爆量弱转强", "build", "炸板释放连板压制，回封时已经是市场最高标。打的是分歧释放后的回封，不是低吸幻想。", "量能明显超过前几日，回封不能拖泥带水。", "3-4成"],
+          ["3/23 六板缩量转强", "add", "大盘、情绪、板块一起大分歧时它能缩量转强，五维确认，正式按市场总龙处理。", "先于板块修复，打板能上车。", "加到核心仓"],
+          ["3/25 八板高潮高位", "reduce", "电力继续高潮，位置已经跨过监管敏感区，场内只做兑现，不再开新仓。", "高位缩量/高潮延续，风险收益开始倒挂。", "减一半"],
+          ["3/26 九板爆量断板", "clear", "尾盘竞价抢跑说明资金选择兑现，爆量断板就是周期终点。", "断板、爆量、抢跑三者同时出现。", "全清"]
+        ],
+        logic: [
+          ["盘前", "三板以后开始跟踪，等旧题材高度断掉，华电辽能从电力前排变成市场最高标。"],
+          ["盘中", "分歧日只看能否回封，回封必须伴随量能放出和低点守住。"],
+          ["盘后", "3/23 确认市场总龙后，后面只处理仓位，不再为了高潮追高。"],
+          ["错误", "如果 3/20 不敢左侧，3/23 也必须右侧确认；错过后就不要在 7/8板补票。"]
+        ]
+      },
+      "cycle-02": {
+        brand: "龙头战法复盘 · 美诺华",
+        eyebrow: "创新药周期 · 2026/3/25 - 4/8",
+        h1: "美诺华这一轮，电力退潮后创新药抗住分歧，4/1 定主升加仓，4/7 天量分歧减仓，4/8 长阴清仓。",
+        summary: "创新药的关键是旧电力彻底退潮后，锂电和创新药之间的卡位。美诺华股价、市值、身位都更适合资金抱团，真正强点在于大分歧日抗住，随后强回流确定主升。",
+        metrics: ["美诺华", "创新药 / 避险抱团", "分歧抗住", "天量长阴退潮"],
+        nodes: {
+          build: ["3/30/31 建仓", "电力正式退潮，创新药抗住分歧，左侧建立先手。"],
+          add: ["4/1 加仓", "分歧后强回流，再无题材有效卡位，最后龙头买点。"],
+          reduce: ["4/7 减仓", "新龙爆天量大分歧，补涨龙出现，开始降低仓位。"],
+          clear: ["4/8 清仓", "科技强回流，创新药爆量长阴，周期退潮。"]
+        },
+        daily: [
+          ["3/25", "新题材萌芽", 8.10, 8.91, 7.98, 8.91, 0.82, "", "旧电力高危"],
+          ["3/26", "电力断板", 8.78, 9.80, 8.62, 9.80, 1.28, "", "新题材筛选"],
+          ["3/27", "双主线PK", 9.75, 10.78, 9.45, 10.78, 1.66, "", "五板胜负手"],
+          ["3/30", "抗住分歧", 10.48, 11.86, 10.12, 11.86, 2.45, "build", "创新药主升切换"],
+          ["3/31", "继续走强", 11.72, 13.05, 11.55, 13.05, 2.10, "", "人气累积"],
+          ["4/1", "强回流", 13.28, 14.36, 13.08, 14.36, 1.86, "add", "最后买点"],
+          ["4/2", "一致加速", 15.80, 15.80, 15.80, 15.80, 0.92, "", "明牌无新买点"],
+          ["4/3", "T字分歧", 17.38, 17.38, 16.28, 17.38, 2.42, "", "开始有分歧"],
+          ["4/7", "天量大分歧", 18.10, 19.12, 16.88, 18.35, 4.92, "reduce", "先兑现"],
+          ["4/8", "爆量长阴", 18.08, 18.20, 15.66, 16.02, 5.35, "clear", "退潮清仓"]
+        ],
+        phases: [
+          ["3/30 创新药抗住大分歧", "build", "电力跌停、旧周期正式退潮，创新药没有被拖死，批量二板首板开始主升。", "竞争题材锂电分歧，创新药仍有前排梯队。", "3成"],
+          ["4/1 主升确认", "add", "分歧之后强回流，其他题材卡位失败，美诺华成为最顺的新龙。", "高开转强，后排同步回流。", "加到核心仓"],
+          ["4/7 天量分歧", "reduce", "新龙爆天量，补涨龙出现，新题材也有苗头，说明主升进入末端。", "量能显著放大但分歧加重。", "先走一半"],
+          ["4/8 长阴退潮", "clear", "大盘反转向好、科技强回流，避险抱团的创新药失去环境，长阴就是退潮。", "爆量、长阴、主线切换。", "全清"]
+        ],
+        logic: [
+          ["盘前", "不要只盯旧龙华电辽能，旧周期高位危险时要把新题材前排放入候选池。"],
+          ["盘中", "五板是胜负手，谁在大分歧中抗住、谁次日先回流，谁才是新主升龙。"],
+          ["盘后", "创新药一旦明牌加速，后面买点快速减少，持仓和风控比追高更重要。"],
+          ["错误", "看到补涨龙出现和新题材发酵时，不能继续按早期主升心态加仓。"]
+        ]
+      },
+      "cycle-03": {
+        brand: "龙头战法复盘 · 圣阳股份",
+        eyebrow: "算力/电池周期 · 2026/4/10 - 4/20",
+        h1: "圣阳股份这一轮，4/14 爆量回封建仓，4/15 抗住算力分歧加仓，4/17 烂板减仓，4/20 尾盘跳水清仓。",
+        summary: "算力和电池双主线共振，真正能做的是从中嘉博创、新朋股份分歧掉队后，圣阳股份用高换手弱转强卡出身位。它不是一开始就唯一，而是在分歧中胜出。",
+        metrics: ["圣阳股份", "算力备电 / 电池", "高换手弱转强", "尾盘抢跑退潮"],
+        nodes: {
+          build: ["4/14 建仓", "午后反推上板，爆量换手回封，左侧弱转强。"],
+          add: ["4/15 加仓", "算力大分歧但核心无大负反馈，圣阳抗住晋级。"],
+          reduce: ["4/17 减仓", "多次开板烂板，龙力仍在但疲态明显。"],
+          clear: ["4/20 清仓", "尾盘抢跑跳水，新方向卡位，退潮确认。"]
+        },
+        daily: [
+          ["4/10", "双主线发酵", 6.20, 6.82, 6.05, 6.82, 1.05, "", "候选前排"],
+          ["4/13", "高换手卡位", 6.70, 7.50, 6.28, 7.50, 2.28, "", "开始卡出身位"],
+          ["4/14", "爆量回封", 7.36, 8.25, 7.10, 8.25, 3.62, "build", "左侧弱转强"],
+          ["4/15", "分歧抗住", 8.08, 9.08, 7.95, 9.08, 3.18, "add", "确认买点"],
+          ["4/16", "缩量加速", 9.98, 9.98, 9.98, 9.98, 1.42, "", "持有"],
+          ["4/17", "高位烂板", 10.86, 10.98, 10.12, 10.98, 4.20, "reduce", "第一卖点"],
+          ["4/20", "尾盘跳水", 10.82, 11.18, 9.78, 9.92, 4.85, "clear", "最后卖点"]
+        ],
+        phases: [
+          ["4/14 午后爆量回封", "build", "算力进入高潮，老核心修复助攻，圣阳从候选变成双主线总龙。", "爆量换手、回封坚决、老核心修复。", "3-4成"],
+          ["4/15 分歧抗住", "add", "算力大分歧但核心前排没有大负反馈，圣阳抗住晋级，人气合力形成。", "分歧日不被砸死，回封后带动题材。", "加到核心仓"],
+          ["4/17 多次开板烂板", "reduce", "光通信和商业航天发酵，算力电池开始被分流，圣阳虽封住但疲态明显。", "高位反复开板、成交放大。", "减半"],
+          ["4/20 尾盘抢跑", "clear", "商业航天二波确认，算力分歧延续，尾盘跳水就是最后卖点。", "尾盘跳水、题材被新方向卡位。", "全清"]
+        ],
+        logic: [
+          ["盘前", "多题材共振时不要先入为主，等 3板以后看谁从分歧里活下来。"],
+          ["盘中", "午后反推上板是资金选择结果，回封能否带动老核心修复是关键。"],
+          ["盘后", "4/16 缩量加速后，不再追；4/17 高位烂板只处理利润。"],
+          ["错误", "新方向卡位出现后，不能把尾盘抢跑理解成普通洗盘。"]
+        ]
+      },
+      "cycle-04": {
+        brand: "龙头战法复盘 · 大唐发电",
+        eyebrow: "电力三周期 · 2026/5/6 - 5/14",
+        h1: "大唐发电这一轮，3板爆量弱转强建仓，4板右侧确认加仓，6板高潮减仓，7板高开被砸清仓。",
+        summary: "大唐发电是大市值硬政策龙头，节奏比小票慢，但关键买点仍然在分歧转一致。5/8 三板是左侧，5/11 四板是最佳右侧，5/14 分歧日高开就是卖点。",
+        metrics: ["大唐发电", "电力 / 硬政策", "3板爆量弱转强", "7板监管断板"],
+        nodes: {
+          build: ["5/8 三板建仓", "爆量弱转强，电力龙头五维初步确认。"],
+          add: ["5/11 四板加仓", "弱转强确定，主动性和领涨性压过同级题材。"],
+          reduce: ["5/13 六板减仓", "板块高潮加速，次日分歧预期强。"],
+          clear: ["5/14 七板清仓", "分歧日高开被砸，监管压力下断板。"]
+        },
+        daily: [
+          ["5/6", "首板一字", 3.60, 3.96, 3.60, 3.96, 1.20, "", "政策启动"],
+          ["5/7", "二板加速", 4.36, 4.36, 4.36, 4.36, 0.92, "", "不是买点"],
+          ["5/8", "三板爆量", 4.20, 4.80, 4.08, 4.80, 2.85, "build", "弱转强建仓"],
+          ["5/11", "四板确认", 4.98, 5.28, 4.90, 5.28, 1.76, "add", "最佳买点"],
+          ["5/12", "五板分歧", 5.18, 5.81, 5.06, 5.81, 2.28, "", "最后买点/持有"],
+          ["5/13", "六板加速", 6.39, 6.39, 6.39, 6.39, 1.18, "reduce", "高位降仓"],
+          ["5/14", "七板断板", 6.70, 6.92, 5.78, 5.92, 3.66, "clear", "高开被砸"]
+        ],
+        phases: [
+          ["5/8 三板爆量弱转强", "build", "个股地位和辨识度已经确认，但还有机器人等题材卡位，所以先按左侧博弈。", "爆量回封、板块核心未掉队。", "3成"],
+          ["5/11 四板右侧确认", "add", "主动性、领涨性尽显，卡掉同级题材龙头，缩量开始准备加速。", "先上板、后排跟随、竞争题材转弱。", "加到核心仓"],
+          ["5/13 六板高潮", "reduce", "板块集体高潮，次日板块预期分歧，6进7面临监管压制。", "缩量加速但位置过高。", "减一半"],
+          ["5/14 七板断板", "clear", "分歧日高开容易被砸，大盘、情绪、板块一起分歧时不能硬扛。", "高开下杀、跌回水下、监管压力。", "全清"]
+        ],
+        logic: [
+          ["盘前", "大市值龙头也要看连板节奏，不能因为政策硬就忽略买点。"],
+          ["盘中", "5/11 是关键，弱转强并卡掉机器人后，才是真正右侧。"],
+          ["盘后", "6板以后是风控区，不是新仓区。"],
+          ["错误", "节奏没踏准时不要在7板用信仰补票，分歧日高开先卖。"]
+        ]
+      },
+      "cycle-05": {
+        brand: "龙头战法复盘 · 哈药股份",
+        eyebrow: "医药身位龙周期 · 2026/7/10 - 7/17",
+        h1: "哈药股份这一轮，7/14 三板爆量烂板回封建仓，7/15 四板小高开秒板加仓，7/17 带不动后排清仓。",
+        summary: "哈药的标准在于三板补量，四板确认；风险在于高位冲板失败时不能只看龙头，要看前排是否深水、后排是否只是冲高回落。",
+        metrics: ["哈药股份", "创新药 / 医药", "三板爆量烂板", "前排负反馈"],
+        nodes: {
+          build: ["7/14 三板建仓", "爆量烂板回封，完成4板前关键补量。"],
+          add: ["7/15 四板加仓", "小高开秒板，医药一字助攻，右侧确认。"],
+          reduce: ["7/16 五板减仓", "T字开口补量后回封，可持有但不追高。"],
+          clear: ["7/17 清仓", "冲高不能带后排，爆量断板退潮。"]
+        },
+        daily: [
+          ["7/10", "首板", 5.80, 6.38, 5.72, 6.38, 0.86, "", "承接注意力"],
+          ["7/13", "二板", 7.02, 7.02, 6.88, 7.02, 0.74, "", "身位出现"],
+          ["7/14", "三板爆量", 6.92, 7.72, 6.66, 7.72, 2.58, "build", "烂板回封"],
+          ["7/15", "四板秒板", 7.92, 8.49, 7.88, 8.49, 1.20, "add", "右侧确认"],
+          ["7/16", "五板T字", 9.34, 9.34, 8.82, 9.34, 2.10, "reduce", "高位降仓"],
+          ["7/17", "爆量断板", 9.82, 10.10, 8.76, 8.95, 3.92, "clear", "带动丧失"]
+        ],
+        phases: [
+          ["7/14 三板爆量烂板回封", "build", "三板或四板前必须补量，哈药用烂板回封完成分歧释放。", "爆量超过前高，回封后不再破关键低点。", "3-4成"],
+          ["7/15 四板小高开秒板", "add", "小高开比一字舒服，超预期但不过度一致，医药一字助攻强化右侧确认。", "主动秒板，后排助攻。", "加到核心仓"],
+          ["7/16 五板T字", "reduce", "高位开口补量后能回封可以持有，但追高加仓性价比下降。", "T字开口、量能增加、位置抬高。", "先降风险"],
+          ["7/17 冲高失败断板", "clear", "前排辨识度深水，哈药冲高无法带动后排上板，领涨性丧失。", "冲高回落、后排负反馈、爆量断板。", "全清"]
+        ],
+        logic: [
+          ["盘前", "3板开始做龙头气味分析，看医药身位、题材梯队和前排反馈。"],
+          ["盘中", "爆量烂板不是坏事，关键是回封时低点不破、后排不崩。"],
+          ["盘后", "四板确认后只处理核心仓，五板以上不再提高风险暴露。"],
+          ["错误", "高位不能只看龙头涨幅，带不动板块时冲高就是卖点。"]
+        ]
+      },
+      "cycle-06": {
+        brand: "龙头战法复盘 · 立新能源",
+        eyebrow: "电力卡位周期 · 2026/7/17 - 7/24",
+        h1: "立新能源这一轮，7/21 四板爆量回封建仓，7/22 五板缩量转强加仓，7/24 前排脱节减仓并尾盘清仓。",
+        summary: "立新能源的关键不是电力本身多有价值，而是哈药退潮、科技分歧、其他题材身位不足时，电力用完整梯队卡出唯一性。四板看抗跌，五板看主动和带队。",
+        metrics: ["立新能源", "电力 / 新能源运营", "四板爆量回封", "七板爆量断板"],
+        nodes: {
+          build: ["7/21 四板建仓", "科技反扑、电力分化中爆量回封，确认抗跌性。"],
+          add: ["7/22 五板加仓", "电力回流，先于板块上板，后排跟随。"],
+          reduce: ["7/24 盘中减仓", "前排脱节、监管负反馈传导，先降仓。"],
+          clear: ["7/24 尾盘清仓", "尾盘炸板、爆量断板，周期结束。"]
+        },
+        daily: [
+          ["7/17", "二板启动", 7.42, 8.27, 7.38, 8.27, 0.46, "", "医药退潮"],
+          ["7/20", "三板梯队", 8.84, 9.10, 8.80, 9.10, 0.73, "", "电力321完整"],
+          ["7/21", "四板爆量", 10.01, 10.01, 9.42, 10.01, 1.58, "build", "抗跌回封"],
+          ["7/22", "五板定龙", 10.90, 11.01, 10.72, 11.01, 0.66, "add", "缩量转强"],
+          ["7/23", "六板高位", 12.08, 12.11, 11.62, 12.11, 1.24, "", "继续持有"],
+          ["7/24", "七板断板", 12.99, 13.32, 11.88, 13.03, 2.70, "clear", "尾盘炸板"]
+        ],
+        phases: [
+          ["7/21 四板爆量回封", "build", "科技反扑但电力没有被打散，立新在分化日用回封确认抗跌性。", "放量接近/超过前高，回封坚决。", "3-4成"],
+          ["7/22 五板缩量转强", "add", "龙头先于板块回流，后排跟随上板，主动性和领涨性同时确认。", "先上板、后排补涨跟随。", "加到核心仓"],
+          ["7/24 前排脱节", "reduce", "哈药监管负反馈传导，高位情绪变差，电力前排和后排带动转弱。", "后排不跟、前排脱节、封单质量下降。", "先减一半"],
+          ["7/24 尾盘炸板", "clear", "尾盘爆量断板必须走，不再博弈复杂修复。", "炸板、爆量、题材走弱。", "全清"]
+        ],
+        logic: [
+          ["盘前", "哈药断板后看新最高标卡位，电力梯队完整才值得跟踪。"],
+          ["盘中", "四板看抗跌，五板看主动性和领涨性；只有自己强不够，还要能带队。"],
+          ["盘后", "六板以后每天重新验证后排，不能把前一天定龙当永久免死金牌。"],
+          ["错误", "题材走弱会反过来把龙头带炸，尾盘爆量断板不能恋战。"]
+        ]
+      }
+    };
+
+    const params = new URLSearchParams(location.search);
+    const requested = params.get("cycle") || "cycle-01";
+    const review = reviews[requested] || reviews["cycle-01"];
+    document.title = `${review.brand} | 5分K节点标注`;
+    document.getElementById("brand-title").textContent = review.brand;
+
+    function phaseCard(phase) {
+      const [title, action, why] = phase;
+      return `<article class="node ${action}"><span>${action.toUpperCase()}</span><b>${title}</b><p>${why}</p></article>`;
+    }
+
+    function m5Card(phase, index) {
+      const [title, action, why, trigger, size] = phase;
+      const chartId = `m5-${action}-chart-${index}`;
+      const aria = `${review.brand}${title}5分K节点图`;
+      return `
+        <article class="mini-card">
+          <div class="chart-head">
+            <div><span class="label">${actionNames[action]}节点</span><h2>${title}</h2><p>${why}</p></div>
+          </div>
+          <div class="chart-body"><svg class="k-chart" id="${chartId}" viewBox="0 0 640 300" role="img" aria-label="${aria}"></svg></div>
+          <div class="decision">
+            <article><b>${actionNames[action]}</b><p>${size}</p></article>
+            <article><b>触发</b><p>${trigger}</p></article>
+            <article><b>执行</b><p>${executionText(action)}</p></article>
+          </div>
+        </article>
+      `;
+    }
+
+    function executionText(action) {
+      if (action === "build") return "分歧释放后回封，不等完全明牌。";
+      if (action === "add") return "右侧确认时果断提高核心仓。";
+      if (action === "reduce") return "高位只兑现利润，不开新仓。";
+      return "断板退潮先退出，再看下一周期。";
+    }
+
+    const [leader, theme, buy, risk] = review.metrics;
+    const main = document.getElementById("main");
+    main.innerHTML = `
+      <section class="workbench" id="overview">
+        <div class="board">
+          <article class="thesis">
+            <p class="eyebrow">${review.eyebrow}</p>
+            <h1>${review.h1}</h1>
+            <p>${review.summary}</p>
+            <div class="hero-metrics">
+              <div class="metric"><span>核心龙头</span><strong>${leader}</strong></div>
+              <div class="metric"><span>周期主线</span><strong>${theme}</strong></div>
+              <div class="metric"><span>买点核心</span><strong>${buy}</strong></div>
+              <div class="metric"><span>风控核心</span><strong>${risk}</strong></div>
+            </div>
+          </article>
+          <article class="panel">
+            <span class="label">操作路径</span>
+            <h2>这一轮应该怎么做</h2>
+            <p>按原文复盘的写法，把周期拆成四个动作：先在分歧回封处建仓，再在右侧确认处加仓；高位进入高潮或监管区后开始减仓；一旦爆量断板或带动性丧失，立刻清仓。</p>
+            <div class="node-grid">
+              ${Object.entries(review.nodes).map(([action, node]) => `<article class="node ${action}"><span>${action.toUpperCase()}</span><b>${node[0]}</b><p>${node[1]}</p></article>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-wrap" id="daily">
+        <div class="section-inner">
+          <article class="chart-shell">
+            <div class="chart-head">
+              <div>
+                <span class="label">Daily K Map</span>
+                <h2>总日K路径：先看周期位置，再决定仓位动作</h2>
+                <p>日K用于判断它处在主升、加速、高潮还是退潮；5分K用于把动作落实到盘中。</p>
+              </div>
+              <div class="chart-legend" aria-label="图例">
+                <span class="legend-item"><i class="legend-dot build"></i>建仓</span>
+                <span class="legend-item"><i class="legend-dot add"></i>加仓</span>
+                <span class="legend-item"><i class="legend-dot reduce"></i>减仓</span>
+                <span class="legend-item"><i class="legend-dot clear"></i>清仓</span>
+              </div>
+            </div>
+            <div class="chart-body"><svg class="k-chart" id="daily-chart" viewBox="0 0 1120 430" role="img" aria-label="${review.brand}日K节点复盘图"></svg></div>
+            <p class="chart-note">注：本图为龙头战法复盘节点图，用原文逻辑还原操作节奏；未缓存逐笔行情的周期，5分K为节点化复盘图，精确价格与逐笔成交以行情软件为准。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-wrap" id="m5-buy">
+        <div class="section-inner">
+          <div class="m5-grid">${review.phases.slice(0, 2).map((phase, index) => m5Card(phase, index)).join("")}</div>
+        </div>
+      </section>
+
+      <section class="section-wrap" id="m5-sell">
+        <div class="section-inner">
+          <div class="m5-grid">${review.phases.slice(2).map((phase, index) => m5Card(phase, index + 2)).join("")}</div>
+        </div>
+      </section>
+
+      <section class="section-wrap" id="logic">
+        <div class="section-inner">
+          <article class="panel">
+            <span class="label">原文逻辑整理</span>
+            <h2>把原文翻译成盘前、盘中、盘后的动作</h2>
+            <div class="logic-grid">
+              ${review.logic.map(([title, text]) => `<article class="logic-card"><h3>${title}</h3><p>${text}</p></article>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-wrap" id="discipline">
+        <div class="section-inner">
+          <article class="panel">
+            <span class="label">执行纪律</span>
+            <h2>这一轮对应的仓位表</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>阶段</th><th>盘口/周期条件</th><th>动作</th><th>仓位</th></tr></thead>
+                <tbody>
+                  ${review.phases.map(([title, action, why, trigger, size]) => `<tr><td>${title}</td><td>${trigger}<br>${why}</td><td>${actionNames[action]}</td><td>${size}</td></tr>`).join("")}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+
+    function toBars(rows) {
+      return rows.map(([date, label, open, high, low, close, volume, action, note]) => ({ date, label, open, high, low, close, volume, action, actionText: action ? actionNames[action] : "", note }));
+    }
+
+    function m5Pattern(action) {
+      if (action === "build") {
+        return [
+          { date: "09:30", open: 10.00, high: 10.10, low: 9.62, close: 9.82, volume: 38 },
+          { date: "09:35", open: 9.82, high: 10.20, low: 9.74, close: 10.08, volume: 52, action, actionText: "盯回封" },
+          { date: "09:40", open: 10.08, high: 10.48, low: 10.02, close: 10.48, volume: 74, action, actionText: actionNames[action] },
+          { date: "09:45", open: 10.48, high: 10.48, low: 10.48, close: 10.48, volume: 28 },
+          { date: "10:00", open: 10.48, high: 10.48, low: 10.48, close: 10.48, volume: 18 }
+        ];
+      }
+      if (action === "add") {
+        return [
+          { date: "09:30", open: 10.40, high: 10.78, low: 10.28, close: 10.60, volume: 34 },
+          { date: "09:35", open: 10.60, high: 11.02, low: 10.52, close: 10.92, volume: 48, action, actionText: "右侧" },
+          { date: "09:40", open: 10.92, high: 11.22, low: 10.88, close: 11.22, volume: 62, action, actionText: actionNames[action] },
+          { date: "09:45", open: 11.22, high: 11.22, low: 11.22, close: 11.22, volume: 24 },
+          { date: "10:00", open: 11.22, high: 11.22, low: 11.22, close: 11.22, volume: 16 }
+        ];
+      }
+      if (action === "reduce") {
+        return [
+          { date: "09:30", open: 11.30, high: 11.60, low: 11.08, close: 11.48, volume: 44 },
+          { date: "10:00", open: 11.48, high: 11.62, low: 11.18, close: 11.30, volume: 52, action, actionText: actionNames[action] },
+          { date: "11:00", open: 11.30, high: 11.56, low: 11.12, close: 11.50, volume: 38 },
+          { date: "13:30", open: 11.50, high: 11.60, low: 11.08, close: 11.22, volume: 56, action, actionText: "再减" },
+          { date: "14:45", open: 11.22, high: 11.34, low: 10.95, close: 11.06, volume: 64 }
+        ];
+      }
+      return [
+        { date: "09:30", open: 11.20, high: 11.38, low: 10.78, close: 10.92, volume: 66 },
+        { date: "10:00", open: 10.92, high: 11.04, low: 10.48, close: 10.56, volume: 82, action, actionText: actionNames[action] },
+        { date: "11:00", open: 10.56, high: 10.72, low: 10.22, close: 10.34, volume: 58 },
+        { date: "13:30", open: 10.34, high: 10.58, low: 10.06, close: 10.18, volume: 74 },
+        { date: "14:45", open: 10.18, high: 10.30, low: 9.92, close: 10.02, volume: 62 }
+      ];
+    }
+
+    function renderKChart(id, bars, options = {}) {
+      const svg = document.getElementById(id);
+      if (!svg) return;
+      const width = options.width || 1120;
+      const height = options.height || 430;
+      const pad = options.pad || { left: 58, right: 28, top: 28, bottom: 76 };
+      const maxVolHeight = options.maxVolHeight || 72;
+      const prices = bars.flatMap((d) => [d.open, d.high, d.low, d.close]);
+      const max = Math.max(...prices) * 1.025;
+      const min = Math.min(...prices) * 0.975;
+      const volMax = Math.max(...bars.map((d) => d.volume || 0), 1);
+      const innerW = width - pad.left - pad.right;
+      const innerH = height - pad.top - pad.bottom;
+      const plotH = innerH - maxVolHeight - 18;
+      const step = innerW / bars.length;
+      const bodyW = Math.max(12, Math.min(34, step * 0.42));
+      const x = (i) => pad.left + step * i + step / 2;
+      const y = (v) => pad.top + (1 - (v - min) / (max - min)) * plotH;
+      const volBase = pad.top + plotH + 18 + maxVolHeight;
+      const grid = [0, .25, .5, .75, 1].map((t) => {
+        const gy = pad.top + t * plotH;
+        const val = max - t * (max - min);
+        return `<line class="grid" x1="${pad.left}" y1="${gy}" x2="${width - pad.right}" y2="${gy}" /><text class="axis-text" x="10" y="${gy + 4}">${val.toFixed(2)}</text>`;
+      }).join("");
+      const candles = bars.map((d, i) => {
+        const cx = x(i);
+        const up = d.close >= d.open;
+        const cls = up ? "up" : "down";
+        const top = y(Math.max(d.open, d.close));
+        const bottom = y(Math.min(d.open, d.close));
+        const h = Math.max(3, bottom - top);
+        const vh = ((d.volume || 0) / volMax) * maxVolHeight;
+        const action = d.action ? actionLabel(cx, Math.min(y(d.high) - 34, top - 30), d.action, d.actionText || "") : "";
+        return `
+          <line class="wick ${cls}" x1="${cx}" y1="${y(d.high)}" x2="${cx}" y2="${y(d.low)}" />
+          <rect class="candle ${cls}" x="${cx - bodyW / 2}" y="${top}" width="${bodyW}" height="${h}" />
+          <rect class="volume" x="${cx - bodyW / 2}" y="${volBase - vh}" width="${bodyW}" height="${vh}" />
+          <text class="axis-text" x="${cx}" y="${height - pad.bottom + 24}" text-anchor="middle">${d.date}</text>
+          ${d.label ? `<text class="axis-text" x="${cx}" y="${height - pad.bottom + 42}" text-anchor="middle">${d.label}</text>` : ""}
+          ${action}
+        `;
+      }).join("");
+      const linePath = bars.map((d, i) => `${i ? "L" : "M"}${x(i)} ${y(d.close)}`).join(" ");
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.innerHTML = `
+        <rect x="0" y="0" width="${width}" height="${height}" fill="transparent" />
+        ${grid}
+        <line class="axis" x1="${pad.left}" y1="${height - pad.bottom}" x2="${width - pad.right}" y2="${height - pad.bottom}" />
+        <path class="price-line" d="${linePath}" opacity=".22" />
+        ${candles}
+      `;
+    }
+
+    function actionLabel(cx, cy, action, text) {
+      const color = colors[action] || "#11110f";
+      const w = Math.max(48, text.length * 14 + 18);
+      return `
+        <g class="action-label">
+          <line class="action-line" x1="${cx}" y1="${cy + 24}" x2="${cx}" y2="${cy + 52}" stroke="${color}" />
+          <rect x="${cx - w / 2}" y="${Math.max(4, cy)}" width="${w}" height="26" fill="${color}" />
+          <text x="${cx}" y="${Math.max(4, cy) + 18}" text-anchor="middle">${text}</text>
+        </g>
+      `;
+    }
+
+    renderKChart("daily-chart", toBars(review.daily));
+    review.phases.forEach((phase, index) => {
+      const action = phase[1];
+      renderKChart(`m5-${action}-chart-${index}`, m5Pattern(action), {
+        width: 640,
+        height: 300,
+        pad: { left: 48, right: 24, top: 28, bottom: 66 },
+        maxVolHeight: 52
+      });
+    });
+  </script>
+</body>
+</html>
