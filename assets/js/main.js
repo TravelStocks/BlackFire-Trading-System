@@ -11,15 +11,9 @@ const compareTable = document.querySelector("#compareTable");
 const modeCopy = {
   dragon: {
     title: "有龙：聚焦真龙，做主升浪",
-    body: "只在主线明确、真龙已被市场选择时提高仓位。情绪连板题材看高度和卡位，趋势题材看抗跌与修复；三板确认真龙后汰弱留强。",
+    body: "只在主线明确、真龙已被市场选择时提高仓位。三到四板看定龙分水岭，五板正式定龙；主升2开始建仓，确认转强后加仓。",
     bg: "#f5faf7",
     border: "rgba(7, 135, 93, 0.24)"
-  },
-  institution: {
-    title: "趋势：做业绩披露窗口里的均线主升",
-    body: "机构趋势按先大盘、再板块、再个股、再买点执行；业绩披露窗口是重点观察期。主买点只做大阳线回踩一半、回踩5日线、强势突破近期前高后确认；卖出买前先设止损，破位看收盘价，强趋势用三日移动或平台底部止盈，逻辑变化无脑止盈。",
-    bg: "#f5f8ff",
-    border: "rgba(56, 103, 214, 0.24)"
   },
   relay: {
     title: "无龙：轻仓试错，做低位1进2",
@@ -40,18 +34,15 @@ function updateProgress() {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   const ratio = scrollable > 0 ? scrollTop / scrollable : 0;
   progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
-  backtop?.classList.toggle("is-visible", scrollTop > 520);
+  backtop.classList.toggle("is-visible", scrollTop > 520);
 }
 
 function updateToc() {
+  const marker = window.scrollY + 120;
   let activeId = sections[0]?.id;
-  let maxVisible = 0;
 
   for (const section of sections) {
-    const rect = section.getBoundingClientRect();
-    const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
-    if (visible > maxVisible) {
-      maxVisible = visible;
+    if (section.offsetTop <= marker) {
       activeId = section.id;
     }
   }
@@ -59,22 +50,6 @@ function updateToc() {
   tocLinks.forEach((link) => {
     link.classList.toggle("is-active", link.getAttribute("href") === `#${activeId}`);
   });
-}
-
-function queueTocUpdate() {
-  updateToc();
-  requestAnimationFrame(updateToc);
-  window.setTimeout(updateToc, 80);
-  window.setTimeout(updateToc, 220);
-}
-
-function alignHashTarget() {
-  if (!window.location.hash) return;
-  const target = document.querySelector(window.location.hash);
-  if (!target) return;
-  const top = target.getBoundingClientRect().top + window.scrollY - 88;
-  window.scrollTo({ top, behavior: "auto" });
-  queueTocUpdate();
 }
 
 function setMode(mode) {
@@ -88,7 +63,7 @@ function setMode(mode) {
   });
 
   if (compareTable) {
-    compareTable.classList.remove("mode-dragon", "mode-institution", "mode-relay", "mode-defense");
+    compareTable.classList.remove("mode-dragon", "mode-relay", "mode-defense");
     compareTable.classList.add(`mode-${mode}`);
   }
 
@@ -102,7 +77,7 @@ stateCards.forEach((card) => {
   card.addEventListener("click", () => setMode(card.dataset.mode));
 });
 
-backtop?.addEventListener("click", () => {
+backtop.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
@@ -111,12 +86,7 @@ window.addEventListener("scroll", () => {
   updateToc();
 }, { passive: true });
 
-window.addEventListener("resize", () => {
-  updateProgress();
-  queueTocUpdate();
-});
-window.addEventListener("hashchange", alignHashTarget);
+window.addEventListener("resize", updateProgress);
 
 updateProgress();
-queueTocUpdate();
-window.setTimeout(alignHashTarget, 120);
+updateToc();

@@ -547,28 +547,6 @@ svg {
   color: var(--amber);
 }
 
-.entry-cycle {
-  background:
-    linear-gradient(90deg, rgba(223, 44, 44, 0.14), rgba(7, 135, 93, 0.09) 58%, rgba(255, 255, 255, 0.92)),
-    var(--surface);
-  border-color: rgba(223, 44, 44, 0.28);
-  border-left-color: var(--red);
-}
-
-.entry-cycle:hover {
-  border-color: rgba(223, 44, 44, 0.46);
-  box-shadow: 0 12px 26px rgba(223, 44, 44, 0.12);
-}
-
-.entry-cycle span {
-  color: var(--red);
-  background: rgba(223, 44, 44, 0.09);
-}
-
-.entry-cycle svg {
-  color: var(--red);
-}
-
 .hero-panel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -644,46 +622,6 @@ svg {
   background:
     linear-gradient(135deg, rgba(7, 135, 93, 0.05), transparent 46%),
     rgba(255, 255, 255, 0.86);
-}
-
-.classification-hero-visual {
-  margin: 18px 18px 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  background:
-    linear-gradient(180deg, rgba(223, 44, 44, 0.08), rgba(255, 255, 255, 0.96) 26%),
-    var(--surface);
-  border: 2px solid rgba(223, 44, 44, 0.26);
-  border-radius: var(--radius);
-  box-shadow: 0 22px 48px rgba(20, 31, 28, 0.12);
-}
-
-.classification-hero-visual img {
-  display: block;
-  width: 100%;
-  min-width: 760px;
-  object-fit: contain;
-  background: #fff;
-}
-
-.classification-hero-visual figcaption {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.94);
-  border-top: 1px solid rgba(223, 44, 44, 0.16);
-}
-
-.classification-hero-visual figcaption strong {
-  color: var(--red);
-  font-size: 15px;
-}
-
-.classification-hero-visual figcaption span {
-  max-width: 76ch;
-  color: var(--muted);
-  font-size: 13px;
 }
 
 .classification-card {
@@ -952,6 +890,7 @@ svg {
 
 .decision-grid,
 .risk-grid,
+.trade-grid,
 .details-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -961,6 +900,7 @@ svg {
 
 .decision-card,
 .risk-item,
+.trade-card,
 .review-flow article,
 .details-grid details {
   background: var(--surface);
@@ -1433,46 +1373,6 @@ svg {
   color: var(--muted);
 }
 
-.dragon-visual-card {
-  margin: 16px;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(7, 135, 93, 0.08), rgba(255, 255, 255, 0.96) 30%),
-    var(--surface);
-  border: 1px solid rgba(7, 135, 93, 0.18);
-  border-radius: var(--radius);
-  box-shadow: 0 16px 34px rgba(20, 31, 28, 0.08);
-}
-
-.dragon-visual-card + .dragon-visual-card {
-  margin-top: 0;
-}
-
-.dragon-visual-card img {
-  display: block;
-  width: 100%;
-  max-height: 620px;
-  object-fit: contain;
-  background: #fff;
-}
-
-.dragon-visual-card figcaption {
-  display: grid;
-  gap: 4px;
-  padding: 12px 14px;
-  border-top: 1px solid rgba(7, 135, 93, 0.14);
-}
-
-.dragon-visual-card figcaption strong {
-  color: var(--green);
-  font-size: 15px;
-}
-
-.dragon-visual-card figcaption span {
-  color: var(--muted);
-  font-size: 13px;
-}
-
 .detail-links {
   display: grid;
   gap: 10px;
@@ -1550,10 +1450,54 @@ svg {
 }
 
 .risk-item p,
+.trade-card p,
 .review-flow p {
   margin: 10px 0 0;
   color: var(--muted);
   font-size: 14px;
+}
+
+.trade-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.trade-card {
+  padding: 18px;
+  border-top: 3px solid var(--green);
+  background:
+    linear-gradient(135deg, rgba(7, 135, 93, 0.05), transparent 50%),
+    var(--surface);
+}
+
+.trade-card span {
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.trade-card h3 {
+  margin: 8px 0 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.trade-card strong {
+  display: block;
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.trade-danger {
+  border-top-color: var(--red);
+  background:
+    linear-gradient(135deg, rgba(223, 44, 44, 0.06), transparent 50%),
+    var(--surface);
+}
+
+.trade-danger span {
+  color: var(--red);
 }
 
 .review-flow {
@@ -1744,6 +1688,7 @@ svg {
   .environment-grid,
   .cycle,
   .risk-grid,
+  .trade-grid,
   .review-flow,
   .cadence-grid,
   .stage-flow,
@@ -1815,6 +1760,7 @@ svg {
   .exit-strip,
   .cycle,
   .risk-grid,
+  .trade-grid,
   .review-flow,
   .cadence-grid,
   .stage-flow,
@@ -1830,6 +1776,7 @@ svg {
   .theme-grid,
   .environment-grid,
   .risk-grid,
+  .trade-grid,
   .review-flow,
   .cadence-grid,
   .stage-flow,
