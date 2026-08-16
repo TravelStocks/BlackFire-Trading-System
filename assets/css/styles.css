@@ -1507,10 +1507,22 @@ svg {
     var(--surface);
 }
 
+.trade-focus {
+  grid-column: 1 / -1;
+  border-top-color: var(--amber);
+  background:
+    linear-gradient(135deg, rgba(180, 123, 18, 0.08), transparent 50%),
+    var(--surface);
+}
+
 .trade-card span {
   color: var(--green);
   font-size: 13px;
   font-weight: 900;
+}
+
+.trade-focus span {
+  color: var(--amber);
 }
 
 .trade-card h3 {
