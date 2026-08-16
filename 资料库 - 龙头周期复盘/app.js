@@ -360,6 +360,18 @@ const renderArticleBlock = (block) => {
     return `<hr class="article-divider" />`;
   }
 
+  if (block.type === "embedded_review") {
+    const title = block.title || block.text || "龙头战法复盘";
+    const src = block.src || block.url || "";
+    if (!src) return children;
+    return `
+      <div class="embedded-review">
+        <iframe title="${escapeHtml(title)}" src="${escapeHtml(src)}" loading="lazy"></iframe>
+      </div>
+      ${children}
+    `;
+  }
+
   if (!block.text && !children) return "";
   return `<p>${escapeHtml(block.text)}</p>${children}`;
 };

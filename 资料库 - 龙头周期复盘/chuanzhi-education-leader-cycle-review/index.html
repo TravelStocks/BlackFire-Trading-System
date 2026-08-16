@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4f1ea" />
+  <title>传智教育龙头战法复盘 | 5分K节点标注</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #171713;
+      --muted: #68645d;
+      --paper: #f4f1ea;
+      --panel: #fffdf7;
+      --line: rgba(23, 23, 19, 0.14);
+      --line-strong: rgba(23, 23, 19, 0.28);
+      --red: #d43f2f;
+      --red-soft: rgba(212, 63, 47, 0.12);
+      --green: #0e8b68;
+      --green-soft: rgba(14, 139, 104, 0.12);
+      --amber: #d6a928;
+      --blue: #2f5d9b;
+      --black: #11110f;
+      --white: #ffffff;
+      --shadow: 0 18px 48px rgba(24, 21, 16, 0.12);
+      --mono: "Cascadia Mono", "Consolas", monospace;
+      --song: "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
+      --sans: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(17, 17, 15, 0.055) 1px, transparent 1px) 0 0 / 28px 28px,
+        linear-gradient(0deg, rgba(17, 17, 15, 0.045) 1px, transparent 1px) 0 0 / 28px 28px,
+        var(--paper);
+      font-family: var(--sans);
+      letter-spacing: 0;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: rgba(212, 63, 47, 0.18);
+    }
+
+    a { color: inherit; text-underline-offset: 4px; }
+    :focus-visible { outline: 3px solid rgba(47, 93, 155, 0.72); outline-offset: 3px; }
+    .skip-link {
+      position: fixed;
+      left: 18px;
+      top: 12px;
+      z-index: 50;
+      transform: translateY(-140%);
+      padding: 10px 14px;
+      color: var(--white);
+      background: var(--black);
+      border-radius: 6px;
+      transition: transform 160ms ease;
+    }
+    .skip-link:focus-visible { transform: translateY(0); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 22px;
+      align-items: center;
+      min-height: 64px;
+      padding: 0 max(18px, 4vw);
+      color: var(--white);
+      background: rgba(17, 17, 15, 0.94);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .brand-mark {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      color: var(--black);
+      background: var(--amber);
+      border: 1px solid rgba(255,255,255,0.75);
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .nav a {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      color: rgba(255,255,255,0.82);
+      border-radius: 6px;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 160ms ease, background-color 160ms ease;
+    }
+    .nav a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    main { display: grid; gap: 18px; }
+    section { scroll-margin-top: 86px; }
+    .workbench { padding: 34px max(18px, 4vw) 8px; }
+    .board {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 18px;
+      width: min(1480px, 100%);
+      margin: 0 auto;
+      align-items: stretch;
+    }
+    .board > *, .panel > *, .chart-shell > *, .node-grid > *, .image-grid > * { min-width: 0; }
+    .thesis {
+      min-height: 392px;
+      padding: 28px;
+      color: var(--white);
+      background:
+        linear-gradient(135deg, rgba(214,169,40,0.18), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 44%),
+        var(--black);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 18px;
+      color: rgba(255,255,255,0.76);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--amber); }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1 {
+      max-width: 920px;
+      margin-bottom: 22px;
+      font-family: var(--song);
+      font-size: clamp(34px, 4.6vw, 66px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+    .thesis p { max-width: 820px; color: rgba(255,255,255,0.78); line-height: 1.75; }
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .metric {
+      min-height: 94px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.06);
+    }
+    .metric span { display: block; color: rgba(255,255,255,0.62); font-size: 12px; }
+    .metric strong { display: block; margin-top: 8px; font-size: 20px; font-variant-numeric: tabular-nums; }
+
+    .panel {
+      padding: 22px;
+      background: rgba(255,253,247,0.94);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .panel h2 { margin-bottom: 10px; font-family: var(--song); font-size: clamp(24px, 3vw, 38px); }
+    .panel p, .panel li { color: var(--muted); line-height: 1.72; }
+    .label {
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      max-width: 100%;
+      margin-bottom: 10px;
+      padding: 6px 9px;
+      color: var(--red);
+      background: var(--red-soft);
+      border: 1px solid rgba(212,63,47,0.2);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .node {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+    }
+    .node b { display: block; margin-bottom: 6px; color: var(--ink); }
+    .node span { display: inline-flex; margin-bottom: 8px; font-family: var(--mono); font-size: 12px; font-weight: 900; }
+    .node.build span { color: var(--blue); }
+    .node.add span { color: var(--red); }
+    .node.reduce span { color: var(--amber); }
+    .node.clear span { color: var(--green); }
+
+    .section-wrap { padding: 8px max(18px, 4vw); }
+    .section-inner { width: min(1480px, 100%); margin: 0 auto; display: grid; gap: 18px; }
+    .chart-shell {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .chart-head h2 { margin: 0; font-size: 24px; font-family: var(--song); }
+    .chart-head p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); }
+    .legend-dot.build { background: var(--blue); }
+    .legend-dot.add { background: var(--red); }
+    .legend-dot.reduce { background: var(--amber); }
+    .legend-dot.clear { background: var(--green); }
+    .chart-body { padding: 10px 12px 18px; overflow-x: auto; }
+    svg.k-chart { display: block; width: 100%; min-width: 860px; height: auto; }
+    .axis { stroke: rgba(23,23,19,0.22); stroke-width: 1; }
+    .grid { stroke: rgba(23,23,19,0.08); stroke-width: 1; }
+    .candle.up { fill: rgba(212,63,47,0.78); stroke: var(--red); }
+    .candle.down { fill: rgba(14,139,104,0.62); stroke: var(--green); }
+    .wick.up { stroke: var(--red); }
+    .wick.down { stroke: var(--green); }
+    .volume { fill: rgba(47,93,155,0.18); }
+    .price-line { fill: none; stroke: var(--black); stroke-width: 2.5; }
+    .action-label rect { stroke: rgba(17,17,15,0.16); stroke-width: 1; rx: 5; }
+    .action-label text { font-size: 12px; font-weight: 900; fill: var(--white); }
+    .action-line { stroke-width: 1.5; stroke-dasharray: 4 3; }
+    .axis-text { fill: var(--muted); font-size: 12px; font-family: var(--mono); }
+    .chart-note { padding: 0 20px 18px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+    .m5-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .mini-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .mini-card .chart-head { align-items: start; }
+    .mini-card svg.k-chart { min-width: 520px; }
+    .decision {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0 18px 18px;
+    }
+    .decision article {
+      padding: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+    }
+    .decision b { display: block; margin-bottom: 5px; }
+    .decision p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    figure.shot {
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+    .shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #111827; }
+    .shot figcaption { padding: 12px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    table { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #f8f5ed; color: var(--muted); }
+    td:first-child { font-weight: 900; color: var(--ink); white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .skip-link { transition: none; }
+    }
+    @media (max-width: 980px) {
+      .topbar { grid-template-columns: 1fr; padding-block: 10px; }
+      .nav { justify-content: flex-start; }
+      .board, .m5-grid, .image-grid { grid-template-columns: 1fr; }
+      .node-grid, .decision, .hero-metrics { grid-template-columns: 1fr; }
+      .thesis { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">K</span><span>龙头战法复盘 · 传智教育</span></div>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#overview">概览</a>
+      <a href="#daily">周期日K</a>
+      <a href="#m5-buy">5分K买点区</a>
+      <a href="#m5-sell">退潮卖点区</a>
+      <a href="#evidence">盘口证据</a>
+      <a href="#discipline">纪律</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="workbench" id="overview">
+      <div class="board">
+        <article class="thesis">
+          <p class="eyebrow">003032 · Leader Cycle Review</p>
+          <h1>传智教育这一轮，只能按 4板建仓、5板加仓、7/8板减仓、断板清仓来复盘。</h1>
+          <p>这页按“龙头战法复盘”的方式重做：先看整段日K路径，再看关键 5分K 节点。重点不是事后说它强，而是把当时应该下单、加仓、降风险、离场的瞬间标出来。</p>
+          <div class="hero-metrics">
+            <div class="metric"><span>核心龙头</span><strong>传智教育 003032</strong></div>
+            <div class="metric"><span>周期主线</span><strong>AI应用 / 教育</strong></div>
+            <div class="metric"><span>买点核心</span><strong>4板爆量 + 5板回风</strong></div>
+            <div class="metric"><span>风控核心</span><strong>7/8板高位降仓</strong></div>
+          </div>
+        </article>
+        <article class="panel">
+          <span class="label">操作路径</span>
+          <h2>这波应该怎么做</h2>
+          <p>盘前从 3板以上候选里筛出传智教育，一鸣食品、明新旭腾作为对照。盘中 4板先手建仓，5板低点 8.02 不破、跳空大单回封时加仓；后面进入监管和加速末端，只做减仓和清仓，不再追高开新仓。</p>
+          <div class="node-grid">
+            <article class="node build"><span>BUILD</span><b>4板建仓</b><p>首次爆量弱转强，左侧给 3-4 成。</p></article>
+            <article class="node add"><span>ADD</span><b>5板加仓</b><p>8.02 不破，回风定龙，右侧加到核心仓。</p></article>
+            <article class="node reduce"><span>REDUCE</span><b>7/8板减仓</b><p>高位 T 字和监管区，只兑现不追。</p></article>
+            <article class="node clear"><span>CLEAR</span><b>断板清仓</b><p>爆量大阴 / 断板，周期结束。</p></article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-wrap" id="daily">
+      <div class="section-inner">
+        <article class="chart-shell">
+          <div class="chart-head">
+            <div>
+              <span class="label">Daily K Map</span>
+              <h2>总日K路径：从候选到定龙，再到退潮</h2>
+              <p>日K用于看周期位置和仓位动作，5分K用于看盘中执行瞬间。</p>
+            </div>
+            <div class="chart-legend" aria-label="图例">
+              <span class="legend-item"><i class="legend-dot build"></i>建仓</span>
+              <span class="legend-item"><i class="legend-dot add"></i>加仓</span>
+              <span class="legend-item"><i class="legend-dot reduce"></i>减仓</span>
+              <span class="legend-item"><i class="legend-dot clear"></i>清仓</span>
+            </div>
+          </div>
+          <div class="chart-body"><svg class="k-chart" id="daily-chart" viewBox="0 0 1120 430" role="img" aria-label="传智教育日K节点复盘图"></svg></div>
+          <p class="chart-note">注：本图为战法复盘节点图，7/31 的 8.02 低点、8.81 回封、2.81 亿成交额采用复盘材料；其他 OHLC 用于还原操作节奏，精确逐笔以行情软件为准。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-wrap" id="m5-buy">
+      <div class="section-inner">
+        <div class="m5-grid">
+          <article class="mini-card">
+            <div class="chart-head">
+              <div><span class="label">4板 · 建仓</span><h2>7/30 首次爆量弱转强</h2><p>一字之后高开拉板，量能补足，左侧先手仓。</p></div>
+            </div>
+            <div class="chart-body"><svg class="k-chart" id="m5-build-chart" viewBox="0 0 640 300" role="img" aria-label="传智教育4板5分K建仓示意图"></svg></div>
+            <div class="decision">
+              <article><b>买点</b><p>爆量分歧后回封，3-4 成建仓。</p></article>
+              <article><b>条件</b><p>题材候选胜出，盘口不能破坏。</p></article>
+              <article><b>错误</b><p>4板没放进候选池，发现晚。</p></article>
+            </div>
+          </article>
+          <article class="mini-card">
+            <div class="chart-head">
+              <div><span class="label">5板 · 加仓</span><h2>7/31 8.02 不破后的回风定龙</h2><p>下杀释放分歧，连续跳空回拉，大单回封。</p></div>
+            </div>
+            <div class="chart-body"><svg class="k-chart" id="m5-add-chart" viewBox="0 0 640 300" role="img" aria-label="传智教育5板5分K加仓示意图"></svg></div>
+            <div class="decision">
+              <article><b>加仓</b><p>8.02 不破，8.81 快封前打。</p></article>
+              <article><b>盘口</b><p>上方压单薄，下方成交大。</p></article>
+              <article><b>错误</b><p>等封单变大后再排，慢了。</p></article>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrap" id="m5-sell">
+      <div class="section-inner">
+        <div class="m5-grid">
+          <article class="mini-card">
+            <div class="chart-head">
+              <div><span class="label">7/8板 · 减仓</span><h2>高位 T 字与监管压力区</h2><p>有先手可以格局，但只做兑现和降仓，不再追高。</p></div>
+            </div>
+            <div class="chart-body"><svg class="k-chart" id="m5-reduce-chart" viewBox="0 0 640 300" role="img" aria-label="传智教育高位5分K减仓示意图"></svg></div>
+            <div class="decision">
+              <article><b>减仓</b><p>高位再爆量，先走一半。</p></article>
+              <article><b>条件</b><p>监管区、加速末端、后排跟随变弱。</p></article>
+              <article><b>纪律</b><p>没有先手不接高位 T 字。</p></article>
+            </div>
+          </article>
+          <article class="mini-card">
+            <div class="chart-head">
+              <div><span class="label">断板 · 清仓</span><h2>爆量断板就是周期结束</h2><p>龙头战法不在退潮日替龙头找理由，先清仓。</p></div>
+            </div>
+            <div class="chart-body"><svg class="k-chart" id="m5-clear-chart" viewBox="0 0 640 300" role="img" aria-label="传智教育断板5分K清仓示意图"></svg></div>
+            <div class="decision">
+              <article><b>清仓</b><p>断板大阴 / 爆量破位，全走。</p></article>
+              <article><b>不做</b><p>不做幻想反包，不做退潮加仓。</p></article>
+              <article><b>复盘</b><p>下一轮只看新最高标卡位。</p></article>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrap" id="evidence">
+      <div class="section-inner">
+        <article class="panel">
+          <span class="label">盘口证据</span>
+          <h2>7/31 加仓点为什么必须提前打</h2>
+          <p>核心不是“封住了看见很强”，而是封住之前已经出现：8.02 低点不破、跳空大单回拉、卖盘压单很薄、下方成交单更大。这个瞬间必须把涨停价买单准备好。</p>
+        </article>
+        <div class="image-grid">
+          <figure class="shot"><img src="./assets/20260731-orderbook-drop.png" alt="传智教育7月31日开板下杀到8.02附近的盘口" loading="lazy" /><figcaption>下杀到 8.02 附近，先释放分歧。</figcaption></figure>
+          <figure class="shot"><img src="./assets/20260731-orderbook-rebound.jpg" alt="传智教育7月31日从8.02连续跳空回拉的成交明细" loading="lazy" /><figcaption>连续跳空回拉，不破第一次低点。</figcaption></figure>
+          <figure class="shot"><img src="./assets/20260731-limit-reseal.jpg" alt="传智教育7月31日09点32附近8.81大单回封" loading="lazy" /><figcaption>09:32 附近 8.81 回封，千万级扫单出现。</figcaption></figure>
+          <figure class="shot"><img src="./assets/thin-offer-reference.png" alt="回风板上方压单薄下方成交大的盘口参考" loading="lazy" /><figcaption>上方压单薄、下方成交大，快封瞬间不能等。</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrap" id="discipline">
+      <div class="section-inner">
+        <article class="panel">
+          <span class="label">执行纪律</span>
+          <h2>这轮回要背下来的表</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>阶段</th><th>看什么</th><th>动作</th><th>仓位</th></tr></thead>
+              <tbody>
+                <tr><td>3板以后</td><td>主动性、带动性、题材容量、唯一性</td><td>放入候选池</td><td>不买或小仓观察</td></tr>
+                <tr><td>4板爆量弱转强</td><td>量能到前高或低量板 1.5-2 倍，回封强</td><td>建仓</td><td>3-4 成</td></tr>
+                <tr><td>5板回风定龙</td><td>低点不破、跳空大单、上方压单薄</td><td>加仓</td><td>提高到核心仓</td></tr>
+                <tr><td>7/8板高位</td><td>监管区、T字、后排变弱、爆量</td><td>减仓</td><td>先走一半或分批兑现</td></tr>
+                <tr><td>断板退潮</td><td>爆量大阴、后排负反馈、题材走弱</td><td>清仓</td><td>回到空仓/观察</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const colors = { build: "#2f5d9b", add: "#d43f2f", reduce: "#d6a928", clear: "#0e8b68" };
+    const dailyBars = [
+      { date: "7/28", label: "二板启动", open: 6.02, high: 6.62, low: 5.98, close: 6.62, volume: 0.64, action: "", note: "旧周期断板，新周期候选" },
+      { date: "7/29", label: "三板一字", open: 7.28, high: 7.28, low: 7.28, close: 7.28, volume: 0.70, action: "", note: "进入3板候选池" },
+      { date: "7/30", label: "四板爆量", open: 8.01, high: 8.01, low: 7.62, close: 8.01, volume: 2.27, action: "build", actionText: "建仓", note: "首次爆量弱转强" },
+      { date: "7/31", label: "五板定龙", open: 8.81, high: 8.81, low: 8.02, close: 8.81, volume: 2.81, action: "add", actionText: "加仓", note: "8.02不破回风" },
+      { date: "8/03", label: "六板加速", open: 9.69, high: 9.69, low: 9.33, close: 9.69, volume: 1.22, action: "", note: "缩量加速持有" },
+      { date: "8/04", label: "七板高位", open: 10.66, high: 10.66, low: 9.92, close: 10.66, volume: 2.55, action: "reduce", actionText: "减仓", note: "高位T字/监管区" },
+      { date: "8/05", label: "八板末端", open: 11.73, high: 11.73, low: 10.88, close: 11.73, volume: 3.18, action: "reduce", actionText: "再减", note: "加速末端兑现" },
+      { date: "8/06", label: "断板退潮", open: 11.80, high: 12.05, low: 10.54, close: 10.72, volume: 4.45, action: "clear", actionText: "清仓", note: "爆量断板结束" }
+    ];
+
+    const m5Build = [
+      { date: "09:30", open: 7.62, high: 7.86, low: 7.58, close: 7.82, volume: 16 },
+      { date: "09:35", open: 7.82, high: 8.01, low: 7.76, close: 7.96, volume: 24, action: "build", actionText: "准备" },
+      { date: "09:40", open: 7.96, high: 8.01, low: 7.88, close: 8.01, volume: 34, action: "build", actionText: "建仓" },
+      { date: "09:45", open: 8.01, high: 8.01, low: 8.01, close: 8.01, volume: 18 },
+      { date: "10:00", open: 8.01, high: 8.01, low: 8.01, close: 8.01, volume: 12 }
+    ];
+    const m5Add = [
+      { date: "09:30", open: 8.81, high: 8.81, low: 8.02, close: 8.20, volume: 96 },
+      { date: "09:35", open: 8.20, high: 8.60, low: 8.09, close: 8.43, volume: 58, action: "add", actionText: "盯低点" },
+      { date: "09:40", open: 8.43, high: 8.81, low: 8.25, close: 8.81, volume: 88, action: "add", actionText: "加仓" },
+      { date: "09:45", open: 8.81, high: 8.81, low: 8.81, close: 8.81, volume: 38 },
+      { date: "10:00", open: 8.81, high: 8.81, low: 8.81, close: 8.81, volume: 22 }
+    ];
+    const m5Reduce = [
+      { date: "09:30", open: 10.66, high: 10.66, low: 10.28, close: 10.45, volume: 62 },
+      { date: "09:35", open: 10.45, high: 10.66, low: 10.16, close: 10.66, volume: 76, action: "reduce", actionText: "减仓" },
+      { date: "10:00", open: 10.66, high: 10.66, low: 10.66, close: 10.66, volume: 28 },
+      { date: "13:30", open: 10.66, high: 10.66, low: 10.42, close: 10.66, volume: 34 },
+      { date: "14:45", open: 10.66, high: 10.66, low: 10.10, close: 10.38, volume: 70, action: "reduce", actionText: "再减" }
+    ];
+    const m5Clear = [
+      { date: "09:30", open: 11.80, high: 12.05, low: 11.38, close: 11.62, volume: 86 },
+      { date: "09:45", open: 11.62, high: 11.72, low: 10.98, close: 11.06, volume: 94, action: "clear", actionText: "清仓" },
+      { date: "10:30", open: 11.06, high: 11.25, low: 10.72, close: 10.88, volume: 62 },
+      { date: "13:30", open: 10.88, high: 11.10, low: 10.54, close: 10.60, volume: 76 },
+      { date: "14:45", open: 10.60, high: 10.84, low: 10.50, close: 10.72, volume: 48 }
+    ];
+
+    function renderKChart(id, bars, options = {}) {
+      const svg = document.getElementById(id);
+      if (!svg) return;
+      const width = options.width || 1120;
+      const height = options.height || 430;
+      const pad = options.pad || { left: 58, right: 28, top: 28, bottom: 76 };
+      const maxVolHeight = options.maxVolHeight || 72;
+      const prices = bars.flatMap((d) => [d.open, d.high, d.low, d.close]);
+      const max = Math.max(...prices) * 1.025;
+      const min = Math.min(...prices) * 0.975;
+      const volMax = Math.max(...bars.map((d) => d.volume || 0), 1);
+      const innerW = width - pad.left - pad.right;
+      const innerH = height - pad.top - pad.bottom;
+      const plotH = innerH - maxVolHeight - 18;
+      const step = innerW / bars.length;
+      const bodyW = Math.max(12, Math.min(34, step * 0.42));
+      const x = (i) => pad.left + step * i + step / 2;
+      const y = (v) => pad.top + (1 - (v - min) / (max - min)) * plotH;
+      const volBase = pad.top + plotH + 18 + maxVolHeight;
+      const grid = [0, .25, .5, .75, 1].map((t) => {
+        const gy = pad.top + t * plotH;
+        const val = max - t * (max - min);
+        return `<line class="grid" x1="${pad.left}" y1="${gy}" x2="${width - pad.right}" y2="${gy}" /><text class="axis-text" x="10" y="${gy + 4}">${val.toFixed(2)}</text>`;
+      }).join("");
+      const candles = bars.map((d, i) => {
+        const cx = x(i);
+        const up = d.close >= d.open;
+        const cls = up ? "up" : "down";
+        const top = y(Math.max(d.open, d.close));
+        const bottom = y(Math.min(d.open, d.close));
+        const h = Math.max(3, bottom - top);
+        const vh = ((d.volume || 0) / volMax) * maxVolHeight;
+        const action = d.action ? actionLabel(cx, Math.min(y(d.high) - 34, top - 30), d.action, d.actionText || "") : "";
+        return `
+          <line class="wick ${cls}" x1="${cx}" y1="${y(d.high)}" x2="${cx}" y2="${y(d.low)}" />
+          <rect class="candle ${cls}" x="${cx - bodyW / 2}" y="${top}" width="${bodyW}" height="${h}" />
+          <rect class="volume" x="${cx - bodyW / 2}" y="${volBase - vh}" width="${bodyW}" height="${vh}" />
+          <text class="axis-text" x="${cx}" y="${height - pad.bottom + 24}" text-anchor="middle">${d.date}</text>
+          ${d.label ? `<text class="axis-text" x="${cx}" y="${height - pad.bottom + 42}" text-anchor="middle">${d.label}</text>` : ""}
+          ${action}
+        `;
+      }).join("");
+      const linePath = bars.map((d, i) => `${i ? "L" : "M"}${x(i)} ${y(d.close)}`).join(" ");
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.innerHTML = `
+        <rect x="0" y="0" width="${width}" height="${height}" fill="transparent" />
+        ${grid}
+        <line class="axis" x1="${pad.left}" y1="${height - pad.bottom}" x2="${width - pad.right}" y2="${height - pad.bottom}" />
+        <path class="price-line" d="${linePath}" opacity=".22" />
+        ${candles}
+      `;
+    }
+
+    function actionLabel(cx, cy, action, text) {
+      const color = colors[action] || "#11110f";
+      const w = Math.max(48, text.length * 14 + 18);
+      return `
+        <g class="action-label">
+          <line class="action-line" x1="${cx}" y1="${cy + 24}" x2="${cx}" y2="${cy + 52}" stroke="${color}" />
+          <rect x="${cx - w / 2}" y="${Math.max(4, cy)}" width="${w}" height="26" fill="${color}" />
+          <text x="${cx}" y="${Math.max(4, cy) + 18}" text-anchor="middle">${text}</text>
+        </g>
+      `;
+    }
+
+    renderKChart("daily-chart", dailyBars);
+    renderKChart("m5-build-chart", m5Build, { width: 640, height: 300, pad: { left: 48, right: 24, top: 28, bottom: 66 }, maxVolHeight: 52 });
+    renderKChart("m5-add-chart", m5Add, { width: 640, height: 300, pad: { left: 48, right: 24, top: 28, bottom: 66 }, maxVolHeight: 52 });
+    renderKChart("m5-reduce-chart", m5Reduce, { width: 640, height: 300, pad: { left: 48, right: 24, top: 28, bottom: 66 }, maxVolHeight: 52 });
+    renderKChart("m5-clear-chart", m5Clear, { width: 640, height: 300, pad: { left: 48, right: 24, top: 28, bottom: 66 }, maxVolHeight: 52 });
+  </script>
+</body>
+</html>

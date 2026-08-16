@@ -106,6 +106,18 @@ window.LONGTOU_CYCLES = [
     "sections": [
       {
         "type": "heading",
+        "level": 2,
+        "text": "龙头战法复盘",
+        "children": []
+      },
+      {
+        "type": "embedded_review",
+        "title": "传智教育龙头战法复盘",
+        "src": "./chuanzhi-education-leader-cycle-review/index.html",
+        "children": []
+      },
+      {
+        "type": "heading",
         "level": 3,
         "text": "一、周期定位：旧高标退潮后的新核心卡位",
         "children": []
