@@ -224,6 +224,134 @@
       font-size: 11px;
     }
 
+    .leader-review {
+      margin: 14px 22px 0;
+      overflow: hidden;
+    }
+
+    .leader-review-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .leader-review-thesis,
+    .leader-review-map,
+    .leader-review-logic {
+      min-width: 0;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fafbfc;
+    }
+
+    .leader-review-thesis {
+      padding: 14px;
+    }
+
+    .leader-review-thesis h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .leader-review-thesis p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .review-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .review-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 9px;
+      border: 1px solid #cbd7ea;
+      border-radius: 999px;
+      background: #fff;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 680;
+    }
+
+    .leader-review-map {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .review-node {
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .review-node strong {
+      display: block;
+      margin: 5px 0;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .review-node span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .review-node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .review-node.buy { border-color: #b7cdf8; background: #eff5ff; }
+    .review-node.add { border-color: #f2c2b8; background: #fff3f0; }
+    .review-node.hold { border-color: #ead599; background: #fff9e8; }
+    .review-node.sell { border-color: #b8ddc2; background: #eefaf2; }
+
+    .leader-review-logic {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .logic-card {
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .logic-card b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .logic-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
     .cycle-overview {
       margin: 14px 22px 0;
       overflow: hidden;
@@ -1198,6 +1326,8 @@
 
     @media (max-width: 1180px) {
       .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .leader-review-body { grid-template-columns: 1fr; }
+      .leader-review-logic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .main { grid-template-columns: 1fr; }
       .side { position: static; max-height: none; }
       .timeline {
@@ -1211,6 +1341,10 @@
       .controls { justify-content: flex-start; width: 100%; }
       .field { min-width: 140px; }
       select { width: 100%; }
+      .leader-review { margin: 10px 12px 0; }
+      .leader-review-body { padding: 10px; }
+      .leader-review-map,
+      .leader-review-logic { grid-template-columns: 1fr; }
       .cycle-overview { margin: 10px 12px 0; }
       .cycle-timeline-shell { padding: 10px; }
       .cycle-timeline-chart { min-width: 780px; }
@@ -1278,6 +1412,14 @@
         </label>
       </div>
     </header>
+
+    <section class="panel leader-review" aria-labelledby="leaderReviewTitle">
+      <div class="section-head">
+        <h2 id="leaderReviewTitle">当前龙头周期复盘</h2>
+        <span class="note" id="leaderReviewNote">按选中股票切换</span>
+      </div>
+      <div class="leader-review-body" id="leaderReview"></div>
+    </section>
 
     <section class="panel cycle-overview" aria-labelledby="cycleTimelineTitle">
       <div class="section-head">
@@ -1748,6 +1890,25 @@ time,price,volume
         code: "600721", name: "百花医药", industry: "医药 创新药",
         run: { start: "2026-08-04", end: "2026-08-12", days: 7 },
         candidates: [],
+        review: {
+          title: "百花医药：传智断板节点共振出来的医药主升龙",
+          summary: "单看百花医药，三板爆量弱转强是建仓节点；四板超预期高开后的回风确认，是最好的右侧加仓点；五板一字极致缩量通常买不进；六板放量补量可以参与但利润少一截；七板碰监管线、医药高位断板预期出现时，纪律上就是走人。",
+          tags: ["三板爆量弱转强", "四板回风确认", "传智断板共振", "医药+PCB双主线", "七板监管线"],
+          nodes: [
+            { type: "buy", label: "3板建仓", date: "2026-08-06", text: "三板爆量弱转强，医药题材开始有身位和题材效应，是左侧建仓点。" },
+            { type: "add", label: "4板重仓", date: "2026-08-07", text: "超预期高开后烂板不破低点，大单反扫回封，6000万级别回封单仍有机会打进去，是最佳右侧买点。" },
+            { type: "hold", label: "5板买不进", date: "2026-08-10", text: "盘子小、题材高潮、极致缩量一字，确认强度但场外资金很难上车。" },
+            { type: "add", label: "6板补量", date: "2026-08-11", text: "极致缩量之后需要放量补量继续往上顶，能打进去但利润和性价比都低于四板。" },
+            { type: "sell", label: "7板退出", date: "2026-08-12", text: "触及监管线和高位分歧区，医药后续在8月13日断板，纪律上七板就应兑现。" },
+            { type: "sell", label: "补涨观察", date: "8/12前后", text: "澳洋健康以强一字顶出补涨，一般补涨龙会在高位龙断板前一天、当天或后一天出现。" }
+          ],
+          logic: [
+            { title: "节点共振", text: "百花医药是在上一波 AI 应用龙头传智教育断板当天顶出来的，新龙常在旧周期断板节点附近产生。" },
+            { title: "题材共振", text: "三板时医药和 PCB 同时顶出题材效应，百花医药与宝鼎形成共振，带动大盘回暖。" },
+            { title: "老龙助攻", text: "同题材上一周期老龙哈药股份上攻助攻，是医药题材延续性的关键确认。" },
+            { title: "盘口执行", text: "四板回风要看低点不破、上方压单不重、下方成交大、大单反扫，不能等封死后再慢排。" }
+          ]
+        },
         daily: [
           ["2026-08-04",7.92,10.0000,7.92,7.92,7.92,10.00,0,107250,84941636,2.79],
           ["2026-08-05",8.71,9.9747,8.71,8.36,8.71,9.97,4.42,416179,360593271,10.82],
@@ -1761,7 +1922,7 @@ time,price,volume
     ];
 
     const state = {
-      stockCode: sourceStocks[0].code,
+      stockCode: "600721",
       selectedKey: "",
       stage: "all",
       onlyIssues: false
@@ -2270,6 +2431,58 @@ time,price,volume
           render();
         });
       });
+    }
+
+    function renderLeaderReview() {
+      const stock = currentStock();
+      const review = stock.review;
+      const noteEl = document.getElementById("leaderReviewNote");
+      const bodyEl = document.getElementById("leaderReview");
+      if (!review) {
+        noteEl.textContent = `${stock.code} ${stock.name} 暂无专项复盘`;
+        bodyEl.innerHTML = `
+          <article class="leader-review-thesis">
+            <h3>${stock.name}：仅展示模型样本，专项周期复盘待补充</h3>
+            <p>当前股票仍可用于开盘下杀、振幅阈值、量能分歧和逐日验证。若要补充专项周期复盘，需要提供三板以后买点、盘口转折、题材共振、监管退出和补涨节点。</p>
+            <div class="review-tags">
+              <span class="review-tag">${stock.run.days}板样本</span>
+              <span class="review-tag">${stock.industry}</span>
+            </div>
+          </article>
+          <div class="leader-review-map">
+            <article class="review-node buy"><span>MODEL</span><strong>三板起验证</strong><p>使用右侧日K模型查看开盘强度、下杀线与振幅阈值。</p></article>
+            <article class="review-node hold"><span>TODO</span><strong>复盘待补</strong><p>补充盘口和题材文字后，可形成建仓、加仓、减仓、清仓节点。</p></article>
+          </div>
+        `;
+        return;
+      }
+      noteEl.textContent = `${stock.code} ${stock.name} / ${stock.run.start} -> ${stock.run.end}`;
+      bodyEl.innerHTML = `
+        <article class="leader-review-thesis">
+          <h3>${review.title}</h3>
+          <p>${review.summary}</p>
+          <div class="review-tags">
+            ${review.tags.map(tag => `<span class="review-tag">${tag}</span>`).join("")}
+          </div>
+        </article>
+        <div class="leader-review-map">
+          ${review.nodes.map(node => `
+            <article class="review-node ${node.type}">
+              <span>${node.date}</span>
+              <strong>${node.label}</strong>
+              <p>${node.text}</p>
+            </article>
+          `).join("")}
+        </div>
+        <div class="leader-review-logic">
+          ${review.logic.map(item => `
+            <article class="logic-card">
+              <b>${item.title}</b>
+              <p>${item.text}</p>
+            </article>
+          `).join("")}
+        </div>
+      `;
     }
 
     function renderTimeline() {
@@ -2973,6 +3186,7 @@ time,price,volume
     function render() {
       renderCycleTimeline();
       renderSummary();
+      renderLeaderReview();
       renderTimeline();
       renderDetail();
       renderCharts();
