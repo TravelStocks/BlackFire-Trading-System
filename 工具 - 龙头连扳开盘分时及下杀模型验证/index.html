@@ -224,6 +224,191 @@
       font-size: 11px;
     }
 
+    .cycle-overview {
+      margin: 14px 22px 0;
+      overflow: hidden;
+    }
+
+    .cycle-timeline-shell {
+      overflow-x: auto;
+      padding: 10px 12px;
+    }
+
+    .cycle-timeline-chart {
+      min-width: 920px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .cycle-axis,
+    .cycle-row {
+      display: grid;
+      grid-template-columns: 172px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .cycle-axis {
+      min-height: 28px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .cycle-axis-track {
+      position: relative;
+      height: 24px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .cycle-tick {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    .cycle-tick::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 17px;
+      width: 1px;
+      height: 7px;
+      background: var(--border);
+    }
+
+    .cycle-row {
+      width: 100%;
+      min-height: 36px;
+      padding: 4px 0;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .cycle-row:focus-visible {
+      outline: 2px solid rgba(37, 99, 235, 0.35);
+      outline-offset: 2px;
+      border-radius: 7px;
+    }
+
+    .cycle-label {
+      display: grid;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .cycle-label strong {
+      overflow: hidden;
+      font-size: 13px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cycle-label span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .cycle-track {
+      position: relative;
+      height: 28px;
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      background:
+        repeating-linear-gradient(90deg, #f0f3f8 0 1px, transparent 1px 72px),
+        #fafbfc;
+    }
+
+    .cycle-bar {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      min-width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 8px;
+      border: 1px solid color-mix(in srgb, var(--tone) 78%, #ffffff);
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--tone) 14%, #ffffff);
+      color: var(--ink);
+      box-shadow: 0 5px 16px rgba(23, 32, 42, 0.06);
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+    .cycle-bar::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--tone);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--tone) 16%, #ffffff);
+    }
+
+    .cycle-bar strong {
+      overflow: hidden;
+      font-size: 12px;
+      font-weight: 780;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cycle-bar em {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-style: normal;
+    }
+
+    .cycle-row:hover .cycle-bar,
+    .cycle-row.active .cycle-bar {
+      background: color-mix(in srgb, var(--tone) 22%, #ffffff);
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--tone) 18%, transparent);
+      transform: translateY(-1px);
+    }
+
+    .cycle-row.active .cycle-track {
+      border-color: #9db9ff;
+      background:
+        repeating-linear-gradient(90deg, #e8eefb 0 1px, transparent 1px 72px),
+        #f5f8ff;
+    }
+
+    .cycle-timeline-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 12px 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .cycle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      padding: 3px 8px;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      background: #fafbfc;
+    }
+
+    .cycle-chip i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--tone);
+    }
+
     .main {
       display: grid;
       grid-template-columns: 308px minmax(0, 1fr);
@@ -1026,6 +1211,12 @@
       .controls { justify-content: flex-start; width: 100%; }
       .field { min-width: 140px; }
       select { width: 100%; }
+      .cycle-overview { margin: 10px 12px 0; }
+      .cycle-timeline-shell { padding: 10px; }
+      .cycle-timeline-chart { min-width: 780px; }
+      .cycle-axis,
+      .cycle-row { grid-template-columns: 132px minmax(0, 1fr); }
+      .cycle-bar strong { max-width: 150px; }
       .summary { grid-template-columns: 1fr; }
       .detail-grid,
       .chart-grid,
@@ -1087,6 +1278,17 @@
         </label>
       </div>
     </header>
+
+    <section class="panel cycle-overview" aria-labelledby="cycleTimelineTitle">
+      <div class="section-head">
+        <h2 id="cycleTimelineTitle">龙头周期时间轴</h2>
+        <span class="note" id="cycleTimelineRange"></span>
+      </div>
+      <div class="cycle-timeline-shell">
+        <div class="cycle-timeline-chart" id="cycleTimelineChart" role="group" aria-label="各个龙头连板周期的起止时间轴"></div>
+      </div>
+      <div class="cycle-timeline-summary" id="cycleTimelineSummary"></div>
+    </section>
 
     <section class="summary" id="summary"></section>
 
@@ -1939,6 +2141,107 @@ time,price,volume
       return { pass, issue, total: validated.length, worst };
     }
 
+    const timelinePalette = ["#2563eb", "#0891b2", "#16803c", "#b7791f", "#5b5fc7", "#c2410c", "#0f766e"];
+    const dayMs = 24 * 60 * 60 * 1000;
+
+    function dateValue(dateText) {
+      const [year, month, day] = dateText.split("-").map(Number);
+      return Date.UTC(year, month - 1, day);
+    }
+
+    function formatMonth(value) {
+      const date = new Date(value);
+      return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+    }
+
+    function formatShortDate(dateText) {
+      return dateText.slice(5).replace("-", "/");
+    }
+
+    function monthTicks(startValue, endValue) {
+      const start = new Date(startValue);
+      const tick = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1);
+      const ticks = [tick];
+      let cursor = tick;
+      while (cursor < endValue) {
+        const current = new Date(cursor);
+        cursor = Date.UTC(current.getUTCFullYear(), current.getUTCMonth() + 1, 1);
+        ticks.push(cursor);
+      }
+      return ticks.filter(value => value >= startValue - dayMs && value <= endValue + dayMs);
+    }
+
+    function renderCycleTimeline() {
+      const chart = document.getElementById("cycleTimelineChart");
+      const rangeEl = document.getElementById("cycleTimelineRange");
+      const summaryEl = document.getElementById("cycleTimelineSummary");
+      const runs = stocks
+        .map((stock, index) => ({
+          stock,
+          index,
+          start: dateValue(stock.run.start),
+          end: dateValue(stock.run.end) + dayMs
+        }))
+        .sort((a, b) => a.start - b.start || a.stock.code.localeCompare(b.stock.code));
+      const minStart = Math.min(...runs.map(run => run.start));
+      const maxEnd = Math.max(...runs.map(run => run.end));
+      const paddedStart = minStart - dayMs * 7;
+      const paddedEnd = maxEnd + dayMs * 7;
+      const span = Math.max(dayMs, paddedEnd - paddedStart);
+      const activeCode = currentStock().code;
+      const ticks = monthTicks(paddedStart, paddedEnd);
+
+      rangeEl.textContent = `${runs.length} 段 / ${formatMonth(minStart)} 至 ${formatMonth(maxEnd)}`;
+      const axis = `
+        <div class="cycle-axis" aria-hidden="true">
+          <span></span>
+          <div class="cycle-axis-track">
+            ${ticks.map(tick => `<span class="cycle-tick" style="left:${((tick - paddedStart) / span * 100).toFixed(3)}%">${formatMonth(tick)}</span>`).join("")}
+          </div>
+        </div>
+      `;
+      const rows = runs.map(({ stock, index, start, end }) => {
+        const color = timelinePalette[index % timelinePalette.length];
+        const left = ((start - paddedStart) / span * 100).toFixed(3);
+        const width = Math.max(3, ((end - start) / span * 100)).toFixed(3);
+        const active = stock.code === activeCode ? " active" : "";
+        const label = `${stock.code} ${stock.name}，${stock.run.start} 至 ${stock.run.end}，${stock.run.days}板`;
+        return `
+          <button class="cycle-row${active}" data-stock="${stock.code}" type="button" aria-label="${label}">
+            <span class="cycle-label">
+              <strong>${stock.code} ${stock.name}</strong>
+              <span>${formatShortDate(stock.run.start)} -> ${formatShortDate(stock.run.end)} · ${stock.industry} · ${stock.run.days}板</span>
+            </span>
+            <span class="cycle-track" aria-hidden="true">
+              <span class="cycle-bar" style="left:${left}%;width:${width}%;--tone:${color}">
+                <strong>${formatShortDate(stock.run.start)} -> ${formatShortDate(stock.run.end)}</strong>
+                <em>${stock.run.days}板</em>
+              </span>
+            </span>
+          </button>
+        `;
+      }).join("");
+      chart.innerHTML = axis + rows;
+      const latest = runs.slice().sort((a, b) => b.end - a.end)[0];
+      const longest = runs.slice().sort((a, b) => b.stock.run.days - a.stock.run.days)[0];
+      summaryEl.innerHTML = `
+        <span class="cycle-chip">样本 ${runs.length} 段</span>
+        <span class="cycle-chip">跨度 ${formatMonth(minStart)} 至 ${formatMonth(maxEnd)}</span>
+        <span class="cycle-chip">最早 ${runs[0].stock.name} ${formatShortDate(runs[0].stock.run.start)}</span>
+        <span class="cycle-chip">最新 ${latest.stock.name} ${formatShortDate(latest.stock.run.end)}</span>
+        <span class="cycle-chip">最长 ${longest.stock.name} ${longest.stock.run.days}板</span>
+        <span class="cycle-chip">点击时间条切换股票</span>
+      `;
+      chart.querySelectorAll(".cycle-row").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.stockCode = btn.dataset.stock;
+          state.selectedKey = "";
+          document.getElementById("stockSelect").value = state.stockCode;
+          render();
+        });
+      });
+    }
+
     function renderSummary() {
       const el = document.getElementById("summary");
       el.innerHTML = stocks.map(stock => {
@@ -2668,6 +2971,7 @@ time,price,volume
     }
 
     function render() {
+      renderCycleTimeline();
       renderSummary();
       renderTimeline();
       renderDetail();
