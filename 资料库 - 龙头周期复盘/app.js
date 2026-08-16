@@ -366,6 +366,13 @@ const renderArticleBlock = (block) => {
     if (!src) return children;
     return `
       <div class="embedded-review">
+        <div class="embedded-review-head">
+          <a class="embedded-review-open" href="${escapeHtml(src)}" target="_blank" rel="noopener">放大查看</a>
+          <div>
+            <span>龙头战法复盘</span>
+            <strong>${escapeHtml(title)}</strong>
+          </div>
+        </div>
         <iframe title="${escapeHtml(title)}" src="${escapeHtml(src)}" loading="lazy"></iframe>
       </div>
       ${children}
