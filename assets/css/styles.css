@@ -944,6 +944,44 @@ svg {
   color: var(--muted);
 }
 
+.dimension-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 14px;
+}
+
+.dimension-grid span {
+  min-height: 46px;
+  padding: 8px 10px;
+  background: rgba(7, 135, 93, 0.06);
+  border: 1px solid rgba(7, 135, 93, 0.18);
+  border-radius: 8px;
+}
+
+.dimension-grid .wide {
+  grid-column: 1 / -1;
+}
+
+.dimension-grid strong,
+.dimension-grid em {
+  display: block;
+}
+
+.dimension-grid strong {
+  color: var(--green);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.dimension-grid em {
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
 .check-list {
   display: grid;
   gap: 8px;

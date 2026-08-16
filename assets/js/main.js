@@ -11,7 +11,7 @@ const compareTable = document.querySelector("#compareTable");
 const modeCopy = {
   dragon: {
     title: "有龙：聚焦真龙，做主升浪",
-    body: "只在主线明确、真龙已被市场选择时提高仓位。三到四板看定龙分水岭，五板正式定龙；主升2开始建仓，确认转强后加仓。",
+    body: "只在主线明确、真龙已被七维确认时提高仓位。第一性看身位，唯一性看题材内和题材之间的连板高度；主升2开始建仓，确认转强后加仓。",
     bg: "#f5faf7",
     border: "rgba(7, 135, 93, 0.24)"
   },
