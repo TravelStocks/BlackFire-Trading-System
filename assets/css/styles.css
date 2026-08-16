@@ -889,6 +889,7 @@ svg {
 }
 
 .decision-grid,
+.watchlist-grid,
 .risk-grid,
 .trade-grid,
 .details-grid {
@@ -899,6 +900,7 @@ svg {
 }
 
 .decision-card,
+.watchlist-grid article,
 .risk-item,
 .trade-card,
 .review-flow article,
@@ -910,6 +912,86 @@ svg {
 
 .decision-card {
   padding: 18px;
+}
+
+.watchlist-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: center;
+  margin: 18px 18px 0;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(7, 135, 93, 0.08), transparent 50%),
+    var(--surface);
+  border: 1px solid rgba(7, 135, 93, 0.22);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+}
+
+.watchlist-summary span {
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.watchlist-summary strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+.watchlist-summary p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.watchlist-grid article {
+  min-height: 160px;
+  padding: 18px;
+  border-top: 3px solid var(--teal);
+  background:
+    linear-gradient(135deg, rgba(0, 140, 140, 0.05), transparent 48%),
+    var(--surface);
+}
+
+.watchlist-grid article:nth-child(3n + 1) {
+  border-top-color: var(--green);
+}
+
+.watchlist-grid article:nth-child(3n) {
+  border-top-color: var(--blue);
+}
+
+.watchlist-grid span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  color: var(--teal);
+  background: rgba(0, 140, 140, 0.08);
+  border: 1px solid rgba(0, 140, 140, 0.18);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.watchlist-grid h3 {
+  margin: 12px 0 8px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.watchlist-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
 }
 
 .card-title {
@@ -1824,6 +1906,7 @@ svg {
 
   .hero-panel,
   .decision-grid,
+  .watchlist-grid,
   .theme-grid,
   .environment-grid,
   .cycle,
@@ -1895,6 +1978,7 @@ svg {
   .hero-prereq,
   .hero-panel,
   .decision-grid,
+  .watchlist-grid,
   .theme-grid,
   .environment-grid,
   .exit-strip,
@@ -1907,6 +1991,7 @@ svg {
   .switch-grid,
   .details-grid,
   .mode-panel,
+  .watchlist-summary,
   .resonance-grid,
   .rhythm-grid {
     grid-template-columns: 1fr;
@@ -1918,6 +2003,7 @@ svg {
   }
 
   .decision-grid,
+  .watchlist-grid,
   .strategy-columns,
   .theme-grid,
   .environment-grid,
@@ -1932,6 +2018,7 @@ svg {
   }
 
   .compare-wrap,
+  .watchlist-summary,
   .review-cadence,
   .resonance-panel,
   .rhythm-panel {
