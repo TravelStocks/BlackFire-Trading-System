@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
+import { fileURLToPath } from "node:url";
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ARCHIVE_FILES = ["data/cycles.js", "data/cycle-updates.js"];
 const DAILY_FILE = path.join(ROOT, "data", "daily-limit-ups.js");
 const OUTPUT_FILE = path.join(ROOT, "data", "leader-volume-analysis.js");
@@ -329,58 +330,64 @@ async function main() {
     boardVolumeFindings: [],
     boardVolumeRules: [
       {
-        title: "连续放量后的缩量确认",
-        text: "四板及以前出现起量接半放量或全放量，第二天放量可半仓，第三天缩量转强可重仓。核心观察位是连续两天放量的第二天，或其后的缩量确认日。"
+        title: "全放量弱转强后的次日确认",
+        text: "题材分化或分歧延续后，龙头当天全放量弱转强；次日如果缩量或降档转强，并且板块同步强回流，就是最舒服的确认买点。代表：百花四板、立新五板、哈药四板、大唐四板、圣阳五板、津药四板。"
       },
       {
-        title: "四板前单次全放量",
-        text: "没有连续两天放量时，四板及以前若直接出现一次全放量，当日可建仓；次日缩量转强确认后可提高仓位。"
+        title: "该全放量却未全放量",
+        text: "分化分歧节点如果走一字、高开秒板或只起量/半放量，说明龙头量能准备没有彻底完成；这种结构容易把二次放量后移到五板，并且五板往往会率先上板。代表：传智教育、华电辽能、豫能控股。"
       },
       {
-        title: "五板补足量能",
-        text: "前四板若由两个缩量板和两个半放量及以下组成，说明量能准备尚未完成；五板出现全放量，可视为补足换手后的重点确认位。"
+        title: "四板前的仓位节奏",
+        text: "四板及以前，半放量当日回封可半仓；连续两天放量后的第三天缩量转强，或单次全放量后的次日缩量转强，可以提高仓位。五板才第一次全放量时，要确认它是否属于补足量能而不是末端兑现。"
       }
     ],
     boardVolumeCombinations: [
       {
         code: "A",
-        name: "连续放量后缩量确认",
-        sequence: "起/半 -> 半/全 -> 缩",
-        rule: "对应规律 1",
+        name: "均匀放量型",
+        sequence: "起量/全放量交替 -> 少见极致缩量 -> 龙头换手稳定",
+        rule: "类型：量能结构",
         cycles: [
-          { id: "jinyao-medicine-2026-04", note: "二板起量、三板半放量、四板缩量。" },
-          { id: "haya-medicine-2026-07", note: "二板起量、三板全放量、四板缩量。" },
-          { id: "wanxiang-agri-2026-09", note: "一板半放量、二板全放量、三板缩量。" }
+          { id: "shengyang-compute-2026-04", note: "一板起量、二板全放量，随后起量/全量交替，没有长时间极致缩量。代表均匀换手型。" }
         ]
       },
       {
         code: "B",
-        name: "连续放量后降档延续",
-        sequence: "起量 -> 全放量 -> 起量/再放量",
-        rule: "规律 1 的延续变体",
+        name: "缩量放量型",
+        sequence: "首板缩量 -> 前置无全量 -> 首次全放量 -> 次日缩量/降档转强",
+        rule: "类型：首板低量启动",
         cycles: [
-          { id: "shengyang-compute-2026-04", note: "一板起量、二板全放量，三板降档后四板再次全放量。" },
-          { id: "lixin-power-2026-07", note: "三板起量、四板全放量，五板降至起量继续晋级。" }
+          { id: "jinyao-medicine-2026-04", note: "启动首板就是缩量板，前面没有充分放量；三板半放量、四板缩量转强，后续六七板再全放量。" },
+          { id: "haya-medicine-2026-07", note: "首板缩量，三板全放量完成换龙，四板缩量秒板确认。" },
+          { id: "datang-power-2026-05", note: "一二板缩量，三板全放量，四板缩量转强确认。" },
+          { id: "baihua-medicine-2026-08", note: "一二板缩量，三板全放量，四板降档转强确认龙头切换。" },
+          { id: "lixin-power-2026-07", note: "一二板缩量，四板全放量，五板降档转强并带动题材强回流。" }
         ]
       },
       {
         code: "C",
-        name: "四板前单次全放量",
-        sequence: "缩量蓄势 -> 全放量 -> 降档",
-        rule: "对应规律 2",
+        name: "分歧全放量确认型",
+        sequence: "题材分化/分歧延续 -> 龙头全放量弱转强 -> 次日缩量/降档转强共振板块回流",
+        rule: "对应规律 1",
         cycles: [
-          { id: "datang-power-2026-05", note: "一二板缩量，三板全放量，四板缩量确认。" },
-          { id: "baihua-medicine-2026-08", note: "一二板缩量，三板全放量，四板降至起量。" }
+          { id: "baihua-medicine-2026-08", note: "三板全放量后，四板转强确认并与医药强回流共振。" },
+          { id: "lixin-power-2026-07", note: "四板全放量后，五板转强确认并与电力强回流共振。" },
+          { id: "haya-medicine-2026-07", note: "三板全放量后，四板弱转强秒板确认医药主升。" },
+          { id: "datang-power-2026-05", note: "三板全放量后，四板带动电力强回流确认。" },
+          { id: "shengyang-compute-2026-04", note: "四板全放量后，五板卡成最高标确认。" },
+          { id: "jinyao-medicine-2026-04", note: "三板半放量后，四板缩量转强确认医药穿越。" }
         ]
       },
       {
         code: "D",
-        name: "前四板蓄量后五板补量",
-        sequence: "缩/起/半 x4 -> 五板全放量",
-        rule: "对应规律 3",
+        name: "五板二次放量型",
+        sequence: "前四板缩/起/半放量 -> 该全量节点未全量 -> 五板率先上板补足全放量",
+        rule: "对应规律 2",
         cycles: [
-          { id: "huadian-power-2026-03", note: "前四板缩、起、缩、半，五板全放量。" },
-          { id: "chuanzhi-ai-2026-08", note: "前四板缩、半、缩、起，五板全放量。" }
+          { id: "chuanzhi-ai-2026-08", note: "前四板缩、半、缩、起，五板全放量，完成五板前的量能补课。" },
+          { id: "huadian-power-2026-03", note: "前四板缩、起、缩、半，五板全放量，先上板再接受分歧检验。" },
+          { id: "yunneng-power-2026-03", name: "豫能控股周期（待补全）", note: "同属五板二次放量逻辑，后续补入完整周期数据后再纳入统计。" }
         ]
       }
     ],
@@ -611,16 +618,16 @@ async function main() {
   };
   output.boardVolumeFindings = [
     {
-      title: "量能标签统一按均值",
-      text: `缩量、起量、半放量和全放量全部由连板均量倍数决定，首板倍数只在旁边作实时参照，不参与分类。`
+      title: "先分两类底层量能结构",
+      text: `均匀放量型不依赖极致缩量一字板，成交更平滑，代表是圣阳股份；缩量放量型通常首板缩量、前面无充分换手，后面必须等首次全放量或次日降档转强确认，代表是津药药业。`
     },
     {
-      title: "一轮主升至少两次全放量",
-      text: `${output.boardVolumeStats.averageTwoFullVolumeCount}/${output.boardVolumeStats.cycleCount} 个周期在成功连板阶段至少出现两次均量全放量，${output.boardVolumeStats.averageFirstFullResetCount}/${output.boardVolumeStats.cycleCount} 个在首次全放量后完成量能重置。`
+      title: "全放量不是单独买点",
+      text: `题材分化或分歧延续后，龙头全放量弱转强只是前置信号；次日缩量或降档转强，并且题材强回流共振，才是仓位提高的确认。`
     },
     {
-      title: "首板倍数负责实时参照",
-      text: `新周期尚未形成可靠均量时，直接查看当日成交额是首板的几倍；周期展开后，再用均量标签复核这次放量在整轮行情中的位置。`
+      title: "五板二次放量是补课节点",
+      text: `如果四板及以前该全放量的位置没有真正全放量，或者连续出现缩量、一字、起量和半放量，五板全放量往往是在补足龙头量能准备，关键看它是否能率先上板。`
     },
     {
       title: "终结日均量信号最稳定",

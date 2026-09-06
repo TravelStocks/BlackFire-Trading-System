@@ -473,7 +473,7 @@
         const cycle = cycles.find((candidate) => candidate.id === sample.id);
         const row = document.createElement("li");
         row.append(
-          createElement("b", "", cycle?.name || sample.id),
+          createElement("b", "", cycle?.name || sample.name || sample.id),
           createElement("span", "", sample.note)
         );
         samples.appendChild(row);

@@ -1,5 +1,5 @@
 window.LEADER_CYCLE_VOLUME_ANALYSIS = {
-  "generatedAt": "2026-09-06T04:28:39.993Z",
+  "generatedAt": "2026-09-06T11:36:31.625Z",
   "method": "关键爆量点按相对成交额识别，并结合换手率、开板次数、封板窗口和原始复盘语义复核。成交额与换手率来自东方财富日K，封板时间来自短线侠每日复盘。",
   "source": {
     "marketName": "东方财富历史日K",
@@ -46,7 +46,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
     "confirmedBuyCount": 9,
     "executableConfirmCount": 7,
     "regulationCount": 5,
-    "postWindowSellCount": 3
+    "postWindowSellCount": 1
   },
   "boardVolumeMethod": "四档量能标签统一按本轮成功封住的连板日平均成交额判断，断板或炸板日不计入均值，但继续与均值比较：x<0.60缩量、0.60<=x<0.90起量、0.90<=x<1.30半放量、x>=1.30全放量。首板成交额固定为1.00倍，仅在旁边显示当日是首板的几倍，不参与四档分类。",
   "boardVolumeStats": {
@@ -62,16 +62,16 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
   },
   "boardVolumeFindings": [
     {
-      "title": "量能标签统一按均值",
-      "text": "缩量、起量、半放量和全放量全部由连板均量倍数决定，首板倍数只在旁边作实时参照，不参与分类。"
+      "title": "先分两类底层量能结构",
+      "text": "均匀放量型不依赖极致缩量一字板，成交更平滑，代表是圣阳股份；缩量放量型通常首板缩量、前面无充分换手，后面必须等首次全放量或次日降档转强确认，代表是津药药业。"
     },
     {
-      "title": "一轮主升至少两次全放量",
-      "text": "9/9 个周期在成功连板阶段至少出现两次均量全放量，8/9 个在首次全放量后完成量能重置。"
+      "title": "全放量不是单独买点",
+      "text": "题材分化或分歧延续后，龙头全放量弱转强只是前置信号；次日缩量或降档转强，并且题材强回流共振，才是仓位提高的确认。"
     },
     {
-      "title": "首板倍数负责实时参照",
-      "text": "新周期尚未形成可靠均量时，直接查看当日成交额是首板的几倍；周期展开后，再用均量标签复核这次放量在整轮行情中的位置。"
+      "title": "五板二次放量是补课节点",
+      "text": "如果四板及以前该全放量的位置没有真正全放量，或者连续出现缩量、一字、起量和半放量，五板全放量往往是在补足龙头量能准备，关键看它是否能率先上板。"
     },
     {
       "title": "终结日均量信号最稳定",
@@ -80,84 +80,109 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
   ],
   "boardVolumeRules": [
     {
-      "title": "连续放量后的缩量确认",
-      "text": "四板及以前出现起量接半放量或全放量，第二天放量可半仓，第三天缩量转强可重仓。核心观察位是连续两天放量的第二天，或其后的缩量确认日。"
+      "title": "全放量弱转强后的次日确认",
+      "text": "题材分化或分歧延续后，龙头当天全放量弱转强；次日如果缩量或降档转强，并且板块同步强回流，就是最舒服的确认买点。代表：百花四板、立新五板、哈药四板、大唐四板、圣阳五板、津药四板。"
     },
     {
-      "title": "四板前单次全放量",
-      "text": "没有连续两天放量时，四板及以前若直接出现一次全放量，当日可建仓；次日缩量转强确认后可提高仓位。"
+      "title": "该全放量却未全放量",
+      "text": "分化分歧节点如果走一字、高开秒板或只起量/半放量，说明龙头量能准备没有彻底完成；这种结构容易把二次放量后移到五板，并且五板往往会率先上板。代表：传智教育、华电辽能、豫能控股。"
     },
     {
-      "title": "五板补足量能",
-      "text": "前四板若由两个缩量板和两个半放量及以下组成，说明量能准备尚未完成；五板出现全放量，可视为补足换手后的重点确认位。"
+      "title": "四板前的仓位节奏",
+      "text": "四板及以前，半放量当日回封可半仓；连续两天放量后的第三天缩量转强，或单次全放量后的次日缩量转强，可以提高仓位。五板才第一次全放量时，要确认它是否属于补足量能而不是末端兑现。"
     }
   ],
   "boardVolumeCombinations": [
     {
       "code": "A",
-      "name": "连续放量后缩量确认",
-      "sequence": "起/半 -> 半/全 -> 缩",
-      "rule": "对应规律 1",
+      "name": "均匀放量型",
+      "sequence": "起量/全放量交替 -> 少见极致缩量 -> 龙头换手稳定",
+      "rule": "类型：量能结构",
       "cycles": [
         {
-          "id": "jinyao-medicine-2026-04",
-          "note": "二板起量、三板半放量、四板缩量。"
-        },
-        {
-          "id": "haya-medicine-2026-07",
-          "note": "二板起量、三板全放量、四板缩量。"
-        },
-        {
-          "id": "wanxiang-agri-2026-09",
-          "note": "一板半放量、二板全放量、三板缩量。"
+          "id": "shengyang-compute-2026-04",
+          "note": "一板起量、二板全放量，随后起量/全量交替，没有长时间极致缩量。代表均匀换手型。"
         }
       ]
     },
     {
       "code": "B",
-      "name": "连续放量后降档延续",
-      "sequence": "起量 -> 全放量 -> 起量/再放量",
-      "rule": "规律 1 的延续变体",
+      "name": "缩量放量型",
+      "sequence": "首板缩量 -> 前置无全量 -> 首次全放量 -> 次日缩量/降档转强",
+      "rule": "类型：首板低量启动",
       "cycles": [
         {
-          "id": "shengyang-compute-2026-04",
-          "note": "一板起量、二板全放量，三板降档后四板再次全放量。"
+          "id": "jinyao-medicine-2026-04",
+          "note": "启动首板就是缩量板，前面没有充分放量；三板半放量、四板缩量转强，后续六七板再全放量。"
+        },
+        {
+          "id": "haya-medicine-2026-07",
+          "note": "首板缩量，三板全放量完成换龙，四板缩量秒板确认。"
+        },
+        {
+          "id": "datang-power-2026-05",
+          "note": "一二板缩量，三板全放量，四板缩量转强确认。"
+        },
+        {
+          "id": "baihua-medicine-2026-08",
+          "note": "一二板缩量，三板全放量，四板降档转强确认龙头切换。"
         },
         {
           "id": "lixin-power-2026-07",
-          "note": "三板起量、四板全放量，五板降至起量继续晋级。"
+          "note": "一二板缩量，四板全放量，五板降档转强并带动题材强回流。"
         }
       ]
     },
     {
       "code": "C",
-      "name": "四板前单次全放量",
-      "sequence": "缩量蓄势 -> 全放量 -> 降档",
-      "rule": "对应规律 2",
+      "name": "分歧全放量确认型",
+      "sequence": "题材分化/分歧延续 -> 龙头全放量弱转强 -> 次日缩量/降档转强共振板块回流",
+      "rule": "对应规律 1",
       "cycles": [
         {
-          "id": "datang-power-2026-05",
-          "note": "一二板缩量，三板全放量，四板缩量确认。"
+          "id": "baihua-medicine-2026-08",
+          "note": "三板全放量后，四板转强确认并与医药强回流共振。"
         },
         {
-          "id": "baihua-medicine-2026-08",
-          "note": "一二板缩量，三板全放量，四板降至起量。"
+          "id": "lixin-power-2026-07",
+          "note": "四板全放量后，五板转强确认并与电力强回流共振。"
+        },
+        {
+          "id": "haya-medicine-2026-07",
+          "note": "三板全放量后，四板弱转强秒板确认医药主升。"
+        },
+        {
+          "id": "datang-power-2026-05",
+          "note": "三板全放量后，四板带动电力强回流确认。"
+        },
+        {
+          "id": "shengyang-compute-2026-04",
+          "note": "四板全放量后，五板卡成最高标确认。"
+        },
+        {
+          "id": "jinyao-medicine-2026-04",
+          "note": "三板半放量后，四板缩量转强确认医药穿越。"
         }
       ]
     },
     {
       "code": "D",
-      "name": "前四板蓄量后五板补量",
-      "sequence": "缩/起/半 x4 -> 五板全放量",
-      "rule": "对应规律 3",
+      "name": "五板二次放量型",
+      "sequence": "前四板缩/起/半放量 -> 该全量节点未全量 -> 五板率先上板补足全放量",
+      "rule": "对应规律 2",
       "cycles": [
         {
-          "id": "huadian-power-2026-03",
-          "note": "前四板缩、起、缩、半，五板全放量。"
+          "id": "chuanzhi-ai-2026-08",
+          "note": "前四板缩、半、缩、起，五板全放量，完成五板前的量能补课。"
         },
         {
-          "id": "chuanzhi-ai-2026-08",
-          "note": "前四板缩、半、缩、起，五板全放量。"
+          "id": "huadian-power-2026-03",
+          "note": "前四板缩、起、缩、半，五板全放量，先上板再接受分歧检验。"
+        },
+        {
+          "id": "yunneng-power-2026-03",
+          "name": "豫能控股周期（待补全）",
+          "note": "同属五板二次放量逻辑，后续补入完整周期数据后再纳入统计。"
         }
       ]
     }
@@ -822,7 +847,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
       "leader": "传智教育",
       "code": "003032.SZ",
       "sector": "AI应用",
-      "dateRange": "2026/7/27-2026/8/5",
+      "dateRange": "2026/7/27-2026/8/6",
       "events": [
         {
           "date": "2026-07-28",
@@ -853,7 +878,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": false,
           "relation": "周期内",
-          "phase": "超强回流",
+          "phase": "分歧",
           "board": "4天4板",
           "type": "强势板",
           "firstSeal": "09:30:09",
@@ -874,7 +899,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": false,
           "relation": "周期内",
-          "phase": "分化",
+          "phase": "超强回流",
           "board": "5天5板",
           "type": "T字板",
           "firstSeal": "09:25:00",
@@ -895,7 +920,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": false,
           "relation": "周期内",
-          "phase": "分歧",
+          "phase": "强回流",
           "board": "7天7板",
           "type": "强势板",
           "firstSeal": "09:30:06",
@@ -916,7 +941,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": true,
           "relation": "周期内",
-          "phase": "分歧延续",
+          "phase": "分歧",
           "board": "8天8板",
           "type": "分歧板",
           "firstSeal": "09:30:48",
@@ -931,14 +956,14 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
         }
       ],
       "postWindow": {
-        "date": "2026-08-06",
-        "displayDate": "2026/8/6",
-        "amount": 1228161669.67,
-        "amountYi": 12.3,
-        "turnover": 38.6,
-        "pct": -6.65,
-        "previousRatio": 1.96,
-        "medianFiveRatio": 3.9
+        "date": "2026-08-07",
+        "displayDate": "2026/8/7",
+        "amount": 1239027552.56,
+        "amountYi": 12.4,
+        "turnover": 38.5,
+        "pct": 5.02,
+        "previousRatio": 1.01,
+        "medianFiveRatio": 3.44
       },
       "tradePlan": {
         "preBuy": {
@@ -984,8 +1009,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "displayDate": "2026/8/6",
           "title": "窗口后爆量分歧",
           "note": "八板后次日成交和换手翻倍，收盘转弱。",
-          "relation": "窗口后",
-          "phase": "窗口后",
+          "relation": "周期内",
+          "phase": "分歧延续",
           "board": "-",
           "type": "未封板",
           "firstSeal": "-",
@@ -1006,7 +1031,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "title": "100%异动红线观察",
             "note": "八板进入100%红线观察，卖点后置到次日爆量分歧。",
             "relation": "周期内",
-            "phase": "分歧延续",
+            "phase": "分歧",
             "board": "8天8板",
             "type": "分歧板",
             "firstSeal": "09:30:48",
@@ -1024,8 +1049,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "displayDate": "2026/8/6",
             "title": "后置卖点",
             "note": "八板进入100%红线观察，卖点后置到次日爆量分歧。",
-            "relation": "窗口后",
-            "phase": "窗口后",
+            "relation": "周期内",
+            "phase": "分歧延续",
             "board": "-",
             "type": "未封板",
             "firstSeal": "-",
@@ -1130,7 +1155,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-07-30",
             "displayDate": "2026/7/30",
             "relation": "周期内",
-            "phase": "超强回流",
+            "phase": "分歧",
             "board": "4板",
             "boardDetail": "4天4板",
             "isBoardDay": true,
@@ -1153,7 +1178,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-07-31",
             "displayDate": "2026/7/31",
             "relation": "周期内",
-            "phase": "分化",
+            "phase": "超强回流",
             "board": "5板",
             "boardDetail": "5天5板",
             "isBoardDay": true,
@@ -1176,7 +1201,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-03",
             "displayDate": "2026/8/3",
             "relation": "周期内",
-            "phase": "超强回流",
+            "phase": "分歧",
             "board": "6板",
             "boardDetail": "6天6板",
             "isBoardDay": true,
@@ -1199,7 +1224,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-04",
             "displayDate": "2026/8/4",
             "relation": "周期内",
-            "phase": "分歧",
+            "phase": "强回流",
             "board": "7板",
             "boardDetail": "7天7板",
             "isBoardDay": true,
@@ -1222,7 +1247,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-05",
             "displayDate": "2026/8/5",
             "relation": "周期内",
-            "phase": "分歧延续",
+            "phase": "分歧",
             "board": "8板",
             "boardDetail": "8天8板",
             "isBoardDay": true,
@@ -1244,8 +1269,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           {
             "date": "2026-08-06",
             "displayDate": "2026/8/6",
-            "relation": "窗口后",
-            "phase": "窗口后",
+            "relation": "周期内",
+            "phase": "分歧延续",
             "board": "断板/炸板",
             "boardDetail": "未封板",
             "isBoardDay": false,
@@ -1266,8 +1291,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           }
         ]
       },
-      "peakAmountDate": "2026-08-05",
-      "peakTurnoverDate": "2026-08-05"
+      "peakAmountDate": "2026-08-06",
+      "peakTurnoverDate": "2026-08-06"
     },
     "baihua-medicine-2026-08": {
       "name": "百花医药周期",
@@ -1661,7 +1686,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
       "leader": "万向德农",
       "code": "600371.SH",
       "sector": "农业",
-      "dateRange": "2026/8/25-2026/9/1",
+      "dateRange": "2026/8/25-2026/9/2",
       "events": [
         {
           "date": "2026-08-19",
@@ -1692,7 +1717,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": true,
           "terminal": false,
           "relation": "周期内",
-          "phase": "修复延续",
+          "phase": "分歧延续",
           "board": "2天2板",
           "type": "分歧板",
           "firstSeal": "09:35:12",
@@ -1713,7 +1738,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": true,
           "relation": "周期内",
-          "phase": "强回流",
+          "phase": "超强回流",
           "board": "6天6板",
           "type": "回封板",
           "firstSeal": "09:32:24",
@@ -1728,14 +1753,14 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
         }
       ],
       "postWindow": {
-        "date": "2026-09-02",
-        "displayDate": "2026/9/2",
-        "amount": 1453094160,
-        "amountYi": 14.5,
-        "turnover": 34.9,
-        "pct": 3.3,
-        "previousRatio": 2.31,
-        "medianFiveRatio": 8.35
+        "date": "2026-09-03",
+        "displayDate": "2026/9/3",
+        "amount": 1013317274,
+        "amountYi": 10.1,
+        "turnover": 25.8,
+        "pct": -9.29,
+        "previousRatio": 0.7,
+        "medianFiveRatio": 5.82
       },
       "tradePlan": {
         "preBuy": {
@@ -1744,7 +1769,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "爆量弱转强",
           "note": "前一轮失败后，二波连续换手回封。",
           "relation": "周期内",
-          "phase": "修复延续",
+          "phase": "分歧延续",
           "board": "2天2板",
           "type": "分歧板",
           "firstSeal": "09:35:12",
@@ -1763,7 +1788,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "缩量转强确认",
           "note": "次日成交额收缩约62%，早盘秒板确认。",
           "relation": "周期内",
-          "phase": "修复延续",
+          "phase": "高潮启动",
           "board": "3天3板",
           "type": "强势板",
           "firstSeal": "09:30:06",
@@ -1781,8 +1806,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "displayDate": "2026/9/2",
           "title": "窗口后爆量分歧",
           "note": "六板后次日换手升至34.9%，未能封板。",
-          "relation": "窗口后",
-          "phase": "窗口后",
+          "relation": "周期内",
+          "phase": "大分歧",
           "board": "-",
           "type": "未封板",
           "firstSeal": "-",
@@ -1822,7 +1847,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-25",
             "displayDate": "2026/8/25",
             "relation": "周期内",
-            "phase": "修复延续",
+            "phase": "分歧",
             "board": "1板",
             "boardDetail": "首板",
             "isBoardDay": true,
@@ -1845,7 +1870,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-26",
             "displayDate": "2026/8/26",
             "relation": "周期内",
-            "phase": "修复延续",
+            "phase": "分歧延续",
             "board": "2板",
             "boardDetail": "2天2板",
             "isBoardDay": true,
@@ -1868,7 +1893,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-27",
             "displayDate": "2026/8/27",
             "relation": "周期内",
-            "phase": "修复延续",
+            "phase": "高潮启动",
             "board": "3板",
             "boardDetail": "3天3板",
             "isBoardDay": true,
@@ -1891,7 +1916,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-28",
             "displayDate": "2026/8/28",
             "relation": "周期内",
-            "phase": "强回流",
+            "phase": "强势延续",
             "board": "4板",
             "boardDetail": "4天4板",
             "isBoardDay": true,
@@ -1914,7 +1939,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-08-31",
             "displayDate": "2026/8/31",
             "relation": "周期内",
-            "phase": "高潮开接分化",
+            "phase": "大分化",
             "board": "5板",
             "boardDetail": "5天5板",
             "isBoardDay": true,
@@ -1937,7 +1962,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-09-01",
             "displayDate": "2026/9/1",
             "relation": "周期内",
-            "phase": "强回流",
+            "phase": "超强回流",
             "board": "6板",
             "boardDetail": "6天6板",
             "isBoardDay": true,
@@ -1959,8 +1984,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           {
             "date": "2026-09-02",
             "displayDate": "2026/9/2",
-            "relation": "窗口后",
-            "phase": "窗口后",
+            "relation": "周期内",
+            "phase": "大分歧",
             "board": "断板/炸板",
             "boardDetail": "未封板",
             "isBoardDay": false,
@@ -1981,8 +2006,8 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           }
         ]
       },
-      "peakAmountDate": "2026-09-01",
-      "peakTurnoverDate": "2026-08-26"
+      "peakAmountDate": "2026-09-02",
+      "peakTurnoverDate": "2026-09-02"
     },
     "datang-power-2026-05": {
       "name": "大唐发电周期",
@@ -2317,7 +2342,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
       "leader": "圣阳股份",
       "code": "002580.SZ",
       "sector": "算力",
-      "dateRange": "2026/4/8-2026/4/21",
+      "dateRange": "2026/4/9-2026/4/20",
       "events": [
         {
           "date": "2026-04-10",
@@ -2327,7 +2352,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": true,
           "terminal": false,
           "relation": "周期内",
-          "phase": "分歧延续",
+          "phase": "高潮启动",
           "board": "2天2板",
           "type": "分歧板",
           "firstSeal": "10:14:30",
@@ -2348,7 +2373,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": false,
           "relation": "周期内",
-          "phase": "继续轮动",
+          "phase": "超强回流",
           "board": "10天5板",
           "type": "分歧板",
           "firstSeal": "10:24:03",
@@ -2369,7 +2394,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": true,
           "relation": "周期内",
-          "phase": "强势延续",
+          "phase": "分歧延续",
           "board": "炸板",
           "type": "未封板",
           "firstSeal": "-",
@@ -2384,14 +2409,14 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
         }
       ],
       "postWindow": {
-        "date": "2026-04-22",
-        "displayDate": "2026/4/22",
-        "amount": 5168025657.52,
-        "amountYi": 51.7,
-        "turnover": 42,
+        "date": "2026-04-21",
+        "displayDate": "2026/4/21",
+        "amount": 1198170278.77,
+        "amountYi": 12,
+        "turnover": 8.8,
         "pct": -10.01,
-        "previousRatio": 4.31,
-        "medianFiveRatio": 2.07
+        "previousRatio": 0.34,
+        "medianFiveRatio": 0.44
       },
       "tradePlan": {
         "preBuy": {
@@ -2400,7 +2425,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "爆量弱转强",
           "note": "二板大换手封住，龙头从混乱题材中开始走出。",
           "relation": "周期内",
-          "phase": "分歧延续",
+          "phase": "高潮启动",
           "board": "2天2板",
           "type": "分歧板",
           "firstSeal": "10:14:30",
@@ -2419,7 +2444,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "缩量转强确认",
           "note": "次日成交额明显收缩，三板回封确认。",
           "relation": "周期内",
-          "phase": "中修复",
+          "phase": "分化",
           "board": "3天3板",
           "type": "回封板",
           "firstSeal": "09:34:48",
@@ -2438,7 +2463,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "高位炸板爆量",
           "note": "尾盘炸板爆量，次日跌停完成确认。",
           "relation": "周期内",
-          "phase": "强势延续",
+          "phase": "分歧延续",
           "board": "炸板",
           "type": "未封板",
           "firstSeal": "-",
@@ -2459,7 +2484,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "title": "100%异动红线观察",
             "note": "七板后进入红线观察，高位卖点后置到下一交易日炸板爆量。",
             "relation": "周期内",
-            "phase": "强势延续",
+            "phase": "分歧",
             "board": "17天9板",
             "type": "分歧板",
             "firstSeal": "09:33:30",
@@ -2478,7 +2503,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "title": "后置卖点",
             "note": "七板后进入红线观察，高位卖点后置到下一交易日炸板爆量。",
             "relation": "周期内",
-            "phase": "强势延续",
+            "phase": "分歧延续",
             "board": "炸板",
             "type": "未封板",
             "firstSeal": "-",
@@ -2514,7 +2539,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-09",
             "displayDate": "2026/4/9",
             "relation": "周期内",
-            "phase": "大分歧",
+            "phase": "分歧（首板）",
             "board": "1板",
             "boardDetail": "首板",
             "isBoardDay": true,
@@ -2537,7 +2562,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-10",
             "displayDate": "2026/4/10",
             "relation": "周期内",
-            "phase": "分歧延续",
+            "phase": "高潮启动",
             "board": "2板",
             "boardDetail": "2天2板",
             "isBoardDay": true,
@@ -2560,7 +2585,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-13",
             "displayDate": "2026/4/13",
             "relation": "周期内",
-            "phase": "中修复",
+            "phase": "分化",
             "board": "3板",
             "boardDetail": "3天3板",
             "isBoardDay": true,
@@ -2583,7 +2608,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-14",
             "displayDate": "2026/4/14",
             "relation": "周期内",
-            "phase": "继续轮动",
+            "phase": "超强回流",
             "board": "4板",
             "boardDetail": "10天5板",
             "isBoardDay": true,
@@ -2606,7 +2631,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-15",
             "displayDate": "2026/4/15",
             "relation": "周期内",
-            "phase": "强势轮动",
+            "phase": "分化",
             "board": "5板",
             "boardDetail": "11天6板",
             "isBoardDay": true,
@@ -2629,7 +2654,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-16",
             "displayDate": "2026/4/16",
             "relation": "周期内",
-            "phase": "强势延续",
+            "phase": "超强回流",
             "board": "6板",
             "boardDetail": "16天8板",
             "isBoardDay": true,
@@ -2652,7 +2677,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-17",
             "displayDate": "2026/4/17",
             "relation": "周期内",
-            "phase": "强势延续",
+            "phase": "分歧",
             "board": "7板",
             "boardDetail": "17天9板",
             "isBoardDay": true,
@@ -2675,7 +2700,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-04-20",
             "displayDate": "2026/4/20",
             "relation": "周期内",
-            "phase": "强势延续",
+            "phase": "分歧延续",
             "board": "断板/炸板",
             "boardDetail": "未封板",
             "isBoardDay": false,
@@ -3122,7 +3147,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": true,
           "terminal": false,
           "relation": "周期内",
-          "phase": "震荡",
+          "phase": "高潮启动",
           "board": "2天2板",
           "type": "回封板",
           "firstSeal": "09:33:29",
@@ -3143,7 +3168,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "firstExchange": false,
           "terminal": false,
           "relation": "周期内",
-          "phase": "分化",
+          "phase": "小分歧",
           "board": "11天6板",
           "type": "分歧板",
           "firstSeal": "09:33:26",
@@ -3195,7 +3220,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "爆量弱转强",
           "note": "二板开板换手回封，前置试错点成立。",
           "relation": "周期内",
-          "phase": "震荡",
+          "phase": "高潮启动",
           "board": "2天2板",
           "type": "回封板",
           "firstSeal": "09:33:29",
@@ -3214,7 +3239,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
           "title": "缩量转强确认",
           "note": "次日缩量一字，确认筹码锁定；属于确认成立但难成交。",
           "relation": "周期内",
-          "phase": "强回流",
+          "phase": "超强回流",
           "board": "3天3板",
           "type": "一字板",
           "firstSeal": "09:25:00",
@@ -3254,7 +3279,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "title": "100%异动红线观察",
             "note": "进入高位监管观察后仍延续，卖点后置到爆量滞涨日。",
             "relation": "周期内",
-            "phase": "强回流高潮",
+            "phase": "超强回流",
             "board": "13天8板",
             "type": "回封板",
             "firstSeal": "09:38:15",
@@ -3332,7 +3357,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-17",
             "displayDate": "2026/3/17",
             "relation": "周期内",
-            "phase": "震荡",
+            "phase": "高潮启动",
             "board": "2板",
             "boardDetail": "2天2板",
             "isBoardDay": true,
@@ -3355,7 +3380,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-18",
             "displayDate": "2026/3/18",
             "relation": "周期内",
-            "phase": "强回流",
+            "phase": "超强回流",
             "board": "3板",
             "boardDetail": "3天3板",
             "isBoardDay": true,
@@ -3378,7 +3403,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-19",
             "displayDate": "2026/3/19",
             "relation": "周期内",
-            "phase": "回流延续",
+            "phase": "小分化",
             "board": "4板",
             "boardDetail": "10天5板",
             "isBoardDay": true,
@@ -3401,7 +3426,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-20",
             "displayDate": "2026/3/20",
             "relation": "周期内",
-            "phase": "分化",
+            "phase": "小分歧",
             "board": "5板",
             "boardDetail": "11天6板",
             "isBoardDay": true,
@@ -3424,7 +3449,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-23",
             "displayDate": "2026/3/23",
             "relation": "周期内",
-            "phase": "高位继续",
+            "phase": "分歧延续",
             "board": "6板",
             "boardDetail": "12天7板",
             "isBoardDay": true,
@@ -3447,7 +3472,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-24",
             "displayDate": "2026/3/24",
             "relation": "周期内",
-            "phase": "强回流高潮",
+            "phase": "超强回流",
             "board": "7板",
             "boardDetail": "13天8板",
             "isBoardDay": true,
@@ -3470,7 +3495,7 @@ window.LEADER_CYCLE_VOLUME_ANALYSIS = {
             "date": "2026-03-25",
             "displayDate": "2026/3/25",
             "relation": "周期内",
-            "phase": "回流延续",
+            "phase": "强势延续",
             "board": "8板",
             "boardDetail": "14天9板",
             "isBoardDay": true,
