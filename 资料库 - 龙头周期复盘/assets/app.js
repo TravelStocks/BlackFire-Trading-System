@@ -25,6 +25,7 @@
     sourceNote: document.getElementById("source-note"),
     patternThesis: document.getElementById("pattern-thesis"),
     ruleGrid: document.getElementById("rule-grid"),
+    strengthSystem: document.getElementById("strength-system"),
     volumeStats: document.getElementById("volume-stats"),
     volumeFindings: document.getElementById("volume-findings"),
     volumeTableBody: document.getElementById("volume-table-body"),
@@ -361,6 +362,44 @@
       card.append(createElement("b", "", rule.title), createElement("p", "", rule.text));
       els.ruleGrid.appendChild(card);
     });
+
+    if (!els.strengthSystem) return;
+    els.strengthSystem.innerHTML = "";
+    if (!patterns.strengthSystem && !(patterns.strengthCombos || []).length) return;
+
+    const header = createElement("div", "strength-system-head");
+    header.append(
+      createElement("h3", "", patterns.strengthSystem?.title || "题材强度排列组合"),
+      createElement("p", "", patterns.strengthSystem?.summary || "")
+    );
+
+    const levels = createElement("div", "strength-levels");
+    (patterns.strengthSystem?.levels || []).forEach((level) => {
+      const item = createElement("article", "strength-level");
+      item.append(
+        createElement("b", "", level.name),
+        createElement("span", "", level.signal),
+        createElement("p", "", level.meaning)
+      );
+      levels.appendChild(item);
+    });
+
+    const combos = createElement("div", "strength-combos");
+    (patterns.strengthCombos || []).forEach((combo) => {
+      const item = createElement("article", "strength-combo");
+      item.dataset.code = combo.code || "";
+      item.append(
+        createElement("span", "strength-combo-code", combo.code || ""),
+        createElement("h4", "", combo.title),
+        createElement("p", "strength-combo-sequence", combo.sequence),
+        createElement("p", "strength-combo-conclusion", combo.conclusion),
+        createElement("p", "strength-combo-watch", combo.watch),
+        createElement("small", "", `案例：${combo.examples}`)
+      );
+      combos.appendChild(item);
+    });
+
+    els.strengthSystem.append(header, levels, combos);
   }
 
   function renderVolumeStudy() {
