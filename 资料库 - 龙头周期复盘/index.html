@@ -3,102 +3,275 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>资料库 - 龙头周期复盘</title>
-  <meta name="description" content="内容优先的龙头周期投研复盘工作台，整合 Notion toggle heading1 周期内容。" />
-  <link rel="stylesheet" href="./styles.css?v=20260816-baihua-cycle" />
+  <meta name="theme-color" content="#161813" />
+  <title>龙头周期归纳</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script defer src="data/cycles.js"></script>
+  <script defer src="data/cycle-updates.js"></script>
+  <script defer src="data/daily-limit-ups.js"></script>
+  <script defer src="data/leader-volume-analysis.js"></script>
+  <script defer src="assets/app.js"></script>
 </head>
 <body>
-  <div class="progress" id="progress"></div>
+  <a class="skip-link" href="#main">跳到主体内容</a>
 
-  <header class="toolbar" id="top">
-    <a class="brand" href="#top">资料库 - 龙头周期复盘</a>
-    <div class="toolbar-controls" role="search">
-      <label class="search-box">
-        <span>搜索</span>
-        <input id="search-input" type="search" placeholder="周期、主线、标的" autocomplete="off" />
-      </label>
-      <label class="filter-box">
-        <span>筛选</span>
-        <select id="stage-filter">
-          <option value="all">全部周期</option>
-        </select>
-      </label>
-      <button class="toolbar-button" id="toolbar-backtop" type="button">回到顶部</button>
-    </div>
+  <header class="topbar" aria-label="页面导航">
+    <a class="brand" href="#main" aria-label="龙头周期归纳首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19V5" />
+          <path d="M4 9h9" />
+          <path d="M4 15h16" />
+          <path d="M13 9l-2-2" />
+          <path d="M20 15l-3-3" />
+        </svg>
+      </span>
+      <span>龙头周期归纳</span>
+    </a>
+    <nav class="nav" aria-label="快速跳转">
+      <a href="#patterns">规律</a>
+      <a href="#reference">参考</a>
+      <a href="#volume-study">爆量</a>
+      <a href="#board-volume">量能</a>
+      <a href="#trade-points">买卖</a>
+      <a href="#cycles">周期</a>
+      <a href="#timeline">节奏</a>
+      <a href="#limit-data">连板</a>
+      <a href="#ledger">每日</a>
+    </nav>
   </header>
 
-  <main class="workspace">
-    <aside class="left-rail" aria-label="周期目录">
-      <div class="mobile-toc">
-        <label for="mobile-cycle-select">周期跳转</label>
-        <select id="mobile-cycle-select"></select>
+  <main id="main">
+    <section class="pattern-section" id="patterns">
+      <div class="pattern-copy">
+        <p class="eyebrow">Pattern Library</p>
+        <h2>共性规律</h2>
+        <p id="pattern-thesis"></p>
+        <div class="rule-grid" id="rule-grid"></div>
       </div>
-      <nav class="toc-card">
-        <div class="rail-title">目录</div>
-        <ol id="toc-list"></ol>
-      </nav>
-    </aside>
-
-    <section class="main-column" aria-label="周期复盘内容">
-      <section class="summary-panel" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Research Review Desk</p>
-          <h1 id="page-title">资料库 - 龙头周期复盘</h1>
-          <p>
-            从 Notion 页面“龙头周期复盘”提取 toggle heading1 内容，按周期单独成章。
-            已排除 Seedance 超小周期，当前先做清爽、可持续迭代的第一版页面。
-          </p>
-        </div>
-        <dl class="metrics" id="metrics"></dl>
-      </section>
-
-      <section class="chip-row" id="cycle-chips" aria-label="周期快捷入口"></section>
-
-      <section class="focus-module" id="cycle-05-06" aria-labelledby="focus-module-title">
-        <div class="focus-module-head">
-          <div>
-            <p class="eyebrow">Cycle 05-06 · 龙头接力复盘</p>
-            <h2 id="focus-module-title">哈药股份 + 立新能源：接力口诀与双周期5分K标注</h2>
-            <p>
-              这一组放在05-06周期前面：先用“接力口诀”锁住纪律，再进入哈药股份与立新能源的完整5分钟K复盘。
-              核心是看旧龙退潮、新龙承接、爆量回封、次日转强、前排负反馈和高位断板。
-            </p>
-          </div>
-          <a class="focus-open" href="./05-06-leader-cycle-review/index.html">打开完整页</a>
-        </div>
-        <figure class="mantra-figure">
-          <img
-            src="./assets/relay-pressure-mantra.png"
-            width="1200"
-            height="2670"
-            alt="接力口诀与情绪周期表"
-            fetchpriority="high"
-          />
-        </figure>
-        <div class="embedded-review">
-          <iframe
-            title="哈药股份与立新能源双周期5分钟K线复盘"
-            src="./05-06-leader-cycle-review/index.html"
-            loading="lazy"
-          ></iframe>
-        </div>
-      </section>
-      <section class="cycles" id="cycle-list" aria-live="polite"></section>
     </section>
 
-    <aside class="right-rail" aria-label="当前周期锚点">
-      <section class="anchor-card">
-        <div class="rail-title">当前周期</div>
-        <div id="active-cycle-name" class="active-cycle-name">待选择</div>
-        <nav id="section-anchors" class="section-anchors"></nav>
-      </section>
-    </aside>
+    <section class="reference-section" id="reference">
+      <div class="reference-copy">
+        <p class="eyebrow">Reference</p>
+        <h2>接力节奏参考</h2>
+        <p>
+          周期档案按“启动、加强、分化、回流、高潮、分歧”沉淀，保留时间周期、题材状态、身位股、核心票、梯队和风险信号。
+        </p>
+        <dl class="source-list">
+          <div>
+            <dt>当前来源</dt>
+            <dd id="source-note">7.26 题材节奏表.xlsx / Sheet1!DD243:DI243</dd>
+          </div>
+          <div>
+            <dt>记录口径</dt>
+            <dd>以交易日为单位，先记节奏，再按短线侠每日复盘的概念分组记录涨停股和封板时间。</dd>
+          </div>
+          <div>
+            <dt>涨停明细来源</dt>
+            <dd><a href="http://duanxianxia.cn/web/fupan/" target="_blank" rel="noreferrer">短线侠每日复盘 - 涨停复盘（按概念）</a></dd>
+          </div>
+        </dl>
+      </div>
+      <figure class="reference-image">
+        <img src="assets/relay-mantra-original.jpg" alt="接力口诀和情绪周期表参考图" />
+      </figure>
+    </section>
+
+    <section class="volume-section" id="volume-study">
+      <div class="volume-heading">
+        <div>
+          <p class="eyebrow">Volume Study</p>
+          <h2>龙头爆量节点</h2>
+          <p>按成交额相对放大、换手率、开板次数与封板窗口复核，只保留会改变周期节奏的关键爆量。</p>
+        </div>
+        <div class="volume-stats" id="volume-stats" aria-label="爆量研究样本统计"></div>
+      </div>
+      <div class="volume-findings" id="volume-findings"></div>
+      <div class="volume-table-wrap" tabindex="0" aria-label="九个龙头周期爆量节点对照表">
+        <table class="volume-table">
+          <thead>
+            <tr>
+              <th>周期</th>
+              <th>关键爆量时间点</th>
+              <th>窗口后验证</th>
+            </tr>
+          </thead>
+          <tbody id="volume-table-body"></tbody>
+        </table>
+      </div>
+      <p class="volume-method" id="volume-method"></p>
+    </section>
+
+    <section class="board-volume-section" id="board-volume">
+      <div class="board-volume-heading">
+        <div>
+          <p class="eyebrow">Board Volume Matrix</p>
+          <h2>连板量能统计</h2>
+          <p>四档量能统一按连板均值标记，旁边补充当日成交额是首板量能的几倍，兼顾历史复盘与新周期实时观察。</p>
+        </div>
+        <div class="board-volume-stats" id="board-volume-stats" aria-label="连板量能样本统计"></div>
+      </div>
+      <div class="board-volume-toolbar">
+        <div class="board-volume-legends">
+          <div class="board-volume-legend-line">
+            <strong>均量标签</strong>
+            <ul class="board-volume-legend" aria-label="连板均量分类阈值">
+              <li data-state="shrink"><b>缩量</b><span>&lt; 0.60x</span></li>
+              <li data-state="rising"><b>起量</b><span>0.60-0.89x</span></li>
+              <li data-state="half"><b>半放量</b><span>0.90-1.29x</span></li>
+              <li data-state="full"><b>全放量</b><span>&ge; 1.30x</span></li>
+            </ul>
+          </div>
+          <p class="board-volume-legend-note">首板成交额固定为 1.00x，仅显示倍数，不参与四档标记。</p>
+        </div>
+        <div class="board-volume-actions" aria-label="周期模块显示控制">
+          <button type="button" id="expand-board-volume">展开全部</button>
+          <button type="button" id="collapse-board-volume">收起全部</button>
+        </div>
+      </div>
+      <div class="board-volume-playbook" aria-labelledby="board-volume-playbook-title">
+        <div class="board-volume-playbook-head">
+          <div>
+            <p class="eyebrow">Setup Library</p>
+            <h3 id="board-volume-playbook-title">量能组合与进场规律</h3>
+          </div>
+          <p>九个周期按四板前量能准备、缩量确认和五板补量路径归类。</p>
+        </div>
+        <div class="board-volume-rules" id="board-volume-rules"></div>
+        <div class="board-volume-combinations" id="board-volume-combinations"></div>
+      </div>
+      <div class="board-volume-findings" id="board-volume-findings"></div>
+      <div class="board-volume-cycle-list" id="board-volume-cycle-list"></div>
+      <p class="board-volume-method" id="board-volume-method"></p>
+    </section>
+
+    <section class="trade-section" id="trade-points">
+      <div class="trade-heading">
+        <div>
+          <p class="eyebrow">Trade Replay</p>
+          <h2>董事长逻辑买卖点</h2>
+          <p>把爆量、次日确认、高位分歧和监管红线连成同一条复盘动线。</p>
+        </div>
+        <div class="trade-stats" id="trade-stats" aria-label="买卖点回测统计"></div>
+      </div>
+      <ol class="trade-logic" id="trade-logic"></ol>
+      <div class="trade-table-wrap" tabindex="0" aria-label="九个周期买卖点推演表">
+        <table class="trade-table">
+          <thead>
+            <tr>
+              <th>周期</th>
+              <th>前置买点</th>
+              <th>标准买点</th>
+              <th>标准卖点</th>
+              <th>监管后置</th>
+            </tr>
+          </thead>
+          <tbody id="trade-table-body"></tbody>
+        </table>
+      </div>
+      <p class="trade-disclaimer">
+        这是历史复盘推演，不是实时交易建议。“100%红线”按董事长交易模型作观察标记；交易所正式口径（<a href="https://www.sse.com.cn/disclosure/diclosure/ycjyxx/main/" target="_blank" rel="noreferrer">上交所</a> / <a href="https://investor.szse.cn/knowledge/t20230406_599705.html" target="_blank" rel="noreferrer">深交所</a>）还涉及连续10个交易日收盘价格涨幅偏离值累计及其他严重异常波动条件。
+      </p>
+    </section>
+
+    <section class="workspace" id="cycles">
+      <div class="workspace-head">
+        <div>
+          <p class="eyebrow">Leader Cycle Archive</p>
+          <h1>龙头周期复盘工作台</h1>
+          <p class="workspace-subtitle">周期、节奏、涨停明细和规律沉淀集中在同一条复盘线上。</p>
+        </div>
+        <div class="headline-aside" aria-label="档案概览">
+          <div>
+            <span class="stat-value" id="cycle-count">1</span>
+            <span class="stat-label">已记录周期</span>
+          </div>
+          <div>
+            <span class="stat-value" id="day-count">6</span>
+            <span class="stat-label">交易日</span>
+          </div>
+          <div>
+            <span class="stat-value" id="latest-range">2026/7/17-2026/7/24</span>
+            <span class="stat-label">当前时间周期</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="archive-layout">
+        <aside class="cycle-index" aria-label="周期索引">
+          <label class="search-label" for="cycle-search">周期检索</label>
+          <div class="search-box">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <input id="cycle-search" type="search" placeholder="输入龙头、题材或标签" autocomplete="off" />
+          </div>
+          <div class="cycle-list" id="cycle-list"></div>
+        </aside>
+
+        <section class="cycle-focus" aria-live="polite">
+          <div class="focus-topline">
+            <span class="status-pill" id="cycle-status">已完成</span>
+            <span class="range-pill" id="cycle-range">2026/7/17-2026/7/24</span>
+          </div>
+          <div class="cycle-title-row">
+            <div>
+              <p class="cycle-sector" id="cycle-sector">电力</p>
+              <h2 id="cycle-title">立新能源周期</h2>
+            </div>
+            <button class="copy-button" id="copy-markdown" type="button">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="10" height="10" rx="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              <span>复制表格</span>
+            </button>
+          </div>
+          <p class="one-line" id="cycle-one-line"></p>
+
+          <div class="metric-strip" id="metric-strip"></div>
+
+          <div class="rhythm-card" id="timeline">
+            <div class="section-heading">
+              <p class="eyebrow">Rhythm Path</p>
+              <h3>节奏路径</h3>
+            </div>
+            <ol class="phase-line" id="phase-line"></ol>
+          </div>
+
+          <div class="limit-card" id="limit-data">
+            <div class="section-heading">
+              <p class="eyebrow">Limit-Up Chain</p>
+              <h3>连板涨停数据</h3>
+            </div>
+            <p class="limit-summary" id="limit-summary"></p>
+            <div class="limit-source" id="limit-source"></div>
+            <div class="limit-tape" id="limit-tape"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="ledger-section" id="ledger">
+      <div class="section-heading wide">
+        <p class="eyebrow">Daily Ledger</p>
+        <h2>每日节奏记录</h2>
+      </div>
+      <div class="ledger-toolbar">
+        <button class="view-button is-active" type="button" data-view="expanded">展开</button>
+        <button class="view-button" type="button" data-view="compact">紧凑</button>
+      </div>
+      <div class="ledger-scroll" tabindex="0" aria-label="周期每日记录">
+        <div class="day-grid" id="day-grid"></div>
+      </div>
+    </section>
   </main>
 
-  <button class="floating-backtop" id="floating-backtop" type="button" aria-label="回到顶部">↑</button>
-
-  <script src="./cycles-data.js?v=20260830-shenzhen-zhonghua-a"></script>
-  <script src="./intraday-data.js?v=20260816-baihua-cycle"></script>
-  <script src="./app.js?v=20260816-baihua-cycle"></script>
+  <footer class="page-footer">
+    <span>个人交易复盘档案</span>
+    <span>内容仅作盘面训练记录，不构成投资建议。</span>
+  </footer>
 </body>
 </html>
