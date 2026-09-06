@@ -39,7 +39,12 @@
     collapseBoardVolume: document.getElementById("collapse-board-volume"),
     tradeStats: document.getElementById("trade-stats"),
     tradeLogic: document.getElementById("trade-logic"),
-    tradeTableBody: document.getElementById("trade-table-body")
+    tradeTableBody: document.getElementById("trade-table-body"),
+    cycleMapTitle: document.getElementById("cycle-map-title"),
+    cycleMapMeta: document.getElementById("cycle-map-meta"),
+    cycleMapCards: document.getElementById("cycle-map-cards"),
+    cycleMapRhythm: document.getElementById("cycle-map-rhythm"),
+    cycleMapBars: document.getElementById("cycle-map-bars")
   };
 
   const state = {
@@ -102,6 +107,17 @@
 
   function getSelectedCycle() {
     return cycles.find((cycle) => cycle.id === state.selectedId) || cycles[0] || null;
+  }
+
+  function getCycleCombination(cycle) {
+    return (leaderVolume.boardVolumeCombinations || []).find((item) =>
+      (item.cycles || []).some((sample) => sample.id === cycle.id)
+    );
+  }
+
+  function getCycleCombinationSample(cycle) {
+    const combination = getCycleCombination(cycle);
+    return (combination?.cycles || []).find((sample) => sample.id === cycle.id) || null;
   }
 
   function setText(node, value) {
@@ -184,7 +200,12 @@
 
       const title = createElement("strong", "", cycle.name);
       const detail = createElement("span", "", `${cycle.dateRange} / ${cycle.sector}`);
-      button.append(title, detail);
+      const combination = getCycleCombination(cycle);
+      if (combination) {
+        button.append(title, detail, createElement("em", "cycle-item-combo", `${combination.code} · ${combination.name}`));
+      } else {
+        button.append(title, detail);
+      }
       button.addEventListener("click", () => {
         state.selectedId = cycle.id;
         history.replaceState(null, "", `#${encodeURIComponent(cycle.id)}`);
@@ -203,12 +224,15 @@
     setText(els.title, cycle.name);
     setText(els.oneLine, cycle.oneLine);
 
+    const analysis = leaderVolume.cycles?.[cycle.id] || {};
+    const combination = getCycleCombination(cycle);
+    const plan = analysis.tradePlan || {};
     const metrics = [
       ["龙头", `${cycle.leader}${cycle.code ? ` ${cycle.code}` : ""}`],
       ["时间周期", cycle.dateRange],
-      ["交易日", `${cycle.tradingDays || cycle.records.length} 天`],
-      ["节奏", cycle.rhythm],
-      ["标签", (cycle.tags || []).join(" / ")]
+      ["量能类型", combination ? `${combination.code} · ${combination.name}` : "待归类"],
+      ["标准买点", plan.standardBuy ? `${plan.standardBuy.displayDate} ${plan.standardBuy.title}` : "待复核"],
+      ["风险卖点", plan.standardSell ? `${plan.standardSell.displayDate} ${plan.standardSell.title}` : "待复核"]
     ];
 
     els.metrics.innerHTML = "";
@@ -217,6 +241,57 @@
       item.append(createElement("b", "", label), createElement("span", "", value));
       els.metrics.appendChild(item);
     });
+  }
+
+  function renderCycleMap(cycle) {
+    if (!els.cycleMapCards) return;
+    const analysis = leaderVolume.cycles?.[cycle.id] || {};
+    const combination = getCycleCombination(cycle);
+    const sample = getCycleCombinationSample(cycle);
+    const boardVolume = analysis.boardVolume;
+    const firstEvent = (analysis.events || []).find((event) => event.firstExchange) || (analysis.events || [])[0];
+    const plan = analysis.tradePlan || {};
+
+    setText(els.cycleMapTitle, cycle.name);
+    setText(els.cycleMapMeta, `${cycle.leader}${cycle.code ? ` ${cycle.code}` : ""} / ${cycle.sector} / ${cycle.dateRange}`);
+    setText(els.cycleMapRhythm, cycle.rhythm);
+
+    els.cycleMapCards.innerHTML = "";
+    [
+      {
+        label: "量能类型",
+        title: combination ? `${combination.code} · ${combination.name}` : "待归类",
+        text: sample?.note || combination?.sequence || "等待更多周期样本。"
+      },
+      {
+        label: "关键爆量",
+        title: firstEvent ? `${firstEvent.displayDate} ${firstEvent.kind}` : "待复核",
+        text: firstEvent ? `${firstEvent.board} / 成交 ${firstEvent.amountYi} 亿 / 换手 ${firstEvent.turnover}%` : "暂无关键爆量节点。"
+      },
+      {
+        label: "标准买点",
+        title: plan.standardBuy ? `${plan.standardBuy.displayDate} ${plan.standardBuy.title}` : "待复核",
+        text: plan.standardBuy?.note || "等待缩量转强与题材回流共振。"
+      },
+      {
+        label: "风险卖点",
+        title: plan.standardSell ? `${plan.standardSell.displayDate} ${plan.standardSell.title}` : "待复核",
+        text: plan.standardSell?.note || "重点看高位炸板爆量和监管红线。"
+      }
+    ].forEach((item) => {
+      const card = createElement("section", "cycle-map-card");
+      card.append(
+        createElement("span", "", item.label),
+        createElement("strong", "", item.title),
+        createElement("p", "", item.text)
+      );
+      els.cycleMapCards.appendChild(card);
+    });
+
+    els.cycleMapBars.innerHTML = "";
+    if (boardVolume?.days?.length) {
+      els.cycleMapBars.appendChild(makeBoardVolumeBars(boardVolume));
+    }
   }
 
   function renderPhaseLine(cycle) {
@@ -488,9 +563,7 @@
     details.open = initiallyOpen;
     const summary = document.createElement("summary");
     const identity = createElement("div", "board-volume-identity");
-    const combination = (leaderVolume.boardVolumeCombinations || []).find((item) =>
-      (item.cycles || []).some((sample) => sample.id === cycle.id)
-    );
+    const combination = getCycleCombination(cycle);
     identity.append(
       createElement("strong", "", cycle.name),
       createElement("span", "", `${cycle.sector} / ${cycle.dateRange}`)
@@ -965,11 +1038,21 @@
     });
   }
 
+  function arrangeSections() {
+    const main = document.getElementById("main");
+    const systemMap = document.getElementById("system-map");
+    const workspace = document.getElementById("cycles");
+    if (main && systemMap && workspace && systemMap.nextElementSibling !== workspace) {
+      main.insertBefore(workspace, systemMap.nextElementSibling);
+    }
+  }
+
   function render() {
     const cycle = getSelectedCycle();
     renderOverview();
     renderCycleList();
     if (!cycle) return;
+    renderCycleMap(cycle);
     renderCycleFocus(cycle);
     renderPhaseLine(cycle);
     renderLimitBoard(cycle);
@@ -980,6 +1063,7 @@
     renderTradeStudy();
   }
 
+  arrangeSections();
   bindControls();
   render();
 })();
