@@ -414,6 +414,54 @@ svg {
   border-top: 1px solid rgba(223, 44, 44, 0.16);
 }
 
+.uniqueness-lanes {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(223, 44, 44, 0.07);
+  border: 1px solid rgba(223, 44, 44, 0.14);
+  border-radius: var(--radius);
+}
+
+.uniqueness-lanes div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 4px 10px;
+  align-items: center;
+  min-height: 58px;
+  padding: 9px 10px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(223, 44, 44, 0.12);
+  border-radius: 6px;
+}
+
+.uniqueness-lanes span,
+.uniqueness-lanes b,
+.uniqueness-lanes em {
+  display: block;
+}
+
+.uniqueness-lanes span {
+  color: #9d1d1d;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.uniqueness-lanes b {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.uniqueness-lanes em {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  font-style: normal;
+  font-weight: 700;
+}
+
 .uniqueness-flow div {
   padding-left: 12px;
   border-left: 2px solid rgba(223, 44, 44, 0.22);
@@ -2725,6 +2773,14 @@ svg {
 
   .uniqueness-flow {
     grid-template-columns: 1fr;
+  }
+
+  .uniqueness-lanes div {
+    grid-template-columns: 1fr;
+  }
+
+  .uniqueness-lanes em {
+    grid-column: auto;
   }
 
   .hero-prereq,
