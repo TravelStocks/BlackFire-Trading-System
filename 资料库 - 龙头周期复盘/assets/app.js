@@ -399,7 +399,43 @@
       combos.appendChild(item);
     });
 
+    const longCombos = createElement("section", "strength-long");
+    if ((patterns.strengthLongCombos || []).length) {
+      const longHead = createElement("div", "strength-long-head");
+      longHead.append(
+        createElement("h3", "", "长周期强度路径"),
+        createElement("p", "", "每条路径至少 6 个连续节点，用来看一个题材从启动、确认、分歧、回流到尾部的完整走法。")
+      );
+
+      const longList = createElement("div", "strength-long-list");
+      (patterns.strengthLongCombos || []).forEach((combo) => {
+        const item = createElement("article", "strength-long-combo");
+        const chain = createElement("ol", "strength-long-chain");
+        (combo.sequence || []).forEach((step, index) => {
+          const node = document.createElement("li");
+          node.append(
+            createElement("span", "", String(index + 1).padStart(2, "0")),
+            createElement("b", "", step)
+          );
+          chain.appendChild(node);
+        });
+
+        item.append(
+          createElement("span", "strength-long-code", combo.code || ""),
+          createElement("h4", "", combo.title),
+          chain,
+          createElement("p", "strength-long-conclusion", combo.conclusion),
+          createElement("p", "strength-long-use", combo.use),
+          createElement("small", "", `案例：${combo.examples}`)
+        );
+        longList.appendChild(item);
+      });
+
+      longCombos.append(longHead, longList);
+    }
+
     els.strengthSystem.append(header, levels, combos);
+    if (longCombos.childElementCount) els.strengthSystem.appendChild(longCombos);
   }
 
   function renderVolumeStudy() {
