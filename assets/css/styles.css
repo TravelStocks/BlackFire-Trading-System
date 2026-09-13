@@ -263,21 +263,23 @@ svg {
   justify-content: center;
 }
 
-.top-cycle-map {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: 14px;
+.cycle-map-section {
   padding: 18px;
   background:
-    linear-gradient(135deg, rgba(223, 44, 44, 0.07), transparent 40%),
-    rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(223, 44, 44, 0.22);
+    linear-gradient(135deg, rgba(223, 44, 44, 0.07), transparent 42%),
+    linear-gradient(180deg, #fff, #fbfcfa);
   border-top: 4px solid var(--red);
-  border-radius: var(--radius);
-  box-shadow: 0 20px 44px rgba(20, 31, 28, 0.1);
+}
+
+.top-cycle-map {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 16px;
+  align-items: start;
 }
 
 .top-cycle-head {
+  grid-column: 1 / -1;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -302,7 +304,9 @@ svg {
 }
 
 .top-cycle-image {
-  display: block;
+  display: grid;
+  max-height: 440px;
+  place-items: center;
   overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -312,22 +316,29 @@ svg {
 .top-cycle-image img {
   display: block;
   width: 100%;
+  max-height: 440px;
   height: auto;
+  object-fit: contain;
 }
 
 .top-cycle-rules {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-content: start;
 }
 
 .top-cycle-rules article {
-  min-height: 136px;
-  padding: 14px;
+  min-height: auto;
+  padding: 12px 14px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-top: 3px solid var(--tone);
+  border-left: 4px solid var(--tone);
   border-radius: var(--radius);
+}
+
+.top-cycle-rules article:last-child {
+  grid-column: 1 / -1;
 }
 
 .top-cycle-rules span {
@@ -336,7 +347,6 @@ svg {
   align-items: center;
   padding: 3px 8px;
   color: var(--tone);
-  background: color-mix(in srgb, var(--tone) 10%, transparent);
   border-radius: 999px;
   font-size: 12px;
   font-weight: 900;
@@ -355,6 +365,26 @@ svg {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.6;
+}
+
+.top-cycle-rules .tone-teal span {
+  background: rgba(0, 140, 140, 0.09);
+}
+
+.top-cycle-rules .tone-green span {
+  background: rgba(7, 135, 93, 0.09);
+}
+
+.top-cycle-rules .tone-amber span {
+  background: rgba(180, 123, 18, 0.11);
+}
+
+.top-cycle-rules .tone-red span {
+  background: rgba(223, 44, 44, 0.09);
+}
+
+.top-cycle-rules .tone-blue span {
+  background: rgba(56, 103, 214, 0.09);
 }
 
 .tone-teal {
@@ -2168,6 +2198,10 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .top-cycle-map {
+    grid-template-columns: 1fr;
+  }
+
   .hero-panel,
   .top-cycle-rules,
   .decision-grid,
@@ -2209,8 +2243,19 @@ svg {
   }
 
   .hero,
+  .cycle-map-section,
   .section-head {
     padding: 22px 18px;
+  }
+
+  .top-cycle-image,
+  .top-cycle-image img {
+    max-height: none;
+  }
+
+  .top-cycle-head > span {
+    width: 100%;
+    justify-content: center;
   }
 
   .hero h1 {
