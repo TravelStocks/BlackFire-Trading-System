@@ -407,6 +407,150 @@ svg {
   --tone: var(--blue);
 }
 
+.speculation-section {
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(7, 135, 93, 0.07), transparent 38%),
+    linear-gradient(180deg, #fff, #fbfcfa);
+}
+
+.speculation-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.46fr);
+  gap: 18px;
+  align-items: end;
+  padding: 28px 30px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.speculation-head h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.16;
+}
+
+.speculation-head p:not(.label),
+.speculation-window p,
+.speculation-principles p,
+.speculation-action p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.speculation-thesis {
+  padding: 15px 16px;
+  color: var(--ink);
+  background: rgba(7, 135, 93, 0.07);
+  border: 1px solid rgba(7, 135, 93, 0.18);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  font-weight: 800;
+}
+
+.speculation-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  gap: 14px;
+  padding: 18px;
+}
+
+.speculation-principles,
+.speculation-timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.speculation-principles article,
+.speculation-window,
+.speculation-action div {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.speculation-principles article {
+  padding: 16px;
+}
+
+.speculation-principles span,
+.speculation-window span,
+.speculation-action span {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 3px 8px;
+  color: var(--green);
+  background: rgba(7, 135, 93, 0.09);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.speculation-principles strong,
+.speculation-action strong {
+  display: block;
+  margin: 9px 0 6px;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.speculation-timeline {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.speculation-window {
+  min-height: 176px;
+  padding: 16px;
+  border-top: 3px solid var(--green);
+}
+
+.speculation-window.empty {
+  border-top-color: var(--amber);
+}
+
+.speculation-window.warning {
+  border-top-color: var(--red);
+}
+
+.speculation-window.empty span {
+  color: var(--amber);
+  background: rgba(180, 123, 18, 0.1);
+}
+
+.speculation-window.warning span {
+  color: var(--red);
+  background: rgba(223, 44, 44, 0.09);
+}
+
+.speculation-window h3 {
+  margin: 10px 0 8px;
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.speculation-window strong {
+  display: block;
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.speculation-action {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 18px 18px;
+}
+
+.speculation-action div {
+  padding: 15px;
+  background:
+    linear-gradient(135deg, rgba(0, 140, 140, 0.06), transparent 54%),
+    rgba(255, 255, 255, 0.92);
+}
+
 .hero h1 {
   margin: 10px 0 12px;
   max-width: 9ch;
@@ -2202,8 +2346,15 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .speculation-head,
+  .speculation-layout {
+    grid-template-columns: 1fr;
+  }
+
   .hero-panel,
   .top-cycle-rules,
+  .speculation-timeline,
+  .speculation-action,
   .decision-grid,
   .watchlist-grid,
   .theme-grid,
@@ -2242,8 +2393,13 @@ svg {
     padding: 16px 12px 42px;
   }
 
+  .section {
+    scroll-margin-top: 150px;
+  }
+
   .hero,
   .cycle-map-section,
+  .speculation-head,
   .section-head {
     padding: 22px 18px;
   }
@@ -2289,6 +2445,8 @@ svg {
   .hero-prereq,
   .hero-panel,
   .top-cycle-rules,
+  .speculation-timeline,
+  .speculation-action,
   .decision-grid,
   .watchlist-grid,
   .theme-grid,
@@ -2324,6 +2482,7 @@ svg {
 
   .decision-grid,
   .watchlist-grid,
+  .speculation-layout,
   .strategy-columns,
   .theme-grid,
   .environment-grid,
@@ -2342,7 +2501,8 @@ svg {
   .leader-competition,
   .review-cadence,
   .resonance-panel,
-  .rhythm-panel {
+  .rhythm-panel,
+  .speculation-action {
     margin: 0 12px 12px;
   }
 
