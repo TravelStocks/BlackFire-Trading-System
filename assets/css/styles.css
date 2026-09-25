@@ -726,6 +726,7 @@ svg {
 .worldview-cycle span,
 .worldview-pillar-grid p,
 .worldview-discipline p,
+.worldview-discipline li,
 .worldview-footer-grid li {
   margin: 0;
   color: var(--muted);
@@ -807,7 +808,7 @@ svg {
 .worldview-pillar-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .worldview-pillar-grid article,
@@ -819,18 +820,73 @@ svg {
 }
 
 .worldview-pillar-grid article {
-  min-height: 168px;
-  padding: 16px;
+  min-height: 100%;
+  padding: 18px;
   border-top: 3px solid var(--blue);
 }
 
-.worldview-pillar-grid article:nth-child(4),
-.worldview-pillar-grid article:nth-child(5) {
+.worldview-pillar-grid .worldview-terrain {
   border-top-color: var(--green);
 }
 
-.worldview-pillar-grid article:nth-child(6) {
+.worldview-pillar-grid .worldview-people {
   border-top-color: var(--amber);
+}
+
+.worldview-pillar-title {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.worldview-pillar-title > span {
+  flex: 0 0 auto;
+}
+
+.worldview-pillar-title h3 {
+  margin: 0 0 4px;
+}
+
+.worldview-pillar-title p {
+  font-size: 13px;
+}
+
+.worldview-signal-list {
+  display: grid;
+  gap: 0;
+}
+
+.worldview-signal-list section {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.worldview-signal-list section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.worldview-signal-list strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.worldview-signal-focus {
+  margin: 10px -8px -2px;
+  padding: 13px 10px !important;
+  background: rgba(0, 145, 113, 0.07);
+  border: 1px solid rgba(0, 145, 113, 0.2) !important;
+  border-left: 4px solid var(--green) !important;
+  border-radius: var(--radius);
+}
+
+.worldview-signal-focus strong {
+  color: var(--green);
 }
 
 .worldview-pillar-grid h3,
@@ -872,6 +928,18 @@ svg {
   color: var(--ink);
   font-size: 16px;
   line-height: 1.35;
+}
+
+.worldview-discipline ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.worldview-discipline li {
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .worldview-footer-grid {
