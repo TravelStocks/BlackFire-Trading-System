@@ -525,6 +525,44 @@ svg {
   color: var(--amber);
 }
 
+.breakout-volume-note {
+  display: grid;
+  grid-template-columns: auto minmax(260px, 0.65fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(56, 103, 214, 0.06);
+  border: 1px solid rgba(56, 103, 214, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+}
+
+.breakout-volume-note span {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 4px 8px;
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.1);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.breakout-volume-note strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.breakout-volume-note p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
 .speculation-layout {
   display: grid;
   grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
@@ -2959,6 +2997,15 @@ svg {
   .month-window.gap,
   .month-window.second {
     grid-column: auto;
+  }
+
+  .breakout-volume-note {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .breakout-volume-note span {
+    width: fit-content;
   }
 
   .top-cycle-image,
