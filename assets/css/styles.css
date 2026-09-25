@@ -1871,7 +1871,7 @@ svg {
 }
 
 .volume-definition-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .volume-definition-grid article,
@@ -1886,7 +1886,7 @@ svg {
   border-top: 3px solid var(--green);
 }
 
-.volume-definition-grid article:nth-child(2) {
+.volume-definition-grid article:nth-child(3) {
   border-top-color: var(--amber);
 }
 
