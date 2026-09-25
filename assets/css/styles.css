@@ -551,6 +551,207 @@ svg {
     rgba(255, 255, 255, 0.92);
 }
 
+.worldview-section {
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(56, 103, 214, 0.06), transparent 38%),
+    linear-gradient(180deg, #fff, #fbfcfa);
+}
+
+.worldview-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.48fr);
+  gap: 18px;
+  align-items: end;
+  padding: 30px;
+  border-bottom: 1px solid var(--line);
+}
+
+.worldview-head h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.16;
+}
+
+.worldview-head p:not(.label),
+.worldview-principle p,
+.worldview-cycle span,
+.worldview-pillar-grid p,
+.worldview-discipline p,
+.worldview-footer-grid li {
+  margin: 0;
+  color: var(--muted);
+}
+
+.worldview-principle {
+  padding: 16px;
+  background: rgba(56, 103, 214, 0.07);
+  border: 1px solid rgba(56, 103, 214, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+}
+
+.worldview-principle span,
+.worldview-pillar-grid span,
+.worldview-discipline span,
+.worldview-footer-grid > article > span {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 3px 8px;
+  color: var(--blue);
+  background: rgba(56, 103, 214, 0.09);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.worldview-principle strong {
+  display: block;
+  margin: 10px 0 7px;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.worldview-body {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.worldview-cycle {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.worldview-cycle div {
+  min-height: 86px;
+  padding: 12px 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+  border-radius: var(--radius);
+}
+
+.worldview-cycle div:nth-child(n+4):nth-child(-n+6) {
+  border-top-color: var(--amber);
+}
+
+.worldview-cycle div:nth-child(n+7) {
+  border-top-color: var(--teal);
+}
+
+.worldview-cycle strong {
+  display: block;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.worldview-cycle span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.worldview-pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.worldview-pillar-grid article,
+.worldview-discipline article,
+.worldview-footer-grid article {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.worldview-pillar-grid article {
+  min-height: 168px;
+  padding: 16px;
+  border-top: 3px solid var(--blue);
+}
+
+.worldview-pillar-grid article:nth-child(4),
+.worldview-pillar-grid article:nth-child(5) {
+  border-top-color: var(--green);
+}
+
+.worldview-pillar-grid article:nth-child(6) {
+  border-top-color: var(--amber);
+}
+
+.worldview-pillar-grid h3,
+.worldview-footer-grid h3 {
+  margin: 10px 0 8px;
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.worldview-discipline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.worldview-discipline article {
+  min-height: 154px;
+  padding: 15px;
+  border-left: 4px solid var(--green);
+}
+
+.worldview-discipline article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.worldview-discipline article:nth-child(3),
+.worldview-discipline article:nth-child(4) {
+  border-left-color: var(--red);
+}
+
+.worldview-discipline article:nth-child(5) {
+  border-left-color: var(--amber);
+}
+
+.worldview-discipline strong {
+  display: block;
+  margin: 10px 0 8px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.worldview-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.worldview-footer-grid article {
+  padding: 18px;
+}
+
+.worldview-footer-grid ul,
+.worldview-footer-grid ol {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.worldview-trend {
+  border-top: 3px solid var(--teal);
+}
+
+.worldview-checklist {
+  border-top: 3px solid var(--green);
+}
+
 .hero h1 {
   margin: 10px 0 12px;
   max-width: 9ch;
@@ -2351,6 +2552,17 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .worldview-head,
+  .worldview-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .worldview-cycle,
+  .worldview-pillar-grid,
+  .worldview-discipline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .hero-panel,
   .top-cycle-rules,
   .speculation-timeline,
@@ -2400,8 +2612,13 @@ svg {
   .hero,
   .cycle-map-section,
   .speculation-head,
+  .worldview-head,
   .section-head {
     padding: 22px 18px;
+  }
+
+  .worldview-body {
+    padding: 12px;
   }
 
   .top-cycle-image,
@@ -2447,6 +2664,10 @@ svg {
   .top-cycle-rules,
   .speculation-timeline,
   .speculation-action,
+  .worldview-cycle,
+  .worldview-pillar-grid,
+  .worldview-discipline,
+  .worldview-footer-grid,
   .decision-grid,
   .watchlist-grid,
   .theme-grid,

@@ -11,7 +11,7 @@ const compareTable = document.querySelector("#compareTable");
 const modeCopy = {
   dragon: {
     title: "有龙：聚焦真龙，做主升浪",
-    body: "只在主线明确、真龙已被七维确认时提高仓位。3-5板爆量弱转强是主战场，5板是成龙或脱离补涨节点；次日必须等板上扫板或回封确认后再加仓。",
+    body: "只在主线明确、真龙已被七维确认时提高仓位。第一性看身位，唯一性看题材内、题材之间以及最高标抱团的唯一出口；主升2开始建仓，确认转强后加仓。",
     bg: "#f5faf7",
     border: "rgba(7, 135, 93, 0.24)"
   },
@@ -23,7 +23,7 @@ const modeCopy = {
   },
   defense: {
     title: "退潮：停止幻想，空仓防守",
-    body: "高潮次日、竞价崩盘、涨停指数走弱、题材电风扇轮动，都优先清仓或空仓。低开不及预期、断板、二波不续强、走弱加仓欲望出现时，条件单和纪律优先。",
+    body: "高潮次日、竞价崩盘、涨停指数走弱、题材电风扇轮动，都优先清仓或空仓。没有合格机会时，空仓就是正确动作。",
     bg: "#fff7f7",
     border: "rgba(223, 44, 44, 0.24)"
   }
@@ -38,7 +38,8 @@ function updateProgress() {
 }
 
 function updateToc() {
-  const marker = window.scrollY + 120;
+  const topbarHeight = document.querySelector(".topbar")?.getBoundingClientRect().height || 0;
+  const marker = window.scrollY + topbarHeight + 64;
   let activeId = sections[0]?.id;
 
   for (const section of sections) {
@@ -73,6 +74,40 @@ function setMode(mode) {
   modePanel.querySelector("p").textContent = copy.body;
 }
 
+function scrollToHashTarget() {
+  if (!window.location.hash) return;
+
+  let hash = window.location.hash;
+  try {
+    hash = decodeURIComponent(hash);
+  } catch {
+    return;
+  }
+
+  const target = document.querySelector(hash);
+  if (!target) return;
+
+  const alignToTarget = () => {
+    const topbarHeight = document.querySelector(".topbar")?.getBoundingClientRect().height || 0;
+    const top = target.getBoundingClientRect().top + window.scrollY - topbarHeight - 18;
+    window.scrollTo({ top, behavior: "auto" });
+    updateProgress();
+    updateToc();
+  };
+
+  requestAnimationFrame(alignToTarget);
+  window.setTimeout(alignToTarget, 250);
+  window.setTimeout(alignToTarget, 1000);
+
+  const pendingImages = Array.from(document.images).filter((image) => !image.complete);
+  if (pendingImages.length) {
+    Promise.all(pendingImages.map((image) => new Promise((resolve) => {
+      image.addEventListener("load", resolve, { once: true });
+      image.addEventListener("error", resolve, { once: true });
+    }))).then(alignToTarget);
+  }
+}
+
 stateCards.forEach((card) => {
   card.addEventListener("click", () => setMode(card.dataset.mode));
 });
@@ -87,6 +122,8 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 window.addEventListener("resize", updateProgress);
+window.addEventListener("load", scrollToHashTarget);
+window.addEventListener("hashchange", scrollToHashTarget);
 
 updateProgress();
 updateToc();
