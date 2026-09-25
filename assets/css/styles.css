@@ -805,6 +805,114 @@ svg {
   line-height: 1.45;
 }
 
+.short-term-methods {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.short-term-methods-head {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: end;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.short-term-methods-head span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.short-term-methods-head h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.short-term-methods-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.short-term-methods-head p strong {
+  color: var(--ink);
+}
+
+.short-term-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.method-card {
+  min-height: 194px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+  border-radius: var(--radius);
+}
+
+.method-card.method-learning {
+  border-top-color: var(--amber);
+}
+
+.method-card-top {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.method-card-top span {
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.method-card-top em {
+  padding: 3px 8px;
+  color: var(--green);
+  background: rgba(0, 145, 113, 0.08);
+  border-radius: 999px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.method-learning .method-card-top span,
+.method-learning .method-card-top em {
+  color: #9a6500;
+}
+
+.method-learning .method-card-top em {
+  background: rgba(194, 126, 0, 0.09);
+}
+
+.method-card h4 {
+  margin: 14px 0 7px;
+  color: var(--ink);
+  font-size: 22px;
+}
+
+.method-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.method-card > strong {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .worldview-pillar-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3162,11 +3270,13 @@ svg {
   }
 
   .worldview-head,
+  .short-term-methods-head,
   .worldview-footer-grid {
     grid-template-columns: 1fr;
   }
 
   .worldview-cycle,
+  .short-term-method-grid,
   .worldview-pillar-grid,
   .worldview-discipline,
   .volume-stats,
@@ -3310,6 +3420,7 @@ svg {
   .speculation-timeline,
   .speculation-action,
   .worldview-cycle,
+  .short-term-method-grid,
   .worldview-pillar-grid,
   .worldview-discipline,
   .worldview-footer-grid,
