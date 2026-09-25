@@ -1119,6 +1119,44 @@ svg {
   box-shadow: 0 12px 26px rgba(56, 103, 214, 0.12);
 }
 
+.entry-priority {
+  min-height: 68px;
+  background:
+    linear-gradient(90deg, rgba(246, 198, 103, 0.24), rgba(255, 255, 255, 0.96)),
+    var(--surface);
+  border-color: rgba(195, 120, 8, 0.48);
+  border-left-color: var(--amber);
+  box-shadow: 0 12px 26px rgba(195, 120, 8, 0.12);
+}
+
+.entry-priority > span:first-child {
+  color: #805006;
+  background: rgba(246, 198, 103, 0.4);
+  border: 1px solid rgba(195, 120, 8, 0.24);
+}
+
+.entry-priority:hover {
+  border-color: rgba(195, 120, 8, 0.7);
+  box-shadow: 0 16px 32px rgba(195, 120, 8, 0.2);
+}
+
+.priority-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.priority-copy strong {
+  font-size: 17px;
+}
+
+.priority-copy em {
+  color: #a56504;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
 .entry-secondary span {
   display: inline-flex;
   align-items: center;
@@ -1138,6 +1176,20 @@ svg {
   width: 18px;
   height: 18px;
   color: var(--blue);
+}
+
+.entry-secondary .priority-copy {
+  display: grid;
+  min-height: 0;
+  gap: 3px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
+}
+
+.entry-priority svg {
+  color: #a56504;
 }
 
 .entry-model {
