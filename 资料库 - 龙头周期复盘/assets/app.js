@@ -424,7 +424,7 @@
         const caseCaption = createElement("div", "strength-case-caption");
         caseCaption.append(
           createElement("b", "", "案例对应"),
-          createElement("span", "", "龙头板位 × 题材阶段")
+          createElement("span", "", "龙头板位 × 题材阶段 × 涨停家数")
         );
         caseTracks.appendChild(caseCaption);
 
@@ -446,6 +446,7 @@
             const caseChain = createElement("ol", "strength-case-chain");
             (cycle.records || []).forEach((record, index) => {
               const boardRecord = (cycle.limitBoard?.items || []).find((item) => item.date === record.date);
+              const dailyLimitUp = dailyLimitUps.cycles?.[cycle.id]?.records?.[record.date];
               const board = boardRecord?.board || record.board || "—";
               const rhythm =
                 record.intensity && !String(record.phase || "").includes(record.intensity)
@@ -463,6 +464,11 @@
                 createElement("em", "", cycle.sector),
                 createElement("span", "", rhythm)
               );
+              if (Number.isFinite(dailyLimitUp?.count)) {
+                context.append(
+                  createElement("span", "strength-case-limit-count", `涨停 ${dailyLimitUp.count}家`)
+                );
+              }
               node.appendChild(context);
               caseChain.appendChild(node);
             });

@@ -1505,6 +1505,15 @@ body.compact .raw-text {
   overflow-wrap: anywhere;
 }
 
+.strength-case-context .strength-case-limit-count {
+  padding-left: 6px;
+  color: var(--red-deep);
+  border-left: 1px solid var(--line-strong);
+  font-family: var(--mono);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
 @media (max-width: 1180px) {
   .strength-levels {
     grid-template-columns: repeat(3, minmax(0, 1fr));
