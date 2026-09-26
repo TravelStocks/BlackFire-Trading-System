@@ -1,0 +1,40 @@
+# 2026-09-26 手册整合核对
+
+本次以线上提交 `c22d86629b23ff8128f91ada9404e362640447ae` 为基准。21条输入记录融入原有章节，不另建一份互相竞争的交易系统。
+
+| 记录 | 输入主题与细节 | 正文位置 |
+|---|---|---|
+| 1—2 | 身位核心；最初未完句；三板起观察；题材节奏与介入问题 | classification / unique-entry / research-questions |
+| 3 | 题材回流可缩量共振，也可爆量承接；五板及之前完成放量 | volume-window |
+| 4 | 强板块、唯一抱团高标、合理量能、中位盈亏比四条件 | classification / 龙头阅读版总纲 |
+| 5—6 | 华电辽能周期；华电能源与绿发；龙版、大晟、欢瑞三选一；竞价先强可能失败；五板板上确认与不同结果 | unique-entry / case-pk |
+| 7 | 三个缩量一字、五板前换手不足；中南文化五连一字；万不得已例外未定义 | leader-exclusions / case-zhongnan |
+| 8 | 三房巷题材五阶段、连续三天分歧、六板失败；电力两天强；赤天化与璐化科技深水不修复 | theme-feedback / case-sanfang / theme-competition |
+| 9 | 讨论补充：同时间量价、固定观察池、收益期望示例、实得收益与可成交、研究适用范围 | theme-feedback / volume-window / layered-validation / research-questions |
+| 10 | 明确采纳：竞争者淘汰vs跨层级衰退；修复对照；新强旧弱；三项环境记录；A/B/C分层验证 | theme-feedback / theme-competition / regime-state / layered-validation |
+| 11 | 18个月、前一波五连板以内、目标五板以上二波的经验排除 | leader-exclusions / research-questions |
+| 12—13 | 百花、传智、津药；半放量成交≤5亿；五六板缺机会；三板早有唯一性可前置；两个转强动作 | volume-window / unique-entry |
+| 14 | 每个至少三个起量或半放量的原命题；第三个最后窗口；两个则五板可能补量；计数与缩量基准 | volume-window / research-questions |
+| 15 | 主要三进四四进五；圣阳五板关键点确认；执行明确与收益不确定 | entry-confirmation |
+| 16 | 金螳螂五板符合、六板新变化；逻辑证伪与后排掉队；买前买后分评 | holding-adaptation / case-jintang |
+| 17 | 主导风格与赚钱效应；中高位无溢价不做；五月底六月中观察 | regime-state / worldview |
+| 18 | 四个以上缩量一字高度龙启动观察；关闭难题；2026年大唐逐日资料与因果边界 | speculation / regime-state / case-datang-2026 |
+| 19 | 明确采纳启停框架；华天三进四一字非买点、高开确认、次日承接、第三个半放量板 | regime-state / entry-confirmation / case-huatian |
+| 20 | 一字当日开板下杀、放量承接、回封；获利盘解释与可观察事实区分 | entry-confirmation / 辅助回封页 |
+| 21 | 最晚四板强板块；环境相对前三；风范排除；金健农业被医药卡位转趋势 | theme-feedback / case-fengfan / theme-competition / case-jinjian |
+
+## 一致性修订
+
+- 同身位各半仓旧方案改为等待唯一性；原案例仍保留研究位置。
+- 首二板学习知识与三板以上当前模式分开；辅助形态不越过主规则。
+- 8家硬底线改作旧参照，增加四板时限和相对前三。
+- 五板机械定龙与预设七板空间改为身份、题材、量能共同确认。
+- 起量次数与旧折算单位分开，不悄悄选择其中一个计数。
+- 一字非买点与开板回封可确认并存；尾盘不自动享有优先权。
+- 五板前合理放量与高位失控爆量的持仓风险分开。
+- 周期空窗不等于所有短线机会消失；严重异动日期不倒推因果。
+- 总龙趋势二波、断板反包与五板以上连板目标分开记录。
+
+## 状态与来源
+
+当前个人规则、经验假设、个人复盘案例、有来源的2026年5月资料分别在正文标注。未定义阈值集中于 `#research-questions`；未完句、名称订正、原话歧义均保留说明。未增加新的买卖数值阈值，未改动其他战法的独立仓位参数。

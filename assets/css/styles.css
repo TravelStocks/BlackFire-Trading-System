@@ -3542,3 +3542,30 @@ svg {
     animation-duration: 0.01ms !important;
   }
 }
+
+
+/* Integrated handbook prose follows the existing paper-and-green visual language. */
+.handbook-panel { margin: 26px 0; padding: clamp(18px, 3vw, 30px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); scroll-margin-top: 125px; }
+.handbook-panel h3 { margin: 4px 0 16px; font-size: clamp(20px, 2.2vw, 27px); line-height: 1.4; }
+.handbook-panel h4 { margin: 24px 0 10px; font-size: 17px; }
+.handbook-panel p, .handbook-panel li { line-height: 1.85; }
+.handbook-panel ul, .handbook-panel ol { padding-left: 1.5em; }
+.handbook-panel li + li { margin-top: 8px; }
+.handbook-panel a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
+.handbook-panel .label { margin: 0; }
+.handbook-note { color: var(--muted); font-size: 13px; line-height: 1.75; }
+.handbook-emphasis { border-left: 3px solid var(--green); padding: 14px 18px; background: #f3f8f4; font-weight: 700; }
+.handbook-table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 7px; margin: 18px 0; }
+.handbook-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; }
+.handbook-table th, .handbook-table td { padding: 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; line-height: 1.75; overflow-wrap: anywhere; }
+.handbook-table th { background: #edf4ef; color: #244e3b; font-weight: 700; }
+.handbook-table th:first-child { width: 23%; }
+.handbook-table tr:last-child td { border-bottom: 0; }
+.handbook-case { margin-top: 15px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-soft); }
+.handbook-case > summary { cursor: pointer; padding: 16px 18px; font-weight: 700; color: var(--ink); }
+.handbook-case > p, .handbook-case > ul { margin: 8px 18px 18px; }
+.handbook-case[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+.handbook-jumps { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+.handbook-jumps a { border: 1px solid var(--line); border-radius: 5px; padding: 5px 8px; color: var(--green); font-size: 12px; text-decoration: none; }
+.handbook-jumps a:focus-visible, .handbook-case > summary:focus-visible, .handbook-table-wrap:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+@media (max-width: 640px) { .handbook-panel { padding: 17px; } .handbook-table { min-width: 590px; } .handbook-panel h3 { font-size: 21px; } }
