@@ -420,13 +420,64 @@
           chain.appendChild(node);
         });
 
+        const caseTracks = createElement("div", "strength-case-tracks");
+        const caseCaption = createElement("div", "strength-case-caption");
+        caseCaption.append(
+          createElement("b", "", "案例对应"),
+          createElement("span", "", "龙头板位 × 题材阶段")
+        );
+        caseTracks.appendChild(caseCaption);
+
+        String(combo.examples || "")
+          .split(/[，,、]/)
+          .map((name) => name.trim())
+          .filter(Boolean)
+          .forEach((leaderName) => {
+            const cycle = cycles.find((sample) => sample.leader === leaderName);
+            if (!cycle) return;
+
+            const caseCycle = createElement("section", "strength-case-cycle");
+            const caseHead = createElement("header", "strength-case-head");
+            caseHead.append(
+              createElement("strong", "", cycle.leader),
+              createElement("span", "", `${cycle.sector} · ${cycle.dateRange}`)
+            );
+
+            const caseChain = createElement("ol", "strength-case-chain");
+            (cycle.records || []).forEach((record, index) => {
+              const boardRecord = (cycle.limitBoard?.items || []).find((item) => item.date === record.date);
+              const board = boardRecord?.board || record.board || "—";
+              const rhythm =
+                record.intensity && !String(record.phase || "").includes(record.intensity)
+                  ? `${record.phase} - ${record.intensity}`
+                  : record.phase || record.intensity || "待确认";
+              const node = document.createElement("li");
+              node.dataset.direction = record.direction || "neutral";
+              node.append(
+                createElement("span", "strength-case-index", String(index + 1).padStart(2, "0")),
+                createElement("b", "", `${cycle.leader} ${board}`)
+              );
+
+              const context = createElement("small", "strength-case-context");
+              context.append(
+                createElement("em", "", cycle.sector),
+                createElement("span", "", rhythm)
+              );
+              node.appendChild(context);
+              caseChain.appendChild(node);
+            });
+
+            caseCycle.append(caseHead, caseChain);
+            caseTracks.appendChild(caseCycle);
+          });
+
         item.append(
           createElement("span", "strength-long-code", combo.code || ""),
           createElement("h4", "", combo.title),
           chain,
           createElement("p", "strength-long-conclusion", combo.conclusion),
           createElement("p", "strength-long-use", combo.use),
-          createElement("small", "", `案例：${combo.examples}`)
+          caseTracks
         );
         longList.appendChild(item);
       });
