@@ -1,12 +1,16 @@
 const progress = document.querySelector("#progress");
 const backtop = document.querySelector("#backtop");
 const tocLinks = [...document.querySelectorAll(".toc-link")];
-const sections = tocLinks
-  .map((link) => document.querySelector(link.getAttribute("href")))
-  .filter(Boolean);
+const sections = [...new Set(tocLinks
+  .map((link) => document.getElementById(link.hash.slice(1)))
+  .filter(Boolean))];
 const stateCards = [...document.querySelectorAll(".state-card")];
 const modePanel = document.querySelector("#modePanel");
 const compareTable = document.querySelector("#compareTable");
+const readingToggle = document.querySelector("#readingToggle");
+const mobileContents = document.querySelector(".mobile-contents");
+const readingDetails = [...document.querySelectorAll("details.reading-fold, details.handbook-case, .details-grid details")];
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const modeCopy = {
   dragon: {
@@ -38,19 +42,34 @@ function updateProgress() {
 }
 
 function updateToc() {
-  const topbarHeight = document.querySelector(".topbar")?.getBoundingClientRect().height || 0;
-  const marker = window.scrollY + topbarHeight + 64;
+  const marker = stickyHeight() + 64;
   let activeId = sections[0]?.id;
-
+  let nearestTop = -Infinity;
   for (const section of sections) {
-    if (section.offsetTop <= marker) {
+    if (!section.getClientRects().length) continue;
+    const top = section.getBoundingClientRect().top;
+    if (top <= marker && top > nearestTop) {
       activeId = section.id;
+      nearestTop = top;
     }
   }
 
   tocLinks.forEach((link) => {
-    link.classList.toggle("is-active", link.getAttribute("href") === `#${activeId}`);
+    const active = link.hash === `#${activeId}`;
+    link.classList.toggle("is-active", active);
+    if (active) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
   });
+  const activeLink = tocLinks.find((link) => link.hash === `#${activeId}`);
+  const label = mobileContents?.querySelector("summary small");
+  if (activeLink && label) label.textContent = activeLink.textContent.replace(/^\s*\d+\s*/, "").trim();
+}
+
+function stickyHeight() {
+  const topbar = document.querySelector(".topbar")?.getBoundingClientRect().height || 0;
+  const mobile = mobileContents && getComputedStyle(mobileContents).display !== "none"
+    ? mobileContents.querySelector("summary").getBoundingClientRect().height : 0;
+  return topbar + mobile;
 }
 
 function setMode(mode) {
@@ -76,54 +95,89 @@ function setMode(mode) {
 
 function scrollToHashTarget() {
   if (!window.location.hash) return;
-
-  let hash = window.location.hash;
+  let id;
   try {
-    hash = decodeURIComponent(hash);
+    id = decodeURIComponent(window.location.hash.slice(1));
   } catch {
     return;
   }
 
-  const target = document.querySelector(hash);
+  const target = document.getElementById(id);
   if (!target) return;
-
-  const alignToTarget = () => {
-    const topbarHeight = document.querySelector(".topbar")?.getBoundingClientRect().height || 0;
-    const top = target.getBoundingClientRect().top + window.scrollY - topbarHeight - 18;
-    window.scrollTo({ top, behavior: "auto" });
+  if (mobileContents) mobileContents.open = false;
+  for (let node = target; node; node = node.parentElement) {
+    if (node.tagName === "DETAILS") node.open = true;
+  }
+  requestAnimationFrame(() => {
+    const top = target.getBoundingClientRect().top + window.scrollY - stickyHeight() - 20;
+    window.scrollTo({ top, behavior: "instant" });
+    target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
     updateProgress();
     updateToc();
-  };
-
-  requestAnimationFrame(alignToTarget);
-  window.setTimeout(alignToTarget, 250);
-  window.setTimeout(alignToTarget, 1000);
-
-  const pendingImages = Array.from(document.images).filter((image) => !image.complete);
-  if (pendingImages.length) {
-    Promise.all(pendingImages.map((image) => new Promise((resolve) => {
-      image.addEventListener("load", resolve, { once: true });
-      image.addEventListener("error", resolve, { once: true });
-    }))).then(alignToTarget);
-  }
+    updateReadingToggle();
+  });
 }
+
+function updateReadingToggle() {
+  if (!readingToggle) return;
+  const expanded = readingDetails.length > 0 && readingDetails.every((detail) => detail.open);
+  readingToggle.setAttribute("aria-pressed", String(expanded));
+  readingToggle.textContent = expanded ? "收起详解" : "展开详解";
+}
+
+readingToggle?.addEventListener("click", () => {
+  const expand = !readingDetails.every((detail) => detail.open);
+  const anchor = [...sections].reverse().find((section) => section.getClientRects().length && section.getBoundingClientRect().top <= stickyHeight() + 64);
+  const oldTop = anchor?.getBoundingClientRect().top;
+  readingDetails.forEach((detail) => { detail.open = expand; });
+  requestAnimationFrame(() => {
+    if (anchor) window.scrollBy({ top: anchor.getBoundingClientRect().top - oldTop, behavior: "instant" });
+    updateReadingToggle();
+    updateProgress();
+    updateToc();
+  });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    if (mobileContents) mobileContents.open = false;
+    if (link.hash === window.location.hash) scrollToHashTarget();
+  });
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && mobileContents?.open) {
+    mobileContents.open = false;
+    mobileContents.querySelector("summary").focus();
+  }
+});
 
 stateCards.forEach((card) => {
   card.addEventListener("click", () => setMode(card.dataset.mode));
 });
 
 backtop.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "instant" : "smooth" });
 });
 
-window.addEventListener("scroll", () => {
-  updateProgress();
-  updateToc();
-}, { passive: true });
+let renderPending = false;
+function scheduleRender() {
+  if (renderPending) return;
+  renderPending = true;
+  requestAnimationFrame(() => {
+    renderPending = false;
+    updateProgress();
+    updateToc();
+    updateReadingToggle();
+  });
+}
+window.addEventListener("scroll", scheduleRender, { passive: true });
+document.addEventListener("toggle", scheduleRender, true);
 
-window.addEventListener("resize", updateProgress);
+window.addEventListener("resize", scheduleRender);
 window.addEventListener("load", scrollToHashTarget);
 window.addEventListener("hashchange", scrollToHashTarget);
 
 updateProgress();
 updateToc();
+updateReadingToggle();
