@@ -86,6 +86,33 @@ body.handbook-edition { background: var(--bg); }
 .case-directory a:hover strong { color: #f5f5f7; text-decoration: none; }
 #case-index a:focus-visible { outline-color: #8ec4ff; }
 .record-links, .record-links a { font-size: 12px; }
+.rotation-reference { margin: 30px 0; padding: 24px 0; border-block: 1px solid var(--line); border-top: 3px solid #ad7200; scroll-margin-top: 136px; }
+.rotation-reference, .rotation-reference * { letter-spacing: 0; }
+.rotation-reference-head .label { margin: 0 0 8px; color: #8a5700; font-size: 12px; font-weight: 750; }
+.rotation-reference-head h3 { margin: 0 0 10px; font-size: 30px; line-height: 1.4; font-weight: 800; }
+.rotation-reference-head > p:last-child { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+.rotation-reference-body { display: grid; grid-template-columns: minmax(0,556px) minmax(230px,1fr); align-items: start; gap: 32px; margin-top: 24px; }
+.rotation-reference-figure { min-width: 0; margin: 0; }
+.rotation-reference-figure > a { display: block; }
+.rotation-reference-figure img { display: block; width: 100%; height: auto; max-width: 556px; }
+.rotation-reference-figure figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 12px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.rotation-reference-figure figcaption a { display: inline-flex; gap: 6px; align-items: center; min-height: 44px; color: var(--module-link); font-size: 14px; font-weight: 650; }
+.rotation-reference-notes h4 { margin: 0 0 6px; font-size: 20px; font-weight: 750; }
+.rotation-reference-notes dl { margin: 0; }
+.rotation-reference-notes dl > div { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.rotation-reference-notes dt { color: var(--ink); font-size: 19px; line-height: 1.6; font-weight: 750; }
+.rotation-reference-notes dt span { margin-right: 10px; color: var(--module-link); font-size: 13px; font-variant-numeric: tabular-nums; }
+.rotation-reference-notes dd { margin: 6px 0 0; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.rotation-reference-key { margin: 22px 0 0; padding-left: 14px; border-left: 3px solid #ad7200; color: #555157; font-size: 14px; line-height: 1.85; }
+.rotation-reference-key strong { display: block; margin-bottom: 6px; color: var(--ink); font-size: 17px; }
+.rotation-reference a:focus-visible { outline: 3px solid var(--module-link); outline-offset: 4px; }
+@media (max-width: 1100px) { .rotation-reference-body { grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 24px; } }
+@media (max-width: 640px) {
+  .rotation-reference { margin: 24px 0; padding: 20px 0; }
+  .rotation-reference-head h3 { font-size: 26px; }
+  .rotation-reference-body { grid-template-columns: 1fr; gap: 22px; margin-top: 20px; }
+  .rotation-reference-notes dl > div { padding: 16px 0; }
+}
 /* Theme rhythm: keep the decision, source samples and conditional actions readable. */
 .theme-volume-models {
   --rhythm-red: #aa2727;
