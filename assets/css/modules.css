@@ -86,6 +86,29 @@ body.handbook-edition { background: var(--bg); }
 .case-directory a:hover strong { color: #f5f5f7; text-decoration: none; }
 #case-index a:focus-visible { outline-color: #8ec4ff; }
 .record-links, .record-links a { font-size: 12px; }
+.worldview-framework { margin: 26px 0; padding: 24px 0; border-block: 1px solid var(--line); border-top: 3px solid var(--module-link); scroll-margin-top: 136px; }
+.worldview-framework, .worldview-framework * { letter-spacing: 0; }
+.worldview-framework header .label { margin: 0 0 10px; color: var(--module-link); font-size: 12px; font-weight: 700; }
+.worldview-framework h3 { margin: 0; font-size: 24px; line-height: 1.5; font-weight: 750; }
+.worldview-framework-body { display: grid; grid-template-columns: 279px minmax(0,1fr); gap: 36px; align-items: start; margin-top: 24px; }
+.worldview-framework figure { min-width: 0; width: 100%; max-width: 279px; margin: 0; }
+.worldview-framework figure > a { display: block; }
+.worldview-framework img { display: block; width: 100%; height: auto; }
+.worldview-framework figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 8px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.worldview-framework figcaption a { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; color: var(--module-link); font-weight: 600; }
+.worldview-framework a:focus-visible { outline: 3px solid var(--module-link); outline-offset: 4px; }
+.worldview-framework-steps { min-width: 0; margin: 0; }
+.worldview-framework-steps > div { padding: 16px 0; border-bottom: 1px solid var(--line); }
+.worldview-framework-steps > div:first-child { padding-top: 0; }
+.worldview-framework-steps > div:last-child { border-bottom: 0; }
+.worldview-framework-steps dt { color: var(--ink); font-size: 19px; line-height: 1.6; font-weight: 750; }
+.worldview-framework-steps dt span { display: block; margin-bottom: 4px; color: var(--module-link); font-size: 12px; }
+.worldview-framework-steps dd { margin: 6px 0 0; color: var(--muted); font-size: 15px; line-height: 1.75; }
+@media (max-width: 700px) {
+  .worldview-framework h3 { font-size: 22px; }
+  .worldview-framework-body { grid-template-columns: 1fr; gap: 24px; }
+  .worldview-framework figure { justify-self: center; }
+}
 .rotation-reference { margin: 30px 0; padding: 24px 0; border-block: 1px solid var(--line); border-top: 3px solid #ad7200; scroll-margin-top: 136px; }
 .rotation-reference, .rotation-reference * { letter-spacing: 0; }
 .rotation-reference-head .label { margin: 0 0 8px; color: #8a5700; font-size: 12px; font-weight: 750; }
