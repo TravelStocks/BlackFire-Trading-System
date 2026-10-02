@@ -347,3 +347,32 @@ body.handbook-edition { background: var(--bg); }
 @media (prefers-reduced-motion: reduce) {
   #resources a, .case-directory a { transition: none; }
 }
+
+/* Total-leader second wave and catch-up continuation share the same theme boundary. */
+.cycle-model-nav { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 12px; }
+.cycle-model-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 9px 15px; border: 1px solid #b6cdea; border-radius: 999px; color: var(--module-link); background: #f3f7fd; font-size: 14px; font-weight: 600; }
+.cycle-model-nav a:hover { background: #e7effc; }
+.cycle-source-note { color: var(--muted); font-size: 14px; line-height: 1.8; }
+.cycle-source-note a, .cycle-framework a { color: var(--module-link); text-decoration: underline; text-underline-offset: 3px; }
+.cycle-framework, .cycle-method { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line); scroll-margin-top: 100px; }
+.cycle-framework > p, .cycle-method-head > p:not(.label), .cycle-rule { font-size: 16px; line-height: 1.85; }
+.cycle-boundaries { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 18px 0; list-style: none; }
+.cycle-boundaries li { padding: 6px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-soft); font-size: 14px; }
+.cycle-method-head .label { margin: 0 0 8px; color: var(--module-link); font-size: 13px; font-weight: 600; }
+.cycle-method-head h4 { margin: 0; font-size: 27px; line-height: 1.5; letter-spacing: -.025em; text-wrap: pretty; }
+.cycle-method-head > p:not(.label) { margin: 12px 0 20px; }
+.cycle-method-facts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 24px; margin: 20px 0; }
+.cycle-method-facts > div { padding-top: 12px; border-top: 2px solid #d8e4f5; }
+.cycle-method-facts dt { margin-bottom: 7px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.cycle-method-facts dd { margin: 0; font-size: 16px; line-height: 1.8; }
+.cycle-method .fold-content h5, .cycle-framework .fold-content h5 { margin: 20px 0 8px; font-size: 17px; line-height: 1.6; }
+.cycle-method .fold-content h5:first-child, .cycle-framework .fold-content h5:first-child { margin-top: 0; }
+.cycle-model-nav a:focus-visible { outline: 3px solid var(--module-link); outline-offset: 3px; }
+@media (max-width: 640px) {
+  .cycle-framework, .cycle-method { scroll-margin-top: 140px; margin-top: 24px; padding-top: 22px; }
+  .cycle-model-nav { gap: 8px; }
+  .cycle-model-nav a { font-size: 13px; padding: 9px 12px; }
+  .cycle-method-head h4 { font-size: 23px; }
+  .cycle-method-facts { grid-template-columns: 1fr; gap: 16px; }
+  .cycle-method-facts dd, .cycle-framework > p, .cycle-method-head > p:not(.label), .cycle-rule { font-size: 15px; }
+}
