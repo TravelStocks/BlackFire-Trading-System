@@ -45,7 +45,7 @@ body.handbook-edition { background: var(--bg); }
 .strategy-head h3 { font-size: 28px; }
 .strategy-summary { font-size: 16px; }
 
-/* The eight resource links form four strategies, one priority resource and three tools. */
+/* Strategy entries, planned strategies and supporting resources stay distinct. */
 #resources .section-head h2 { font-size: clamp(28px,2.7vw,40px); }
 #resources .hero-entry { max-width: none; display: block; margin: 0; padding: 0; background: none; box-shadow: none; border: 0; }
 #resources .hero-entry-actions { gap: 16px; margin: 0 0 20px; }
@@ -56,6 +56,8 @@ body.handbook-edition { background: var(--bg); }
 #resources .entry-link .entry-action { display: inline-flex; align-items: center; gap: 8px; width: fit-content; min-height: 34px; margin-top: auto; padding: 5px 13px; background: var(--module-link); color: #fff; border-radius: 999px; font-size: 12px; font-weight: 500; }
 #resources .entry-action svg { width: 15px; height: 15px; }
 #resources .entry-link:hover { transform: none; background: #ebf2fc; border-color: #b6cdea; box-shadow: 0 6px 20px #0066cc0a; }
+#resources .entry-pending, #resources .entry-pending:hover { background: #f5f5f7; border-color: #e7e7ec; box-shadow: none; transform: none; cursor: default; }
+#resources .entry-pending-status { margin: auto 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
 #resources .entry-secondary { position: relative; margin: 0; border: 1px solid #e7e7ec; border-radius: 20px; box-shadow: none; background: #f5f5f7; color: var(--ink); transition: background-color 180ms ease, border-color 180ms ease; }
 #resources .entry-secondary:hover { transform: none; background: #ebf2fc; border-color: #b6cdea; box-shadow: none; }
 #resources .entry-secondary > span:first-child { width: fit-content; min-height: 0; padding: 0; background: none; border: 0; color: var(--module-link); font-size: 12px; font-weight: 600; line-height: 1.5; }
@@ -67,7 +69,7 @@ body.handbook-edition { background: var(--bg); }
 #resources .entry-priority strong { font-size: 28px; line-height: 1.4; font-weight: 600; letter-spacing: -.025em; }
 #resources .entry-priority em { color: #c7c7cc; font-size: 14px; font-weight: 400; }
 #resources .entry-priority > svg { grid-column: 2; grid-row: 1 / 3; align-self: center; width: 48px; height: 48px; padding: 13px; color: #fff; background: #0066cc; }
-.resource-tools { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.resource-tools { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
 #resources .resource-tools .entry-secondary { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 12px; min-height: 208px; padding: 22px; }
 #resources .resource-tools strong { font-size: 17px; line-height: 1.6; font-weight: 600; }
 #resources .resource-tools svg { margin-top: auto; align-self: flex-end; }
