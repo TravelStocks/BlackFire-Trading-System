@@ -1,8 +1,10 @@
-# BlackFire-Trading-System
+# MESSI-10-Trading-System
 
 这是一个 A 股超短线交易体系网页手册，总页用于判断市场状态与选择交易模式，两个子目录分别承载具体战法细节。
 
 ## 入口
+
+- 在线手册：[MESSI-10 交易系统手册](https://travelstocks.github.io/MESSI-10-Trading-System/)
 
 - `index.html`：总交易模式，包含情绪周期、战法分流、仓位、风控与复盘闭环。
 - `战法1 - 龙头信仰/龙头信仰-阅读版.html`：有龙主升期的龙头战法细节。
