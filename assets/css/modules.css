@@ -378,3 +378,7 @@ body.handbook-edition { background: var(--bg); }
 }
 
 .cycle-method-facts .cycle-position { grid-column: 1 / -1; }
+
+/* Keep the stage-to-strategy source diagram readable at the full content width. */
+.cycle-stage-reference .rotation-reference-figure { margin-top: 24px; }
+.cycle-stage-reference .rotation-reference-figure img { max-width: none; }
