@@ -383,6 +383,42 @@ body.handbook-edition { background: var(--bg); }
 .cycle-stage-reference .rotation-reference-figure { margin-top: 24px; }
 .cycle-stage-reference .rotation-reference-figure img { max-width: none; }
 
+/* Environment-first rules share the handbook's typography and responsive table. */
+.market-principle, .market-discipline { letter-spacing: 0; }
+.worldview-head h2 > span { display: inline-block; }
+.market-principle > strong > span, .market-principle-tempo > span { display: inline-block; min-height: 0; padding: 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; }
+.worldview-head .market-principle { padding: 22px 24px; border-left: 4px solid var(--module-link); background: #f2f6fc; }
+.market-principle > strong { display: block; font-size: 24px; line-height: 1.55; letter-spacing: 0; text-wrap: balance; }
+.worldview-head .market-principle > .market-principle-tempo { max-width: none; color: var(--green); font-size: 21px; font-weight: 750; }
+.worldview-head .market-principle > .market-principle-boundary { font-size: 14px; color: var(--muted); }
+.market-discipline { margin: 28px 0; padding: 24px 0; border-block: 1px solid var(--line); scroll-margin-top: 136px; }
+.market-discipline > .label { margin: 0 0 8px; color: var(--module-link); font-size: 12px; font-weight: 700; letter-spacing: 0; }
+.market-discipline h3 { margin: 0 0 14px; color: var(--ink); font-size: 24px; line-height: 1.5; letter-spacing: 0; text-wrap: balance; }
+.market-discipline > p:not(.label) { margin: 14px 0; font-size: 16px; line-height: 1.85; }
+.discipline-points { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 28px; margin: 22px 0; }
+.discipline-points > div { min-width: 0; padding-top: 12px; border-top: 2px solid #d8e4f1; }
+.discipline-points dt { margin-bottom: 7px; color: var(--ink); font-size: 18px; line-height: 1.6; font-weight: 750; }
+.discipline-points dd { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.market-discipline > .discipline-note { color: var(--muted); font-size: 14px; }
+.market-discipline > .discipline-bottom-line { margin-bottom: 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 15px; }
+.environment-table { table-layout: fixed; width: 100%; }
+.environment-table th:nth-child(1) { width: 22%; }
+.environment-table th:nth-child(2), .environment-table th:nth-child(3) { width: 20%; }
+.environment-table th, .environment-table td { overflow-wrap: anywhere; font-size: 15px; vertical-align: top; }
+.environment-table th { background: #f2f6fc; }
+.environment-table td strong { display: block; font-size: 17px; line-height: 1.6; }
+.environment-table td small { display: block; margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.75; }
+.environment-table-wrap:focus-visible { outline: 3px solid var(--module-link); outline-offset: 3px; }
+@media (max-width: 640px) {
+  .worldview-head .market-principle { padding: 18px 16px; }
+  .market-principle > strong, .market-discipline h3 { font-size: 22px; }
+  .worldview-head .market-principle > .market-principle-tempo { font-size: 20px; }
+  .market-discipline { margin: 24px 0; padding: 20px 0; }
+  .discipline-points { grid-template-columns: 1fr; gap: 18px; }
+  .market-discipline > p:not(.label) { font-size: 15px; }
+  .environment-table td:first-child { background: #f2f6fc; }
+}
+
 /* Agriculture case: distinguish two catch-up cycles from the excluded solo phase. */
 .agriculture-cycle-stages { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px 24px; padding: 0; margin: 24px 0; list-style: none; counter-reset: agriculture-stage; }
 .agriculture-cycle-stages > li { counter-increment: agriculture-stage; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); }
