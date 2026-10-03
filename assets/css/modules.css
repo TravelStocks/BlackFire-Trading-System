@@ -382,3 +382,31 @@ body.handbook-edition { background: var(--bg); }
 /* Keep the stage-to-strategy source diagram readable at the full content width. */
 .cycle-stage-reference .rotation-reference-figure { margin-top: 24px; }
 .cycle-stage-reference .rotation-reference-figure img { max-width: none; }
+
+/* Agriculture case: distinguish two catch-up cycles from the excluded solo phase. */
+.agriculture-cycle-stages { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px 24px; padding: 0; margin: 24px 0; list-style: none; counter-reset: agriculture-stage; }
+.agriculture-cycle-stages > li { counter-increment: agriculture-stage; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); }
+.agriculture-stage-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; color: var(--module-link); font-size: 13px; font-weight: 600; }
+.agriculture-stage-heading::before { content: counter(agriculture-stage, decimal-leading-zero); font-variant-numeric: tabular-nums; }
+.agriculture-stage-heading time { margin-left: auto; color: var(--muted); font-weight: 400; }
+.agriculture-cycle-stages h5, .agriculture-case-rule h5 { margin: 12px 0 8px; font-size: 18px; line-height: 1.65; }
+.agriculture-cycle-stages p, .agriculture-case-rule p { margin: 8px 0 0; font-size: 15px; line-height: 1.85; }
+.agriculture-cycle-stages .agriculture-stage-excluded { border-color: #decaca; background: #fbf6f5; }
+.agriculture-stage-excluded .agriculture-stage-heading { color: #854c43; }
+.agriculture-case-rule { margin: 24px 0; padding: 2px 0 2px 18px; border-left: 3px solid var(--module-link); }
+.agriculture-case-rule h5 { margin-top: 0; }
+.agriculture-day > summary { display: flex; align-items: baseline; gap: 16px; }
+.agriculture-day > summary time { flex: 0 0 94px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.agriculture-day > summary span { flex: 1; min-width: 0; }
+.agriculture-day-columns { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 24px; }
+.agriculture-day-columns > div { min-width: 0; }
+.agriculture-cycle-case .agriculture-day-columns h5 { margin: 0 0 14px; font-size: 15px; color: var(--module-link); }
+.agriculture-original { margin: 0; white-space: pre-line; overflow-wrap: anywhere; font-size: 15px; line-height: 1.85; }
+@media (max-width: 640px) {
+  .agriculture-cycle-stages, .agriculture-day-columns { grid-template-columns: 1fr; gap: 16px; }
+  .agriculture-cycle-stages > li { padding: 16px; }
+  .agriculture-day > summary { flex-wrap: wrap; gap: 4px 8px; padding-right: 46px; position: relative; }
+  .agriculture-day > summary time { flex-basis: 100%; }
+  .agriculture-day > summary::after { position: absolute; right: 13px; top: 19px; }
+  .agriculture-case-rule { padding-left: 14px; }
+}
