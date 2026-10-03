@@ -376,3 +376,5 @@ body.handbook-edition { background: var(--bg); }
   .cycle-method-facts { grid-template-columns: 1fr; gap: 16px; }
   .cycle-method-facts dd, .cycle-framework > p, .cycle-method-head > p:not(.label), .cycle-rule { font-size: 15px; }
 }
+
+.cycle-method-facts .cycle-position { grid-column: 1 / -1; }
